@@ -64,8 +64,6 @@ class MainApplication :Application(),Application.ActivityLifecycleCallbacks,Life
             modules(appModule)
         }
 
-        MobileAds.initialize(this)
-
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)

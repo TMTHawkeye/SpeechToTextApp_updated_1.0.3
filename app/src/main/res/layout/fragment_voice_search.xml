@@ -217,6 +217,22 @@
 
         </androidx.cardview.widget.CardView>
 
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_view_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_20sdp"
+            app:layout_constraintTop_toBottomOf="@+id/cardView_more"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_alignParentBottom="true">
+
+            <include layout="@layout/native_ad_template_placeholder"/>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
         <FrameLayout
             android:id="@+id/ad_view_container"
             android:layout_width="match_parent"

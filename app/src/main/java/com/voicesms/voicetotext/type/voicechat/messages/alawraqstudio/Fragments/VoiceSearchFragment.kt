@@ -24,7 +24,12 @@ class VoiceSearchFragment : Fragment(), View.OnClickListener {
         binding = FragmentVoiceSearchBinding.inflate(layoutInflater, container, false)
 
 
-        AdManager.getInstance().loadNativeAd(requireContext(), BuildConfig.Voice_Search_Screen_Native,binding.adViewContainer)
+        AdManager.getInstance().loadNativeAd(
+            requireContext(),
+            BuildConfig.Voice_Search_Screen_Native,
+            binding.adViewContainer,
+            binding.shimmerViewContainer
+        )
 
         binding.cardViewComunication.setOnClickListener(this)
         binding.cardViewShopping.setOnClickListener(this)
@@ -88,6 +93,17 @@ class VoiceSearchFragment : Fragment(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
         binding.root.clearFocus()
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        AdManager.getInstance().currentNativeAd=null
+        AdManager.getInstance().interstitialAd=null
+    }
+
+    override fun onPause() {
+        super.onPause()
+        AdManager.getInstance().currentNativeAd=null
+        AdManager.getInstance().interstitialAd=null
     }
 
 }

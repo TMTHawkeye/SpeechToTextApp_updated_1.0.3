@@ -1,12 +1,15 @@
 package com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Adapters
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.StrictMode
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Interfaces.RecordingsCallback
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ModelClasses.FileData
@@ -102,56 +105,25 @@ class SavedFilesAdapter(
             }
         }
 
-//        holder.itemView.setOnLongClickListener {
-//            isSelectionMode = true
-////            selectedItems.clear()
-//            selectedItems.add(position)
-//            notifyItemChanged(position)
-//            true
-//        }
-//
-//        holder.itemView.setOnClickListener {
-//            if (isSelectionMode) {
-//                // Handle click in selection mode
-//                if (selectedItems.contains(position)) {
-//                    selectedItems.remove(position)
-//                } else {
-//                    selectedItems.add(position)
-//                }
-//                notifyItemChanged(position)
-//            }
-//            else{
-//                Toast.makeText(context, "Item clicked!", Toast.LENGTH_SHORT).show()
-//            }
-//        }
+        holder.binding.playRecId.setOnClickListener {
+            val file = File(listofFiles[position].filePath)
+            val fileUri = FileProvider.getUriForFile(
+                context,
+                "${context.applicationContext.packageName}.provider",
+                file
+            )
+
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.setDataAndType(fileUri, "audio/*")
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            try {
+                context.startActivity(intent)
+            } catch (e: ActivityNotFoundException) {
+                Toast.makeText(context, "Cant' play the audio!", Toast.LENGTH_SHORT).show()
+            }
+        }
+
     }
 }
-
-
-
-//private fun openFile(file: File, context: Context) {
-////    val uri = Uri.fromFile(file)
-//    val uri = FileProvider.getUriForFile(
-//        context,
-//        "androidx.core.content.FileProvider",
-//        file
-//    )
-//
-//
-//
-//    val intent = Intent(Intent.ACTION_VIEW)
-//    intent.setDataAndType(uri, "audio/mp3")
-////    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_GRANT_READ_URI_PERMISSION
-//
-//    val authority = context.packageName + ".provider"
-//    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-//    FileProvider.getUriForFile(context, authority, file)
-//
-//    try {
-//        context.startActivity(intent)
-//    } catch (e: Exception) {
-//        e.printStackTrace()
-//    }
-//}
 
 

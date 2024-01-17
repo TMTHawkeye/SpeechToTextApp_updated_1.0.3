@@ -35,6 +35,7 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ViewModel.SMSViewModel
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ViewModel.VoiceTalkViewModel
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.FragmentVoiceTalkBinding
+import io.paperdb.Paper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -138,8 +139,14 @@ class VoiceTalkFragment : Fragment(), LanguageSelectionListener, ConversationAda
         }
 
         binding.speakIdFrom.setOnClickListener {
-            m_model.getSpeech(sourceselectedCountryName) {
-                speechRecognitionLauncherFrom.launch(it)
+            val isDloaded=Paper.book().read<Boolean>("initialModel",false)
+            if(isDloaded!!) {
+                m_model.getSpeech(sourceselectedCountryName) {
+                    speechRecognitionLauncherFrom.launch(it)
+                }
+            }
+            else{
+                Toast.makeText(requireContext(), "Model is being downloaded", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -150,9 +157,14 @@ class VoiceTalkFragment : Fragment(), LanguageSelectionListener, ConversationAda
         }
 
         binding.speakIdTo.setOnClickListener {
-
-            m_model.getSpeech(selectedCountryName) {
-                speechRecognitionLauncherTo.launch(it)
+            val isDloaded=Paper.book().read<Boolean>("initialModel",false)
+            if(isDloaded!!) {
+                m_model.getSpeech(selectedCountryName) {
+                    speechRecognitionLauncherTo.launch(it)
+                }
+            }
+            else{
+                Toast.makeText(requireContext(), "Model is being downloaded", Toast.LENGTH_SHORT).show()
             }
         }
 

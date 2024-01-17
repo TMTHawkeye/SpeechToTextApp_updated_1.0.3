@@ -11,15 +11,26 @@ import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.appopen.AppOpenAd
+import com.google.android.ump.ConsentForm
+import com.google.android.ump.ConsentInformation
+import com.google.android.ump.ConsentRequestParameters
+import com.google.android.ump.UserMessagingPlatform
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.isInternetAvailable
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivityLauncherBinding
+import java.util.concurrent.atomic.AtomicBoolean
 
 class LauncherActivity : AppCompatActivity() {
     lateinit var binding: ActivityLauncherBinding
     private var appOpenAd: AppOpenAd? = null
     private val handler = Handler()
+
+    private lateinit var consentInformation: ConsentInformation
+    // Use an atomic boolean to initialize the Google Mobile Ads SDK and load ads once.
+    private var isMobileAdsInitializeCalled = AtomicBoolean(false)
 
     //    private val delayedVisibilityChange = Runnable {
 //        binding.progressSplash.visibility = android.view.View.GONE
@@ -31,7 +42,12 @@ class LauncherActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.launcherLottieId.repeatCount = LottieDrawable.INFINITE
         binding.launcherLottieId.playAnimation()
-        loadAppOpenAd()
+
+        if(isInternetAvailable(this@LauncherActivity)) {
+            showConsentForm()
+            loadAppOpenAd()
+        }
+        else {
 
         handler.postDelayed({
             binding.progressSplash.visibility = android.view.View.GONE
@@ -41,16 +57,76 @@ class LauncherActivity : AppCompatActivity() {
                 startMainActivity()
             }
         }, 3000)
+        }
 
 
     }
+
+    private fun showConsentForm() {
+        // Create a ConsentRequestParameters object.
+        val params = ConsentRequestParameters
+            .Builder()
+            .build()
+        //4578E44B3EC04E5531D3048D1D820B11
+
+        consentInformation = UserMessagingPlatform.getConsentInformation(this)
+        consentInformation.requestConsentInfoUpdate(
+            this,
+            params,
+            {
+                UserMessagingPlatform.loadAndShowConsentFormIfRequired(
+                    this@LauncherActivity,
+                    ConsentForm.OnConsentFormDismissedListener {
+                            loadAndShowError ->
+                        // Consent gathering failed.
+                        Log.w("TAG", String.format("%s: %s",
+                            loadAndShowError?.errorCode,
+                            loadAndShowError?.message))
+
+                        // Consent has been gathered.
+                        if (consentInformation.canRequestAds()) {
+                            initializeMobileAdsSdk()
+                        }
+                    }
+                )
+            },
+            {
+                    requestConsentError ->
+                // Consent gathering failed.
+                Log.w("TAG", String.format("%s: %s",
+                    requestConsentError.errorCode,
+                    requestConsentError.message))
+            })
+
+        if (consentInformation.canRequestAds()) {
+            initializeMobileAdsSdk()
+
+        }
+    }
+
+    private fun initializeMobileAdsSdk() {
+        if (isMobileAdsInitializeCalled.getAndSet(true)) {
+            return
+        }
+        MobileAds.initialize(this)
+
+        handler.postDelayed({
+            binding.progressSplash.visibility = android.view.View.GONE
+            if (appOpenAd != null) {
+                appOpenAd?.show(this)
+            } else {
+                startMainActivity()
+            }
+        }, 3000)
+    }
+
 
     private fun loadAppOpenAd() {
         val adRequest = AdRequest.Builder().build()
 
         AppOpenAd.load(
             this,
-            BuildConfig.app_open_launcher,
+            BuildConfig.app_open,
             adRequest,
             AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT,
             object : AppOpenAd.AppOpenAdLoadCallback() {

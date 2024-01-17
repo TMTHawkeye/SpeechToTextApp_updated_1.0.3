@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     android:background="@color/green">
 
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/_20ssp">
+
+        <include layout="@layout/native_ad_template_placeholder"/>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
     <FrameLayout
         android:id="@+id/ad_frame"
         android:layout_width="match_parent"
@@ -25,7 +38,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ad_frame"
+        app:layout_constraintTop_toBottomOf="@+id/shimmer_view_container"
         android:layout_marginBottom="@dimen/_35sdp"/>
 
     <ProgressBar

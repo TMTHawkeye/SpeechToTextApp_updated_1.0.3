@@ -1,12 +1,14 @@
 package com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities
 
 import android.graphics.Rect
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.ads.mediation.admob.AdMobAdapter
+import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
@@ -17,6 +19,7 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ViewModel.VoiceSearchViewModel
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivityVoiceSearchCategoryBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.UUID
 import java.util.concurrent.atomic.AtomicBoolean
 
 class VoiceSearchCategoryActivity : BaseActivity() {
@@ -45,15 +48,11 @@ class VoiceSearchCategoryActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding=ActivityVoiceSearchCategoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-//        adView = AdView(this)
+        adView = AdView(this@VoiceSearchCategoryActivity)
 //        binding.adViewContainer.addView(adView)
-//
-//        binding.adViewContainer.viewTreeObserver.addOnGlobalLayoutListener {
-//            if (!initialLayoutComplete.getAndSet(true)) {
-//                loadBanner()
-//            }
-//        }
+        binding.shimmerLayout.startShimmer()
+        loadBanner()
+
 
         val categoryName=intent.getStringExtra("category")
         if(categoryName?.equals(getString(R.string.communication_title))!!){
@@ -93,4 +92,53 @@ class VoiceSearchCategoryActivity : BaseActivity() {
         super.onResume()
         (application as MainApplication).loadAd(this)
     }
+
+    private fun loadBanner() {
+        adView.adUnitId = BuildConfig.categoriesScreen_colapsible_Banner
+        adView.setAdSize(adSize)
+        adView.setBackgroundColor(getColor(R.color.light_green))
+
+        val extras = Bundle()
+        extras.putString("collapsible", "bottom")
+        extras.putString("collapsible_request_id", UUID.randomUUID().toString());
+        val adRequest = AdRequest.Builder()
+            .addNetworkExtrasBundle(AdMobAdapter::class.java, extras)
+            .build()
+
+        adView.adListener = object : AdListener() {
+            override fun onAdOpened() {
+                val layoutParams = adView.layoutParams as ConstraintLayout.LayoutParams
+                layoutParams.setMargins(
+                    layoutParams.leftMargin,
+                    layoutParams.topMargin,
+                    layoutParams.rightMargin,
+                    20
+                )
+                adView.layoutParams = layoutParams
+            }
+
+            override fun onAdClosed() {
+                val layoutParams = adView.layoutParams as ConstraintLayout.LayoutParams
+                layoutParams.setMargins(
+                    layoutParams.leftMargin,
+                    layoutParams.topMargin,
+                    layoutParams.rightMargin,
+                    0
+                )
+                adView.layoutParams = layoutParams
+            }
+
+            override fun onAdLoaded() {
+                super.onAdLoaded()
+                binding.shimmerLayout.stopShimmer()
+                binding.shimmerLayout.visibility=View.GONE
+
+            }
+        }
+        adView.loadAd(adRequest)
+
+        binding.adViewContainer.addView(adView)
+
+    }
+
 }

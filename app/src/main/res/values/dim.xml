@@ -1,4 +1,5 @@
 <resources>
     <dimen name="margin_message_start">16dp</dimen>
     <dimen name="margin_message_end">16dp</dimen>
+
 </resources>

@@ -207,7 +207,7 @@ class MainActivity : BaseActivity() {
         adapter.addFragment(VoiceSearchFragment(), getString(R.string.voiceSearch))
 
         binding.viewPager2.adapter = adapter
-        binding.viewPager2.offscreenPageLimit = 1
+        binding.viewPager2.offscreenPageLimit = ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT
 
         TabLayoutMediator(binding.tabs, binding.viewPager2) { tab, position ->
             // Set text for tabs

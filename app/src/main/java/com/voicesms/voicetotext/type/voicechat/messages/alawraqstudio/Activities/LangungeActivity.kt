@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
-import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Adapters.LanguageAdapter
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
@@ -22,7 +21,12 @@ class LangungeActivity : AppCompatActivity() {
         binding=ActivityLangungeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        AdManager.getInstance().loadNativeAd(this@LangungeActivity, BuildConfig.language_Screen_Native,binding.adViewContainer)
+        AdManager.getInstance().loadNativeAd(
+            this@LangungeActivity,
+            BuildConfig.language_Screen_Native,
+            binding.adViewContainer,
+            binding.shimmerViewContainer
+        )
 
         val languagesList=getLanguagesList()
         val adapter=LanguageAdapter(this@LangungeActivity,languagesList)
@@ -41,6 +45,17 @@ class LangungeActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    override fun onPause() {
+        super.onPause()
+        AdManager.getInstance().currentNativeAd=null
+        AdManager.getInstance().interstitialAd=null
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        AdManager.getInstance().currentNativeAd=null
+        AdManager.getInstance().interstitialAd=null
     }
 
     fun getLanguagesList():ArrayList<Language>{

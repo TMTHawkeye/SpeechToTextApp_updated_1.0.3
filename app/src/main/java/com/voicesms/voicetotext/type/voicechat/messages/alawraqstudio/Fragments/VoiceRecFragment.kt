@@ -71,7 +71,12 @@ class VoiceRecFragment : Fragment() {
 
 //        loadNativeAd()
 
-        AdManager.getInstance().loadNativeAd(requireContext(), BuildConfig.native_voice_Rec,binding.adFrame)
+        AdManager.getInstance().loadNativeAd(
+            requireContext(),
+            BuildConfig.native_voice_Rec,
+            binding.adFrame,
+            binding.shimmerViewContainer
+        )
 
 
 
@@ -106,6 +111,17 @@ class VoiceRecFragment : Fragment() {
             stopRecordingDialog()
 
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        AdManager.getInstance().currentNativeAd=null
+        AdManager.getInstance().interstitialAd=null
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        AdManager.getInstance().currentNativeAd=null
+        AdManager.getInstance().interstitialAd=null
     }
 
     private fun updateRecordingTime() {

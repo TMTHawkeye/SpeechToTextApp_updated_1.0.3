@@ -1,13 +1,9 @@
 package com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities
 
-import android.content.ContentValues
 import android.content.DialogInterface
 import android.content.Intent
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
-import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -25,7 +21,6 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ViewModel.
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivitySavedFilesBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
-import java.io.FileInputStream
 
 class SavedFilesActivity : BaseActivity(), RecordingsCallback {
     lateinit var binding: ActivitySavedFilesBinding
@@ -33,6 +28,17 @@ class SavedFilesActivity : BaseActivity(), RecordingsCallback {
     val TAG = "Files Size Tag"
     lateinit var adapter: SavedFilesAdapter
     lateinit var listofFiles: ArrayList<FileData>
+
+    override fun onPause() {
+        super.onPause()
+        AdManager.getInstance().currentNativeAd=null
+        AdManager.getInstance().interstitialAd=null
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        AdManager.getInstance().currentNativeAd=null
+        AdManager.getInstance().interstitialAd=null
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +49,12 @@ class SavedFilesActivity : BaseActivity(), RecordingsCallback {
         m_viewmodel.getListofFilesFromStorage(folderPath.absolutePath) {
             Log.d(TAG, "size of saved file list: ${it?.size}")
             if (it!!.size != 0) {
-                AdManager.getInstance().loadNativeAd(this@SavedFilesActivity, BuildConfig.Save_file_Screen_Native,binding.adViewContainer)
+                AdManager.getInstance().loadNativeAd(
+                    this@SavedFilesActivity,
+                    BuildConfig.Save_file_Screen_Native,
+                    binding.adViewContainer,
+                    binding.shimmerViewContainer
+                )
 
                 listofFiles = it
                 binding.noItemId.visibility = View.GONE

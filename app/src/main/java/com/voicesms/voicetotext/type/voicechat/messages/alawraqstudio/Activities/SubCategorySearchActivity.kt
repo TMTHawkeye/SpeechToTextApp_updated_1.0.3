@@ -1,23 +1,14 @@
 package com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities
 
-import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
-import android.view.Window
-import android.webkit.WebSettings
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
@@ -38,7 +29,6 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ViewModel.
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivitySubCategorySearchBinding
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.NativeAdTemplateBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.Locale
 
 
 class SubCategorySearchActivity : BaseActivity() {
@@ -59,6 +49,16 @@ class SubCategorySearchActivity : BaseActivity() {
 
     private var currentNativeAd: NativeAd? = null
 
+    override fun onPause() {
+        super.onPause()
+        AdManager.getInstance().currentNativeAd=null
+        AdManager.getInstance().interstitialAd=null
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        AdManager.getInstance().currentNativeAd=null
+        AdManager.getInstance().interstitialAd=null
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySubCategorySearchBinding.inflate(layoutInflater)
@@ -66,7 +66,12 @@ class SubCategorySearchActivity : BaseActivity() {
 
 //        refreshAd()
 
-        AdManager.getInstance().loadNativeAd(this@SubCategorySearchActivity, BuildConfig.Sub_categories_native,binding.adViewContainer)
+        AdManager.getInstance().loadNativeAd(
+            this@SubCategorySearchActivity,
+            BuildConfig.Sub_categories_native,
+            binding.adViewContainer,
+            binding.shimmerViewContainer
+        )
 
         subcategoryName = intent.getStringExtra("subcategory")!!
         binding.subcategoryTitle.text = subcategoryName

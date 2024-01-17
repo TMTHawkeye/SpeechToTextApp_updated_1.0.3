@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdLoader
@@ -19,7 +20,6 @@ import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdOptions
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.NativeAdTemplateBinding
 
@@ -97,11 +97,16 @@ class AdManager private constructor() {
         }
     }
 
-     fun loadNativeAd(context:Context,adUnitId:String,adFrame:FrameLayout) {
+     fun loadNativeAd(
+         context: Context,
+         adUnitId: String,
+         adFrame: FrameLayout,
+         shimmerViewContainer: ShimmerFrameLayout
+     ) {
         val builder = AdLoader.Builder(context,adUnitId)
 
         builder.forNativeAd { nativeAd ->
-                handleNativeAd(context,nativeAd,adFrame)
+                handleNativeAd(context,nativeAd,adFrame,shimmerViewContainer)
         }
 
         val videoOptions = VideoOptions.Builder().setStartMuted(true).build()
@@ -114,6 +119,8 @@ class AdManager private constructor() {
                 override fun onAdFailedToLoad(loadAdError: LoadAdError) {
                     // Handle ad loading failure
                     Log.e("TAG", "Failed to load native ad with error: $loadAdError")
+                    shimmerViewContainer.stopShimmer()
+                    shimmerViewContainer.visibility = View.GONE
                 }
             })
             .build()
@@ -121,12 +128,15 @@ class AdManager private constructor() {
         adLoader.loadAd(AdRequest.Builder().build())
     }
 
-    private fun handleNativeAd(context: Context, nativeAd: NativeAd, adFrame: FrameLayout) {
+    private fun handleNativeAd(context: Context, nativeAd: NativeAd, adFrame: FrameLayout, shimmerView: ShimmerFrameLayout) {
         // Destroy the previous native ad, if any
         currentNativeAd?.destroy()
 
         // Save the new native ad
         currentNativeAd = nativeAd
+
+//        shimmerView.stopShimmer()
+//        shimmerView.visibility = View.GONE
 
         // Inflate and populate the native ad view
         val unifiedAdBinding = NativeAdTemplateBinding.inflate(LayoutInflater.from(context))

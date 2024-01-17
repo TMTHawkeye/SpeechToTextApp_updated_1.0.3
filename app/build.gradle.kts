@@ -101,6 +101,12 @@ android {
                 "guide_Screen_banner",
                 "\"ca-app-pub-3940256099942544/6300978111\""
             )
+
+            buildConfigField(
+                "String",
+                "categoriesScreen_colapsible_Banner",
+                "\"ca-app-pub-3940256099942544/2014213617\""
+            )
             buildConfigField(
                 "String",
                 "native_splash",
@@ -170,11 +176,11 @@ android {
                 "\"ca-app-pub-4970195951959554/1039825328\""
             )
 
-            buildConfigField(
-                "String",
-                "app_open_launcher",
-                "\"ca-app-pub-3940256099942544/9257395921\""
-            )
+//            buildConfigField(
+//                "String",
+//                "app_open_launcher",
+//                "\"ca-app-pub-3940256099942544/9257395921\""
+//            )
             buildConfigField("Boolean", "env_dev", "false")
             signingConfig = signingConfigs.getByName("release")
 
@@ -197,6 +203,12 @@ android {
                 "String",
                 "guide_Screen_banner",
                 "\"ca-app-pub-3940256099942544/6300978111\""
+            )
+
+            buildConfigField(
+                "String",
+                "categoriesScreen_colapsible_Banner",
+                "\"ca-app-pub-3940256099942544/2014213617\""
             )
 
             buildConfigField(
@@ -269,11 +281,11 @@ android {
                 "\"ca-app-pub-3940256099942544/9257395921\""
             )
 
-            buildConfigField(
-                "String",
-                "app_open_launcher",
-                "\"ca-app-pub-3940256099942544/9257395921\""
-            )
+//            buildConfigField(
+//                "String",
+//                "app_open_launcher",
+//                "\"ca-app-pub-3940256099942544/9257395921\""
+//            )
 
             buildConfigField("Boolean", "env_dev", "true")
             signingConfig = signingConfigs.getByName("debug")
@@ -353,6 +365,10 @@ dependencies {
 
     implementation("com.google.android.gms:play-services-ads:22.6.0")
 
+    implementation("com.google.android.ump:user-messaging-platform:2.1.0")
+
+
+
     implementation("com.facebook.shimmer:shimmer:0.5.0")
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
@@ -360,6 +376,9 @@ dependencies {
     kapt ("androidx.lifecycle:lifecycle-compiler:2.6.2")
 
     implementation ("com.zeugmasolutions.localehelper:locale-helper-android:1.5.1")
+
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
+
 
 
 }

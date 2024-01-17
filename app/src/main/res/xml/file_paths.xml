@@ -17,4 +17,12 @@
         name="files"
         path="." />
 
+    <external-path
+        name="external_files"
+        path="Android/data/${applicationId}/files/recordings" />
+
+    <!--    <external-path-->
+<!--        name="external_files"-->
+<!--        path="Android/data/com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio/files/recordings" />-->
+
 </paths>

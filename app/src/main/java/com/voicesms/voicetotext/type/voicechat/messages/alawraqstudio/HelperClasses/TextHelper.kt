@@ -5,6 +5,8 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -93,4 +95,11 @@ fun shareText(context:Context,message: String) {
     return spannableString
 }
 
+
+ fun isInternetAvailable(context:Context): Boolean {
+    val connectivityManager =
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val networkInfo: NetworkInfo? = connectivityManager.activeNetworkInfo
+    return networkInfo?.isConnectedOrConnecting == true
+}
 

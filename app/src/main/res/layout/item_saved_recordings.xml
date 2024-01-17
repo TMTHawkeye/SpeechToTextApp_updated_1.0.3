@@ -58,6 +58,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginEnd="@dimen/_20ssp"/>
 
+    <ImageView
+        android:id="@+id/play_rec_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_play_arrow_24"
+        app:tint="@color/green"
+        app:layout_constraintEnd_toStartOf="@+id/send_rec_id"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="@dimen/_20ssp"/>
+
 
 
     <View

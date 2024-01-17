@@ -79,6 +79,7 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
     private val handler = Handler()
     var mExecutor: ExecutorService = Executors.newSingleThreadExecutor()
     var mHandler = Handler(Looper.getMainLooper())
+    var searchedText=""
 
 
     private var currentNativeAd: NativeAd? = null
@@ -94,7 +95,12 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
         initLanguages()
 
 //        loadNativeAd()
-        AdManager.getInstance().loadNativeAd(requireContext(), BuildConfig.native_voice_SMS,binding.adFrame)
+        AdManager.getInstance().loadNativeAd(
+            requireContext(),
+            BuildConfig.native_voice_SMS,
+            binding.adFrame,
+            binding.shimmerViewContainer
+        )
 
         speakText = TextToSpeech(requireContext(), OnInitListener { status ->
             if (status == TextToSpeech.SUCCESS) {
@@ -142,8 +148,9 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
         }
 
         binding.translateFromTo.setOnClickListener {
-            if (!binding.fromTextId.text.isNullOrEmpty()) {
+            if (!binding.fromTextId.text.isNullOrEmpty()&&!searchedText.equals(binding.fromTextId.text.toString())) {
                 getTranslation()
+                searchedText=binding.fromTextId.text.toString()
                 AdManager.getInstance().showInterstitial(requireActivity(),BuildConfig.interstitial_home) {
                     getTranslation()
                 }
@@ -409,6 +416,18 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
         imm.hideSoftInputFromWindow(binding.fromTextId.windowToken, 0)
     }
 
+    override fun onPause() {
+        super.onPause()
+        AdManager.getInstance().currentNativeAd=null
+        AdManager.getInstance().interstitialAd=null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        AdManager.getInstance().currentNativeAd=null
+        AdManager.getInstance().interstitialAd=null
+    }
+
     override fun onResume() {
         super.onResume()
         hideKeyboard()
@@ -468,14 +487,12 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
             binding.correspondingFromLanguageId.text = selectedLanguage.split("(").first()
         }
     }
-
     override fun onDismisBottomSheet(isDismissed: Boolean) {
         if (isDismissed) {
             isBottomSheetVisible = false
             isSourceBottomSheetVisible = false
         }
     }
-
     fun getTranslation() {
         binding.toTextId.text = getString(R.string.translating)
         m_viewmodel.getTranslation(
@@ -489,141 +506,6 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
             binding.toCard.visibility = View.VISIBLE
         }
     }
-
-    private fun loadNativeAd() {
-        val builder = AdLoader.Builder(requireContext(), BuildConfig.native_voice_SMS)
-
-        builder.forNativeAd { nativeAd ->
-            // Check if the fragment is still active
-            if (isAdded) {
-                // You can handle the loaded native ad here
-                handleNativeAd(nativeAd)
-            } else {
-                // The fragment is no longer active, destroy the native ad
-                nativeAd.destroy()
-            }
-        }
-
-        val videoOptions = VideoOptions.Builder().setStartMuted(true).build()
-        val adOptions = NativeAdOptions.Builder().setVideoOptions(videoOptions).build()
-
-        builder.withNativeAdOptions(adOptions)
-
-        val adLoader = builder
-            .withAdListener(object : AdListener() {
-                override fun onAdFailedToLoad(loadAdError: LoadAdError) {
-                    // Handle ad loading failure
-                    Log.e("TAG", "Failed to load native ad with error: $loadAdError")
-                }
-            })
-            .build()
-
-        adLoader.loadAd(AdRequest.Builder().build())
-    }
-
-    private fun handleNativeAd(nativeAd: NativeAd) {
-        // Destroy the previous native ad, if any
-        currentNativeAd?.destroy()
-
-        // Save the new native ad
-        currentNativeAd = nativeAd
-
-        // Inflate and populate the native ad view
-        val unifiedAdBinding = NativeAdTemplateBinding.inflate(layoutInflater)
-        populateNativeAdView(nativeAd, unifiedAdBinding)
-
-        // Add the native ad view to your layout
-        binding.adFrame.addView(unifiedAdBinding.root)
-
-
-//        val unifiedAdBinding = NativeAdTemplateBinding.inflate(layoutInflater)
-//        populateNativeAdView(nativeAd, unifiedAdBinding)
-//        binding.adFrame.removeAllViews()
-//        binding.adFrame.addView(unifiedAdBinding.root)
-    }
-
-    private fun populateNativeAdView(
-        nativeAd: NativeAd,
-        unifiedAdBinding: NativeAdTemplateBinding
-    ) {
-        val nativeAdView = unifiedAdBinding.root
-
-        // Set the media view.
-        nativeAdView.mediaView = unifiedAdBinding.adMedia
-
-        // Set other ad assets.
-        nativeAdView.headlineView = unifiedAdBinding.adHeadline
-        nativeAdView.bodyView = unifiedAdBinding.adBody
-        nativeAdView.callToActionView = unifiedAdBinding.adCallToAction
-        nativeAdView.iconView = unifiedAdBinding.adAppIcon
-//        nativeAdView.priceView = unifiedAdBinding.adPrice
-//        nativeAdView.starRatingView = unifiedAdBinding.adStars
-//        nativeAdView.storeView = unifiedAdBinding.adStore
-        nativeAdView.advertiserView = unifiedAdBinding.adAdvertiser
-
-        // The headline and media content are guaranteed to be in every UnifiedNativeAd.
-        unifiedAdBinding.adHeadline.text = nativeAd.headline
-        nativeAd.mediaContent?.let { unifiedAdBinding.adMedia.setMediaContent(it) }
-
-        // These assets aren't guaranteed to be in every UnifiedNativeAd, so it's important to
-        // check before trying to display them.
-        if (nativeAd.body == null) {
-            unifiedAdBinding.adBody.visibility = View.INVISIBLE
-        } else {
-            unifiedAdBinding.adBody.visibility = View.VISIBLE
-            unifiedAdBinding.adBody.text = nativeAd.body
-        }
-
-        if (nativeAd.callToAction == null) {
-            unifiedAdBinding.adCallToAction.visibility = View.INVISIBLE
-        } else {
-            unifiedAdBinding.adCallToAction.visibility = View.VISIBLE
-            unifiedAdBinding.adCallToAction.text = nativeAd.callToAction
-        }
-
-        if (nativeAd.icon == null) {
-            unifiedAdBinding.adAppIcon.visibility = View.GONE
-        } else {
-            unifiedAdBinding.adAppIcon.setImageDrawable(nativeAd.icon?.drawable)
-            unifiedAdBinding.adAppIcon.visibility = View.VISIBLE
-        }
-
-//        if (nativeAd.price == null) {
-////            unifiedAdBinding.adPrice.visibility = View.INVISIBLE
-//        } else {
-////            unifiedAdBinding.adPrice.visibility = View.VISIBLE
-////            unifiedAdBinding.adPrice.text = nativeAd.price
-//        }
-
-//        if (nativeAd.store == null) {
-//            unifiedAdBinding.adStore.visibility = View.INVISIBLE
-//        } else {
-//            unifiedAdBinding.adStore.visibility = View.VISIBLE
-//            unifiedAdBinding.adStore.text = nativeAd.store
-//        }
-
-//        if (nativeAd.starRating == null) {
-//            unifiedAdBinding.adStars.visibility = View.INVISIBLE
-//        } else {
-//            unifiedAdBinding.adStars.rating = nativeAd.starRating!!.toFloat()
-//            unifiedAdBinding.adStars.visibility = View.VISIBLE
-//        }
-
-        if (nativeAd.advertiser == null) {
-            unifiedAdBinding.adAdvertiser.visibility = View.INVISIBLE
-        } else {
-            unifiedAdBinding.adAdvertiser.text = nativeAd.advertiser
-            unifiedAdBinding.adAdvertiser.visibility = View.VISIBLE
-        }
-
-        // This method tells the Google Mobile Ads SDK that you have finished populating your
-        // native ad view with this native ad.
-        nativeAdView.setNativeAd(nativeAd)
-
-
-    }
-
-
     override fun onDestroyView() {
         // Destroy the native ad to prevent memory leaks
         currentNativeAd?.destroy()
