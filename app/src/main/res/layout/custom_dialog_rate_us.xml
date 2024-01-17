@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:padding="@dimen/_10ssp">
+
+
+    <RelativeLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_60sdp">
+
+        <RelativeLayout
+            android:id="@+id/relative_tool_rateus"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_60sdp"
+            android:background="@color/green">
+
+            <ImageView
+                android:id="@+id/closeDialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:padding="@dimen/_10ssp"
+                android:src="@drawable/close_dialog" />
+
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/rateapp_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relative_tool_rateus"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="@dimen/_40ssp"
+            android:text="@string/rate_our_app"
+            android:textColor="@color/green"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/rateapp_txt_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rateapp_txt"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_5ssp"
+            android:text="@string/would_you_like_to_rate_our_app"
+            android:textColor="@color/green" />
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rateapp_txt_subtitle"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_10ssp"
+            android:numStars="5"
+            android:stepSize="1"
+            android:isIndicator="true"
+            android:progressTint="@color/yellow"
+            android:progressBackgroundTint="@color/dark_grey"/>
+
+
+        <LinearLayout
+            android:id="@+id/linear_not_rated"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ratingBar"
+            android:layout_centerHorizontal="true"
+            android:layout_marginVertical="@dimen/_10ssp"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/rateBtn"
+                android:layout_width="@dimen/_100ssp"
+                android:layout_height="@dimen/_30ssp"
+                app:cardCornerRadius="@dimen/_10ssp">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/green">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="@string/rate"
+                        android:textColor="@color/white" />
+                </RelativeLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/doItLater"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/_20ssp"
+                android:text="@string/ratelater"
+                android:textColor="@color/green" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linear_rated"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ratingBar"
+            android:layout_centerHorizontal="true"
+            android:layout_marginVertical="@dimen/_10ssp"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/reviewBtn"
+                android:layout_width="@dimen/_100ssp"
+                android:layout_height="@dimen/_30ssp"
+                app:cardCornerRadius="@dimen/_10ssp">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/green">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="@string/review"
+                        android:textColor="@color/white" />
+                </RelativeLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/done_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/_20ssp"
+                android:text="@string/done"
+                android:textColor="@color/green" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+    <ImageView
+        android:id="@+id/header_icon_rateus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/rate_us_header_icon" />
+
+
+</RelativeLayout>

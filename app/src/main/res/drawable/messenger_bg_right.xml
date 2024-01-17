@@ -1,0 +1,8 @@
+<!-- res/drawable/message_background.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <corners android:radius="8dp" />
+    <solid android:color="@color/white" /> <!-- Background color for the message -->
+    <stroke
+        android:width="1dp"
+        android:color="@color/green" /> <!-- Border color for the message -->
+</shape>

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "746554173904",
+    "project_id": "voice-sms-e05fb",
+    "storage_bucket": "voice-sms-e05fb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:746554173904:android:e1b5e553d80fa74fc3f1d5",
+        "android_client_info": {
+          "package_name": "com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6sK-EsDfKUomU4-z06WXFqoFVUst6wDo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

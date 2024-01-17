@@ -1,0 +1,190 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Voice SMS</string>
+
+    <string name="voiceTalk">Voice Talk</string>
+    <string name="voiceSms">Voice SMS</string>
+    <string name="voiceRec">Voice Rec</string>
+    <string name="voiceSearch">Voice Search</string>
+
+    <string name="translateFrom">Translate From: </string>
+    <string name="translateTo">Translate To: </string>
+
+    <string name="writetextHint">Write your text here</string>
+    <string name="translation">Translation</string>
+    <string name="status_recording_start">Start Recording</string>
+    <string name="status_recording_started">Recording...</string>
+
+    <string name="startRec">Start Recording</string>
+    <string name="stopRec">Stop Recording</string>
+
+    <string name="save">Save</string>
+    <string name="saveFileTitle">Saved Files</string>
+    <string name="selectedItems">Selected</string>
+    <string name="languageName">English</string>
+    <string name="fileNameHint">Enter name here</string>
+    <string name="dload">Download</string>
+
+    <string name="let_s_start">Let\'s Start</string>
+
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="rate_us">Rate Us</string>
+    <string name="share_app">Share App</string>
+    <string name="language">Language</string>
+    <string name="save_files">Save Files</string>
+
+
+
+    <string name="communication_title">Communication</string>
+    <string name="shopping_title">Shopping</string>
+    <string name="social_title">Social Media</string>
+    <string name="searchEngine_title">Search Engine</string>
+    <string name="more_title">More</string>
+
+    <string name="allowMicPermToast">Recording will not start until permission granted!</string>
+    <string name="rate_our_app">Rate our App</string>
+    <string name="rate">Rate</string>
+    <string name="ratelater">I\'ll Rate Later</string>
+    <string name="kindly_rate_our_application">Kindly Rate our app</string>
+    <string name="done">Done</string>
+    <string name="thanksforSharing">Thanks for Sharing</string>
+    <string name="performBetter">We will try perform better</string>
+    <string name="recordandsend">Record and Send \nVoice SMS</string>
+    <string name="next">Next</string>
+    <string name="getstarted">Get Started</string>
+    <string name="voiceRecording">Voice Recording</string>
+    <string name="record_your_voice_and_send">Record Your voice \nand send</string>
+
+    <string name="previous">Previous</string>
+    <string name="no_conversation_found">No Conversation Found</string>
+    <string name="search_language">Search Language...</string>
+    <string name="languages">Languages</string>
+    <string name="do_you_really_want_to_exit_from_this_app">Do you really want to exit \nfrom this app?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="unavailable">Unavailable</string>
+    <string name="translating">Translating...</string>
+    <string name="record_voice">Record your voice \nwith ease</string>
+    <string name="no_item_found">No Item Found</string>
+
+    <style name="textStyle" parent="TextAppearance.AppCompat">
+        <item name="fontFamily">@font/poppins</item>
+        <item name="android:textSize">@dimen/_15ssp</item>
+    </style>
+
+    <style name="TabLayoutTextStyle">
+        <item name="android:textSize">@dimen/_5ssp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="tabPaddingStart">@dimen/_8ssp</item>
+        <item name="tabPaddingEnd">@dimen/_8ssp</item>
+    </style>
+
+
+    <string name="recordingTime">00:00:00</string>
+    <string name="recordingTimeLimit">01:00:00</string>
+
+
+    <string name="fileExtension">.mp3</string>
+
+
+
+    <string name="dummyConversation">Hey, Hammad. How are you?</string>
+
+    <string name="dummy_recorded_file">AUD-2031107-WA0004.mp3</string>
+    <string name="dummy_recorded_file_size">10.59 KB</string>
+    <string name="dummy_recorded_time">2 days ago</string>
+    <string name="dummy_category">Fiverr</string>
+
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="recorded_voicesFoldername">recorded_voices</string>
+
+    <string name="reddit">Reddit</string>
+    <string name="quora">Quora</string>
+    <string name="flipboard">Flipboard</string>
+    <string name="msn">MSN</string>
+
+    <string name="alibaba">Alibaba</string>
+    <string name="amazon">Amazon</string>
+    <string name="daraz">Daraz</string>
+    <string name="olx">OLX</string>
+    <string name="ebay">Ebay</string>
+    <string name="aliexpress">Ali Express</string>
+
+    <string name="youtube">Youtube</string>
+    <string name="insta">Instagram</string>
+    <string name="pintrest">Pintrest</string>
+    <string name="facebook">Facebook</string>
+    <string name="twitter">Twitter</string>
+    <string name="tiktok">Tik Tok</string>
+
+    <string name="google">Google</string>
+    <string name="bing">Bing</string>
+    <string name="duckgo">Duck Go</string>
+    <string name="yahoo">Yahoo</string>
+    <string name="wikipedia">Wikipedia</string>
+
+    <string name="playstore">Google Play</string>
+    <string name="weather">Weather</string>
+    <string name="location">Location</string>
+    <string name="imdb">IMDB</string>
+
+    <string name="reddit_baseurl">https://www.reddit.com/search/?q=</string>
+    <string name="quora_baseurl">https://www.quora.com/search?q=</string>
+    <string name="flipboard_baseurl">https://flipboard.com/search/</string>
+    <string name="msn_baseurl">https://www.bing.com/search?q</string>
+    <string name="alibaba__baseurl">https://www.alibaba.com/trade/search?searchText=</string>
+    <string name="amazon_baseurl">https://www.amazon.com/s?k=</string>
+    <string name="daraz_baseurl">https://www.daraz.pk/catalog/?q=</string>
+    <string name="olx_baseurl">https://www.olx.com.pk/items/q-</string>
+    <string name="ebay_baseurl">https://www.ebay.com/sch/i.html?_nkw=</string>
+    <string name="aliexpress_baseurl">https://www.aliexpress.com/w/wholesale-</string>
+    <string name="youtube_baseurl">https://www.youtube.com/results?search_query=</string>
+    <string name="insta_baseurl">https://www.instagram.com/</string>
+    <string name="pintrest_baseurl">https://www.pinterest.com/search/pins/?q=</string>
+    <string name="facebook_baseurl">https://www.facebook.com/search/top/?q=</string>
+    <string name="twitter_baseurl">https://twitter.com/search?q=</string>
+    <string name="tiktok_baseurl">https://www.tiktok.com/search?q=</string>
+    <string name="google_baseurl">https://www.google.com.pk/search?q=</string>
+    <string name="bing_baseurl">https://www.bing.com/search?q=</string>
+    <string name="duckgo_baseurl">https://duckduckgo.com/?q=</string>
+    <string name="yahoo_baseurl">https://search.yahoo.com/search?p=</string>
+    <string name="wikipedia_baseurl">https://en.wikipedia.org/wiki/</string>
+    <string name="playstore_baseurl">https://play.google.com/store/search?q=</string>
+    <string name="weather_baseurl">https://www.google.com/search?q=weather</string>
+    <string name="location_baseurl">https://www.google.com/maps/search/</string>
+    <string name="imdb_baseurl">https://www.imdb.com/find/?q=</string>
+    <string name="source">source</string>
+    <string name="target">target</string>
+    <string name="navigation_drawer_open">open_drawer</string>
+    <string name="navigation_drawer_close">close_drawer</string>
+    <string name="storagePermissionCode">1</string>
+    <string name="mic_permissions">2</string>
+    <string name="mypref">MyPref</string>
+    <string name="review">Review More</string>
+    <string name="title_activity_base">BaseActivity</string>
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+
+
+    <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
+
+    <string name="ad_attribution">Ad</string>
+    <string name="ads_action_text">This action may contain ads</string>
+    <string name="comming_soon">Comming Soon!</string>
+    <string name="cantswitchtabs">Cannot switch tabs during recording</string>
+    <string name="can_t_share_empty_text">Can\'t share empty text!</string>
+    <string name="failed_to_load_languages_trying_again">Failed to load languages, trying again!</string>
+    <string name="can_t_speak_for_empty_text">Can\'t speak for empty text!</string>
+    <string name="error_listning_to_voice">Error listning to voice!</string>
+    <string name="error_while_stopping_trying_to_stop_again">Error while stopping, trying to stop again!</string>
+    <string name="recording_has_been_saved">Recording has been saved!</string>
+    <string name="error_occured_while_saving_the_file_free_up_space_and_try_again">Error occured while saving the file, free up space and try again!</string>
+    <string name="file_name_cannot_be_empty">File name cannot be empty!</string>
+    <string name="permission_denied">Permission Denied</string>
+
+    <string name="would_you_like_to_rate_our_app">Would you like to rate our app</string>
+    <string name="you_denied_the_required_permission_please_go_to_app_settings_to_enable_it">You denied the required permission. Please go to app settings to enable it.</string>
+    <string name="open_settings">Open Settings</string>
+    <string name="cancel">Cancel</string>
+
+</resources>

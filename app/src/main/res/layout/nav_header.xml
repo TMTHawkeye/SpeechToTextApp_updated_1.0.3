@@ -1,0 +1,156 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/green"
+    android:orientation="vertical"
+    android:padding="@dimen/_16sdp"
+    tools:ignore="HardcodedText">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/menu_header_icon"
+        android:contentDescription="@string/app_name"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        android:id="@+id/menu_header_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:layout_marginTop="@dimen/_20ssp"
+        android:gravity="center_horizontal"/>
+
+
+    <View
+        android:id="@+id/myRectangleView"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="@dimen/_30ssp"
+        android:background="@color/medium_green"
+        android:layout_marginVertical="@dimen/_10ssp"/>
+
+    <!-- Item 1 - Privacy Policy -->
+    <LinearLayout
+        android:id="@+id/privacy_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10ssp"
+            android:src="@drawable/privacy_icon"
+            android:contentDescription="Privacy Policy" />
+
+        <TextView
+            android:id="@+id/nav_privacy_policy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/privacy_policy"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:layout_gravity="center_vertical"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/rate_us_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10ssp"
+            android:src="@drawable/rate_us_icon"
+            android:contentDescription="Rate Us"/>
+
+        <TextView
+            android:id="@+id/nav_rate_us"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/rate_us"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:layout_gravity="center_vertical"/>
+    </LinearLayout>
+
+    <!-- Item 3 - Share App -->
+    <LinearLayout
+        android:id="@+id/shareApp_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10ssp"
+            android:src="@drawable/share_icon"
+            android:contentDescription="Share App"/>
+
+        <TextView
+            android:id="@+id/nav_share_app"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/share_app"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:layout_gravity="center_vertical"/>
+    </LinearLayout>
+
+    <!-- Item 4 - Language -->
+    <LinearLayout
+        android:id="@+id/language_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10ssp"
+            android:src="@drawable/language_icon"
+            android:contentDescription="Language"/>
+
+        <TextView
+            android:id="@+id/nav_language"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/language"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:layout_gravity="center_vertical"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/saved_files_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10ssp"
+            android:src="@drawable/saved_files_icon"
+            android:contentDescription="Save Files"/>
+
+        <TextView
+            android:id="@+id/nav_save_files"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/save_files"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:layout_gravity="center_vertical"/>
+    </LinearLayout>
+
+
+
+</LinearLayout>
