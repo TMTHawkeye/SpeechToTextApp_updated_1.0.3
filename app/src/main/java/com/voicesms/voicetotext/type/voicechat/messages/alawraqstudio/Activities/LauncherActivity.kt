@@ -156,10 +156,6 @@ class LauncherActivity : AppCompatActivity() {
         )
     }
 
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        handler.removeCallbacks(delayedVisibilityChange)
-//    }
 
     private fun startMainActivity() {
 
