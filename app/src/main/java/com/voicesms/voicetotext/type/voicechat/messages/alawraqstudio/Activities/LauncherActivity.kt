@@ -156,7 +156,6 @@ class LauncherActivity : AppCompatActivity() {
         )
     }
 
-
     private fun startMainActivity() {
 
         binding.launcherLottieId.cancelAnimation()
