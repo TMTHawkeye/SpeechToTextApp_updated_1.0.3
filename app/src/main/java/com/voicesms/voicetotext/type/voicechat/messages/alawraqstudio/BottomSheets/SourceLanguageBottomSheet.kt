@@ -59,9 +59,9 @@ class SourceLanguageBottomSheet(var ctxt: Context) : BottomSheetDialogFragment()
         lifecycleScope.launch(Dispatchers.IO) {
             getDownloadedmodels()
         }
-        mExecutor.execute {
+//        mExecutor.execute {
             val langList = viewModel.getLanguages()
-            mHandler.post {
+//            mHandler.post {
                 adapter = LanguageListAdapter(ctxt, langList, null, viewModel)
                 recyclerView.adapter = adapter
                 adapter.setOnItemClickListener(object : LanguageListAdapter.OnItemClickListener {
@@ -103,8 +103,8 @@ class SourceLanguageBottomSheet(var ctxt: Context) : BottomSheetDialogFragment()
                         // Not needed
                     }
                 })
-            }
-        }
+//            }
+//        }
 
     }
 

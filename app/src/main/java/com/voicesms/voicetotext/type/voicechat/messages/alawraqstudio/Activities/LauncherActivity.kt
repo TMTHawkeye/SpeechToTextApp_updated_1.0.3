@@ -45,7 +45,7 @@ class LauncherActivity : AppCompatActivity() {
 
         if(isInternetAvailable(this@LauncherActivity)) {
             showConsentForm()
-            loadAppOpenAd()
+            loadAppOpenAd(BuildConfig.app_open_launcher)
         }
         else {
 
@@ -121,12 +121,12 @@ class LauncherActivity : AppCompatActivity() {
     }
 
 
-    private fun loadAppOpenAd() {
+    private fun loadAppOpenAd(adUnitId:String) {
         val adRequest = AdRequest.Builder().build()
 
         AppOpenAd.load(
             this,
-            BuildConfig.app_open,
+            adUnitId,
             adRequest,
             AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT,
             object : AppOpenAd.AppOpenAdLoadCallback() {

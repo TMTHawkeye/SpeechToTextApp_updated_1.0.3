@@ -343,9 +343,9 @@ class VoiceTalkFragment : Fragment(), LanguageSelectionListener, ConversationAda
 
     private fun initLanguages() {
         try {
-            mExecutor.execute {
+//            mExecutor.execute {
                 listLanguages = m_viewmodel.getLanguages()
-                mHandler.post {
+//                mHandler.post {
 //                    sourceselectedCountryName = Locale.getDefault().language
 //                    sourceselectedCode = Locale.getDefault().country
 
@@ -380,8 +380,8 @@ class VoiceTalkFragment : Fragment(), LanguageSelectionListener, ConversationAda
 
                     binding.correspondingToLanguageId.text =
                         extractLanguageFromCountry(listLanguages, pkUrduPosition)
-                }
-            }
+//                }
+//            }
         } catch (e: Exception) {
             Log.d("TAG", "initLanguages Voice Talk Fragment: ${e.message}")
             Toast.makeText(

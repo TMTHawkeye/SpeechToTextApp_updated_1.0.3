@@ -137,7 +137,7 @@ class MainApplication :Application(),Application.ActivityLifecycleCallbacks,Life
             val request = AdRequest.Builder().build()
             AppOpenAd.load(
                 context,
-                BuildConfig.app_open,
+                BuildConfig.app_open_others,
                 request,
                 object : AppOpenAd.AppOpenAdLoadCallback() {
                     /**

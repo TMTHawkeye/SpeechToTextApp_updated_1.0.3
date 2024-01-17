@@ -59,9 +59,9 @@ class LanguageBottomSheet(var ctxt: Context) : BottomSheetDialogFragment() {
         lifecycleScope.launch(Dispatchers.IO) {
             getDownloadedmodels()
         }
-        mExecutor.execute {
+//        mExecutor.execute {
             var listofLanguages = viewModel.getLanguages()
-            mHandler.post {
+//            mHandler.post {
                 Log.d("TAG list of languages", "onViewCreated: ${listofLanguages.size}")
                 adapter = LanguageListAdapter(ctxt, listofLanguages, null, viewModel)
                 recyclerView.adapter = adapter
@@ -104,8 +104,8 @@ class LanguageBottomSheet(var ctxt: Context) : BottomSheetDialogFragment() {
                         // Not needed
                     }
                 })
-            }
-        }
+//            }
+//        }
     }
 
     // Set the listener for the hosting fragment/activity

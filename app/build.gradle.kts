@@ -43,6 +43,11 @@ android {
     }
 
     buildTypes {
+        getByName("debug") {
+            signingConfig = signingConfigs.getByName("debug")
+            isMinifyEnabled = false
+        }
+
         release {
             isMinifyEnabled = true
             isShrinkResources = true
@@ -54,10 +59,8 @@ android {
             signingConfig = signingConfigs.getByName("release")
             isDebuggable = false
         }
-        getByName("debug") {
-            signingConfig = signingConfigs.getByName("debug")
-            isMinifyEnabled = false
-        }
+
+
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -86,101 +89,125 @@ android {
         create("Prod") {
             dimension = "defaultFlavour"
             resValue("string", "admob_app_id", "\"ca-app-pub-4970195951959554~7719432673\"")
-//            buildConfigField("String", "interstitial", "\"ca-app-pub-5236996920514682/5811910511\"")
-//            buildConfigField("String", "banner", "\"ca-app-pub-5236996920514682/2891105840\"")
-//            buildConfigField("String", "native_ad", "\"ca-app-pub-5236996920514682/1054407857\"")
-//            buildConfigField("String", "app_open_id", "\"ca-app-pub-5236996920514682/6541704104\"")
+
+
+
+
 
             buildConfigField(
                 "String",
                 "banner_voice_talk",
-                "\"ca-app-pub-4970195951959554/2275534304\""
+                "\"ca-app-pub-4970195951959554/2109225769\""
             )
             buildConfigField(
                 "String",
                 "guide_Screen_banner",
-                "\"ca-app-pub-3940256099942544/6300978111\""
+                "\"ca-app-pub-4970195951959554/4543817415\""
             )
 
             buildConfigField(
                 "String",
                 "categoriesScreen_colapsible_Banner",
-                "\"ca-app-pub-3940256099942544/2014213617\""
+                "\"ca-app-pub-4970195951959554/6978409066\""
             )
+
+
+
+
+
+
+
             buildConfigField(
                 "String",
                 "native_splash",
-                "\"ca-app-pub-4970195951959554/5170642023\""
+                "\"ca-app-pub-4970195951959554/7387008141\""
             )
             buildConfigField(
                 "String",
                 "native_voice_SMS",
-                "\"ca-app-pub-3940256099942544/2247696110\""
+                "\"ca-app-pub-4970195951959554/6597450909\""
             )
 
             buildConfigField(
                 "String",
                 "native_voice_Rec",
-                "\"ca-app-pub-3940256099942544/2247696110\""
+                "\"ca-app-pub-4970195951959554/1370859164\""
             )
 
             buildConfigField(
                 "String",
                 "Sub_categories_native",
-                "\"ca-app-pub-3940256099942544/2247696110\""
+                "\"ca-app-pub-4970195951959554/9987715784\""
             )
 
             buildConfigField(
                 "String",
                 "Voice_Search_Screen_Native",
-                "\"ca-app-pub-3940256099942544/2247696110\""
+                "\"ca-app-pub-4970195951959554/8044078721\""
             )
 
             buildConfigField(
                 "String",
                 "Save_file_Screen_Native",
-                "\"ca-app-pub-3940256099942544/2247696110\""
+                "\"ca-app-pub-4970195951959554/9057777493\""
             )
 
             buildConfigField(
                 "String",
                 "language_Screen_Native",
-                "\"ca-app-pub-3940256099942544/2247696110\""
+                "\"ca-app-pub-4970195951959554/2275062517\""
             )
-            
+
+
+
+
+
             buildConfigField(
                 "String",
-                "interstitial_home",
+                "Translate_Button_inter",
                 "\"ca-app-pub-4970195951959554/9579309252\""
             )
 
             buildConfigField(
                 "String",
                 "welcome_Screen_inter",
-                "\"ca-app-pub-3940256099942544/1033173712\""
+                "\"ca-app-pub-4970195951959554/1562430858\""
             )
             buildConfigField(
                 "String",
                 "interstitial_voice_rec_save_btn",
-                "\"ca-app-pub-3940256099942544/1033173712\""
+                "\"ca-app-pub-4970195951959554/9579309252\""
             )
 
             buildConfigField(
                 "String",
                 "interstitial_voice_search_category",
-                "\"ca-app-pub-3940256099942544/1033173712\""
+                "\"ca-app-pub-4970195951959554/9579309252\""
             )
+
+
+
+
+
+
+
+
             buildConfigField(
                 "String",
-                "app_open",
+                "app_open_others",
                 "\"ca-app-pub-4970195951959554/1039825328\""
             )
 
-//            buildConfigField(
-//                "String",
-//                "app_open_launcher",
-//                "\"ca-app-pub-3940256099942544/9257395921\""
-//            )
+            buildConfigField(
+                "String",
+                "app_open_launcher",
+                "\"ca-app-pub-4970195951959554/2900968221\""
+            )
+
+
+
+
+
             buildConfigField("Boolean", "env_dev", "false")
             signingConfig = signingConfigs.getByName("release")
 
@@ -189,10 +216,8 @@ android {
             dimension = "defaultFlavour"
 
             resValue("string", "admob_app_id", "\"ca-app-pub-3940256099942544~3347511713\"")
-//            buildConfigField("String", "interstitial", "\"ca-app-pub-3940256099942544/1033173712\"")
-//            buildConfigField("String", "banner", "\"ca-app-pub-3940256099942544/6300978111\"")
-//            buildConfigField("String", "native_ad", "\"ca-app-pub-3940256099942544/2247696110\"")
-//            buildConfigField("String", "app_open_id", "\"ca-app-pub-3940256099942544/3419835294\"")
+
+
 
             buildConfigField(
                 "String",
@@ -208,8 +233,17 @@ android {
             buildConfigField(
                 "String",
                 "categoriesScreen_colapsible_Banner",
-                "\"ca-app-pub-3940256099942544/2014213617\""
+                "\"ca-app-pub-3940256099942544/6300978111\""
             )
+
+
+
+
+
+
+
+
+
 
             buildConfigField(
                 "String",
@@ -251,9 +285,20 @@ android {
                 "language_Screen_Native",
                 "\"ca-app-pub-3940256099942544/2247696110\""
             )
+
+
+
+
+
+
+
+
+
+
+
             buildConfigField(
                 "String",
-                "interstitial_home",
+                "Translate_Button_inter",
                 "\"ca-app-pub-3940256099942544/1033173712\""
             )
 
@@ -275,17 +320,29 @@ android {
                 "\"ca-app-pub-3940256099942544/1033173712\""
             )
 
+
+
+
+
+
+
+
+
             buildConfigField(
                 "String",
-                "app_open",
+                "app_open_others",
                 "\"ca-app-pub-3940256099942544/9257395921\""
             )
 
-//            buildConfigField(
-//                "String",
-//                "app_open_launcher",
-//                "\"ca-app-pub-3940256099942544/9257395921\""
-//            )
+
+            buildConfigField(
+                "String",
+                "app_open_launcher",
+                "\"ca-app-pub-3940256099942544/9257395921\""
+            )
+
+
+
 
             buildConfigField("Boolean", "env_dev", "true")
             signingConfig = signingConfigs.getByName("debug")
@@ -353,13 +410,16 @@ dependencies {
     implementation("io.github.pilgr:paperdb:2.7.2")
 
     // Import the Firebase BoM
-    implementation(platform("com.google.firebase:firebase-bom:32.4.1"))
+//    implementation(platform("com.google.firebase:firebase-bom:32.4.1"))
+//
+//    //firebase crashlytics
+//    implementation("com.google.firebase:firebase-crashlytics")
+//    implementation("com.google.firebase:firebase-analytics")
 
-    //firebase crashlytics
-    implementation("com.google.firebase:firebase-crashlytics")
-    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-crashlytics:18.6.0")
+    implementation("com.google.firebase:firebase-analytics:21.5.0")
     //firebase messaging
-    implementation("com.google.firebase:firebase-messaging")
+//    implementation("com.google.firebase:firebase-messaging")
 
     implementation("com.google.code.gson:gson:2.8.9")
 

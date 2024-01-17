@@ -90,7 +90,7 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
     ): View? {
         binding = FragmentVoiceSMSBinding.inflate(layoutInflater, container, false)
 //        loadAd()
-        AdManager.getInstance().loadInterstitial(requireContext(), BuildConfig.interstitial_home)
+        AdManager.getInstance().loadInterstitial(requireContext(), BuildConfig.Translate_Button_inter)
 
         initLanguages()
 
@@ -151,7 +151,7 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
             if (!binding.fromTextId.text.isNullOrEmpty()&&!searchedText.equals(binding.fromTextId.text.toString())) {
                 getTranslation()
                 searchedText=binding.fromTextId.text.toString()
-                AdManager.getInstance().showInterstitial(requireActivity(),BuildConfig.interstitial_home) {
+                AdManager.getInstance().showInterstitial(requireActivity(),BuildConfig.Translate_Button_inter) {
                     getTranslation()
                 }
             }
@@ -237,7 +237,7 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
 
                 if (editable.length == 0) {
                     binding.toTextId.text = null
-                    binding.translateFromTo.visibility = View.GONE
+//                    binding.translateFromTo.visibility = View.GONE
                     binding.lottieTranslateFromTo.cancelAnimation()
 
 
@@ -351,9 +351,9 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
 
     private fun initLanguages() {
         try {
-            mExecutor.execute {
+//            mExecutor.execute {
                 listLanguages = m_viewmodel.getLanguages()
-                mHandler.post {
+//                mHandler.post {
 
 //                    sourceselectedCountryName = Locale.getDefault().language
 //                    sourceselectedCode = Locale.getDefault().country
@@ -397,15 +397,11 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
                     binding.sendId.setImageAlpha(128)
 //                    binding.translateFromTo.setImageAlpha(128)
                     binding.toSendId.setImageAlpha(128)
-                }
-            }
+//                }
+//            }
         } catch (e: Exception) {
             Log.d("TAG", "initLanguages: Failed, ${e.message}")
-            Toast.makeText(
-                requireContext(),
-                getString(R.string.failed_to_load_languages_trying_again),
-                Toast.LENGTH_SHORT
-            ).show()
+
             initLanguages()
         }
     }
