@@ -186,5 +186,10 @@
     <string name="you_denied_the_required_permission_please_go_to_app_settings_to_enable_it">You denied the required permission. Please go to app settings to enable it.</string>
     <string name="open_settings">Open Settings</string>
     <string name="cancel">Cancel</string>
+    <string name="delete_dialog_text">Are you sure you want to delete selected files?</string>
+    <string name="delete_files">Delete Files</string>
+    <string name="file_deleted_successfully">File deleted successfully!</string>
+    <string name="share_mp3_files">Share MP3 files</string>
+
 
 </resources>

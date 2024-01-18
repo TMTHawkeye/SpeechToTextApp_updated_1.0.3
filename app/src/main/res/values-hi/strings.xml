@@ -54,7 +54,7 @@
     <string name="share_app">ऐप शेयर करें</string>
     <string name="language">भाषा</string>
     <string name="save_files">फ़ाइलें सहेजें</string>
-
+    <string name="delete_dialog_text">क्या आप निश्चित हैं कि आप चयनित फ़ाइलें हटाना चाहते हैं?</string>
 
 
 
@@ -153,24 +153,28 @@
     <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
 
     <string name="ad_attribution">Ad</string>
-    <string name="ads_action_text">This action may contain ads</string>
-    <string name="comming_soon">Comming Soon!</string>
-    <string name="cantswitchtabs">Cannot switch tabs during recording</string>
-    <string name="can_t_share_empty_text">Can\'t share empty text!</string>
-    <string name="failed_to_load_languages_trying_again">Failed to load languages, trying again!</string>
-    <string name="can_t_speak_for_empty_text">Can\'t speak for empty text!</string>
-    <string name="error_listning_to_voice">Error listning to voice!</string>
-    <string name="error_while_stopping_trying_to_stop_again">Error while stopping, trying to stop again!</string>
-    <string name="recording_has_been_saved">Recording has been saved!</string>
-    <string name="error_occured_while_saving_the_file_free_up_space_and_try_again">Error occured while saving the file, free up space and try again!</string>
-    <string name="file_name_cannot_be_empty">File name cannot be empty!</string>
-    <string name="permission_denied">Permission Denied</string>
+    <string name="ads_action_text">इस क्रिया में विज्ञापन हो सकता है</string>
+    <string name="comming_soon">जल्दी ही आ रहा है!</string>
+    <string name="cantswitchtabs">रेकॉर्डिंग के दौरान टैब स्विच नहीं किया जा सकता</string>
+    <string name="can_t_share_empty_text">खाली टेक्स्ट को साझा नहीं कर सकते!</string>
+    <string name="failed_to_load_languages_trying_again">भाषाएँ लोड करने में विफल, फिर कोशिश कर रहा हूँ!</string>
+    <string name="can_t_speak_for_empty_text">खाली टेक्स्ट के लिए बोला नहीं जा सकता!</string>
+    <string name="error_listning_to_voice">आवाज सुनने में त्रुटि!</string>
+    <string name="error_while_stopping_trying_to_stop_again">रुकने के दौरान त्रुटि, फिर से कोशिश कर रहा हूँ!</string>
+    <string name="recording_has_been_saved">रेकॉर्डिंग सहेज ली गई है!</string>
+    <string name="error_occured_while_saving_the_file_free_up_space_and_try_again">फाइल सहेजने में त्रुटि हुई, जगह मुक्त करें और पुनः प्रयास करें!</string>
+    <string name="file_name_cannot_be_empty">फ़ाइल का नाम खाली नहीं हो सकता!</string>
+    <string name="permission_denied">अनुमति निरस्त</string>
 
-    <string name="would_you_like_to_rate_our_app">Would you like to rate our app</string>
-    <string name="you_denied_the_required_permission_please_go_to_app_settings_to_enable_it">You denied the required permission. Please go to app settings to enable it.</string>
-    <string name="open_settings">Open Settings</string>
-    <string name="cancel">Cancel</string>
+    <string name="would_you_like_to_rate_our_app">क्या आप हमारी एप्लिकेशन को रेट करना चाहेंगे</string>
+    <string name="you_denied_the_required_permission_please_go_to_app_settings_to_enable_it">आपने आवश्यक अनुमति को इनकार किया है। कृपया ऐप सेटिंग्स में जाकर इसे सक्षम करें।</string>
+    <string name="open_settings">सेटिंग्स खोलें</string>
+    <string name="cancel">रद्द करें</string>
+    <string name="delete_files">फ़ाइलें हटाएं</string>
+    <string name="share_mp3_files">MP3 फ़ाइलें साझा करें</string>
 
+
+    <string name="file_deleted_successfully">फ़ाइल सफलतापूर्वक हटा दी गई!</string>
 
 
 

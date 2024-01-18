@@ -147,30 +147,32 @@
     <string name="title_activity_base">BaseActivity</string>
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
-
+    <string name="delete_dialog_text">هل أنت متأكد أنك تريد حذف الملفات المحددة؟</string>
 
     <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
 
     <string name="ad_attribution">Ad</string>
-    <string name="ads_action_text">This action may contain ads</string>
-    <string name="comming_soon">Comming Soon!</string>
-    <string name="cantswitchtabs">Cannot switch tabs during recording</string>
-    <string name="can_t_share_empty_text">Can\'t share empty text!</string>
-    <string name="failed_to_load_languages_trying_again">Failed to load languages, trying again!</string>
-    <string name="can_t_speak_for_empty_text">Can\'t speak for empty text!</string>
-    <string name="error_listning_to_voice">Error listning to voice!</string>
-    <string name="error_while_stopping_trying_to_stop_again">Error while stopping, trying to stop again!</string>
-    <string name="recording_has_been_saved">Recording has been saved!</string>
-    <string name="error_occured_while_saving_the_file_free_up_space_and_try_again">Error occured while saving the file, free up space and try again!</string>
-    <string name="file_name_cannot_be_empty">File name cannot be empty!</string>
-    <string name="permission_denied">Permission Denied</string>
+    <string name="ads_action_text">هذا الإجراء قد يحتوي على إعلانات</string>
+    <string name="comming_soon">قريبًا!</string>
+    <string name="cantswitchtabs">لا يمكن التبديل بين العلامات أثناء التسجيل</string>
+    <string name="can_t_share_empty_text">لا يمكن مشاركة نص فارغ!</string>
+    <string name="failed_to_load_languages_trying_again">فشل في تحميل اللغات، محاولة مرة أخرى!</string>
+    <string name="can_t_speak_for_empty_text">لا يمكن التحدث بنص فارغ!</string>
+    <string name="error_listning_to_voice">خطأ أثناء الاستماع إلى الصوت!</string>
+    <string name="error_while_stopping_trying_to_stop_again">خطأ أثناء الإيقاف، محاولة إيقاف مرة أخرى!</string>
+    <string name="recording_has_been_saved">تم حفظ التسجيل!</string>
+    <string name="error_occured_while_saving_the_file_free_up_space_and_try_again">حدث خطأ أثناء حفظ الملف، قم بتحرير المساحة وحاول مرة أخرى!</string>
+    <string name="file_name_cannot_be_empty">اسم الملف لا يمكن أن يكون فارغًا!</string>
+    <string name="permission_denied">تم رفض الإذن</string>
 
-    <string name="would_you_like_to_rate_our_app">Would you like to rate our app</string>
-    <string name="you_denied_the_required_permission_please_go_to_app_settings_to_enable_it">You denied the required permission. Please go to app settings to enable it.</string>
-    <string name="open_settings">Open Settings</string>
-    <string name="cancel">Cancel</string>
+    <string name="would_you_like_to_rate_our_app">هل ترغب في تقييم تطبيقنا؟</string>
+    <string name="you_denied_the_required_permission_please_go_to_app_settings_to_enable_it">لقد رفضت الإذن اللازم. يرجى الانتقال إلى إعدادات التطبيق لتمكينه.</string>
+    <string name="open_settings">فتح الإعدادات</string>
+    <string name="cancel">إلغاء</string>
+    <string name="delete_files">حذف الملفات</string>
+    <string name="file_deleted_successfully">تم حذف الملف بنجاح!</string>
 
-
+    <string name="share_mp3_files">مشاركة ملفات MP3</string>
 
 
     <style name="textStyle" parent="TextAppearance.AppCompat">

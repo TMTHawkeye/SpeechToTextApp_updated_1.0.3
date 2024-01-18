@@ -23,9 +23,9 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivityLauncherBinding
 import java.util.concurrent.atomic.AtomicBoolean
 
-class LauncherActivity : AppCompatActivity() {
+class LauncherActivity : BaseActivity() {
     lateinit var binding: ActivityLauncherBinding
-    private var appOpenAd: AppOpenAd? = null
+     var appOpenAd: AppOpenAd? = null
     private val handler = Handler()
 
     private lateinit var consentInformation: ConsentInformation
@@ -159,7 +159,7 @@ class LauncherActivity : AppCompatActivity() {
     private fun startMainActivity() {
 
         binding.launcherLottieId.cancelAnimation()
-
+        this.appOpenAd=null
         val intent = if (isFirstTimeLaunch()) {
             Intent(this@LauncherActivity, LangungeActivity::class.java)
         } else {

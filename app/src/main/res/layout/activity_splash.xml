@@ -54,20 +54,22 @@
         android:indeterminateTint="@color/grey"/>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="@dimen/_100sdp"
-        android:layout_height="@dimen/_30sdp"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/card_start"
         app:layout_constraintTop_toBottomOf="@+id/main_image_splash"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:cardCornerRadius="@dimen/_30ssp"
-        android:visibility="gone"
         android:layout_marginBottom="@dimen/_10ssp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingHorizontal="@dimen/_12sdp"
+            android:paddingVertical="@dimen/_8sdp">
 
             <TextView
                 android:layout_width="wrap_content"

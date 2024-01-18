@@ -60,49 +60,49 @@ class SourceLanguageBottomSheet(var ctxt: Context) : BottomSheetDialogFragment()
             getDownloadedmodels()
         }
 //        mExecutor.execute {
-            val langList = viewModel.getLanguages()
+        val langList = viewModel.getLanguages()
 //            mHandler.post {
-                adapter = LanguageListAdapter(ctxt, langList, null, viewModel)
-                recyclerView.adapter = adapter
-                adapter.setOnItemClickListener(object : LanguageListAdapter.OnItemClickListener {
-                    override fun onItemClick(
-                        selectedLanguage: String?,
-                        selectedCode: String?,
-                        countryName: String?
-                    ) {
-                        languageSelectionListener.onLanguageSelected(
-                            selectedLanguage!!,
-                            selectedCode!!,
-                            countryName!!,
-                            "from_source"
-                        )
-                        dismiss()
-                    }
-                })
+        adapter = LanguageListAdapter(ctxt, langList, null, viewModel)
+        recyclerView.adapter = adapter
+        adapter.setOnItemClickListener(object : LanguageListAdapter.OnItemClickListener {
+            override fun onItemClick(
+                selectedLanguage: String?,
+                selectedCode: String?,
+                countryName: String?
+            ) {
+                languageSelectionListener.onLanguageSelected(
+                    selectedLanguage!!,
+                    selectedCode!!,
+                    countryName!!,
+                    "from_source"
+                )
+                dismiss()
+            }
+        })
 
-                binding.editTextSearch.addTextChangedListener(object : TextWatcher {
-                    override fun afterTextChanged(s: Editable?) {
-                        adapter.filterList(s.toString())
-                    }
+        binding.editTextSearch.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                adapter.filterList(s.toString())
+            }
 
-                    override fun beforeTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        count: Int,
-                        after: Int
-                    ) {
-                        // Not needed
-                    }
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+                // Not needed
+            }
 
-                    override fun onTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        before: Int,
-                        count: Int
-                    ) {
-                        // Not needed
-                    }
-                })
+            override fun onTextChanged(
+                s: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
+                // Not needed
+            }
+        })
 //            }
 //        }
 
@@ -112,6 +112,7 @@ class SourceLanguageBottomSheet(var ctxt: Context) : BottomSheetDialogFragment()
     fun setListener(listener: LanguageSelectionListener) {
         this.languageSelectionListener = listener
     }
+
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         languageSelectionListener.onDismisBottomSheet(true)
@@ -133,7 +134,10 @@ class SourceLanguageBottomSheet(var ctxt: Context) : BottomSheetDialogFragment()
 
         WindowCompat.setDecorFitsSystemWindows(requireActivity().window, false)
 
-        val insetsController = WindowCompat.getInsetsController(requireActivity().window, requireActivity().window.decorView)
+        val insetsController = WindowCompat.getInsetsController(
+            requireActivity().window,
+            requireActivity().window.decorView
+        )
         insetsController.systemBarsBehavior =
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         insetsController.hide(WindowInsetsCompat.Type.statusBars())

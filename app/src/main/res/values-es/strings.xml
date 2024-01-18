@@ -70,7 +70,7 @@
     <string name="share_app">Compartir aplicación</string>
     <string name="language">Idioma</string>
     <string name="save_files">Guardar archivos</string>
-
+    <string name="delete_dialog_text">¿Estás seguro/a de que deseas eliminar los archivos seleccionados?</string>
 
 
 
@@ -170,26 +170,30 @@
     <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
 
     <string name="ad_attribution">Ad</string>
-    <string name="ads_action_text">This action may contain ads</string>
-    <string name="comming_soon">Comming Soon!</string>
-    <string name="cantswitchtabs">Cannot switch tabs during recording</string>
-    <string name="can_t_share_empty_text">Can\'t share empty text!</string>
-    <string name="failed_to_load_languages_trying_again">Failed to load languages, trying again!</string>
-    <string name="can_t_speak_for_empty_text">Can\'t speak for empty text!</string>
-    <string name="error_listning_to_voice">Error listning to voice!</string>
-    <string name="error_while_stopping_trying_to_stop_again">Error while stopping, trying to stop again!</string>
-    <string name="recording_has_been_saved">Recording has been saved!</string>
-    <string name="error_occured_while_saving_the_file_free_up_space_and_try_again">Error occured while saving the file, free up space and try again!</string>
-    <string name="file_name_cannot_be_empty">File name cannot be empty!</string>
-    <string name="permission_denied">Permission Denied</string>
+    <string name="ads_action_text">Esta acción puede contener anuncios</string>
+    <string name="comming_soon">¡Próximamente!</string>
+    <string name="cantswitchtabs">No se puede cambiar de pestaña durante la grabación</string>
+    <string name="can_t_share_empty_text">¡No se puede compartir un texto vacío!</string>
+    <string name="failed_to_load_languages_trying_again">Error al cargar idiomas, intentando de nuevo</string>
+    <string name="can_t_speak_for_empty_text">¡No se puede hablar por un texto vacío!</string>
+    <string name="error_listning_to_voice">Error al escuchar la voz</string>
+    <string name="error_while_stopping_trying_to_stop_again">Error al detener, intentando detener de nuevo</string>
+    <string name="recording_has_been_saved">¡La grabación ha sido guardada!</string>
+    <string name="error_occured_while_saving_the_file_free_up_space_and_try_again">Error al guardar el archivo, libere espacio e intente de nuevo</string>
+    <string name="file_name_cannot_be_empty">El nombre de archivo no puede estar vacío</string>
+    <string name="permission_denied">Permiso denegado</string>
 
-    <string name="would_you_like_to_rate_our_app">Would you like to rate our app</string>
-    <string name="you_denied_the_required_permission_please_go_to_app_settings_to_enable_it">You denied the required permission. Please go to app settings to enable it.</string>
-    <string name="open_settings">Open Settings</string>
-    <string name="cancel">Cancel</string>
+    <string name="would_you_like_to_rate_our_app">¿Te gustaría valorar nuestra aplicación?</string>
+    <string name="you_denied_the_required_permission_please_go_to_app_settings_to_enable_it">Has denegado el permiso necesario. Por favor, ve a la configuración de la aplicación para habilitarlo.</string>
+    <string name="open_settings">Abrir Configuración</string>
+    <string name="cancel">Cancelar</string>
+    <string name="delete_files">Eliminar archivos</string>
 
 
+    <string name="file_deleted_successfully">¡Archivo eliminado exitosamente!</string>
 
+
+    <string name="share_mp3_files">Compartir archivos MP3</string>
 
 
 

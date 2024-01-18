@@ -16,16 +16,21 @@ import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.VideoOptions
+import com.google.android.gms.ads.appopen.AppOpenAd
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdOptions
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.MainApplication
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.NativeAdTemplateBinding
+import java.util.Date
 
 class AdManager private constructor() {
 
      var interstitialAd: InterstitialAd? = null
+     var isInterstitialShowing: Boolean = false
      var currentNativeAd: NativeAd? = null
 //     var interstitialAd: InterstitialAd? = null
     private var adIsLoading: Boolean = false
@@ -77,18 +82,24 @@ class AdManager private constructor() {
                     override fun onAdDismissedFullScreenContent() {
                         Log.d("InterstitialAdManager", "Ad was dismissed.")
                         interstitialAd = null
+                        isInterstitialShowing=false
                         onAdDismissed.invoke(true)
+
                     }
 
                     override fun onAdFailedToShowFullScreenContent(adError: AdError) {
                         Log.d("InterstitialAdManager", "Ad failed to show.")
                         interstitialAd = null
+                        isInterstitialShowing=false
+
                         onAdDismissed.invoke(true)
+
                     }
 
                     override fun onAdShowedFullScreenContent() {
                         Log.d("InterstitialAdManager", "Ad showed fullscreen content.")
                         interstitialAd = null
+                        isInterstitialShowing=true
                     }
                 }
             interstitialAd?.show(activity)
@@ -238,4 +249,119 @@ class AdManager private constructor() {
         val adRequest = AdRequest.Builder().build()
         adView?.loadAd(adRequest)
     }
+
+
+
+
+
+
+
+
+
+
+    private var appOpenAd: AppOpenAd? = null
+    private var isLoadingAd = false
+    var isShowingAd = false
+
+    private var loadTime: Long = 0
+
+
+    fun loadAd(context: Context) {
+        if (isLoadingAd || isAdAvailable()) {
+            return
+        }
+
+        isLoadingAd = true
+        val request = AdRequest.Builder().build()
+        AppOpenAd.load(
+            context,
+            BuildConfig.app_open_others,
+            request,
+            object : AppOpenAd.AppOpenAdLoadCallback() {
+
+                override fun onAdLoaded(ad: AppOpenAd) {
+                    appOpenAd = ad
+                    isLoadingAd = false
+                    loadTime = Date().time
+                    Log.d("LOG_TAG", "onAdLoaded.")
+                }
+                override fun onAdFailedToLoad(loadAdError: LoadAdError) {
+                    isLoadingAd = false
+                    Log.d("LOG_TAG", "onAdFailedToLoad: " + loadAdError.message)
+                }
+            }
+        )
+    }
+
+    private fun wasLoadTimeLessThanNHoursAgo(numHours: Long): Boolean {
+        val dateDifference: Long = Date().time - loadTime
+        val numMilliSecondsPerHour: Long = 3600000
+        return dateDifference < numMilliSecondsPerHour * numHours
+    }
+
+    private fun isAdAvailable(): Boolean {
+        return appOpenAd != null && wasLoadTimeLessThanNHoursAgo(4)
+    }
+
+    fun showAdIfAvailable(activity: Activity) {
+        showAdIfAvailable(
+            activity,
+            object : MainApplication.OnShowAdCompleteListener {
+                override fun onShowAdComplete() {
+                }
+            }
+        )
+    }
+
+    fun showAdIfAvailable(activity: Activity, onShowAdCompleteListener: MainApplication.OnShowAdCompleteListener) {
+        if (isShowingAd) {
+            Log.d("LOG_TAG", "The app open ad is already showing.")
+            return
+        }
+        if (!isAdAvailable()) {
+            Log.d("LOG_TAG", "The app open ad is not ready yet.")
+            onShowAdCompleteListener.onShowAdComplete()
+//                if (googleMobileAdsConsentManager.canRequestAds) {
+            loadAd(activity)
+//                }
+            return
+        }
+
+        Log.d("LOG_TAG", "Will show ad.")
+
+        appOpenAd?.fullScreenContentCallback =
+            object : FullScreenContentCallback() {
+                override fun onAdDismissedFullScreenContent() {
+                    appOpenAd = null
+                    isShowingAd = false
+                    Log.d("LOG_TAG", "onAdDismissedFullScreenContent.")
+
+                    onShowAdCompleteListener.onShowAdComplete()
+//                        if (googleMobileAdsConsentManager.canRequestAds) {
+                    loadAd(activity)
+//                        }
+                }
+
+                override fun onAdFailedToShowFullScreenContent(adError: AdError) {
+                    appOpenAd = null
+                    isShowingAd = false
+                    Log.d("LOG_TAG", "onAdFailedToShowFullScreenContent: " + adError.message)
+
+                    onShowAdCompleteListener.onShowAdComplete()
+//                        if (googleMobileAdsConsentManager.canRequestAds) {
+                    loadAd(activity)
+//                        }
+                }
+
+                override fun onAdShowedFullScreenContent() {
+                    Log.d("LOG_TAG", "onAdShowedFullScreenContent.")
+                }
+            }
+        isShowingAd = true
+        appOpenAd?.show(activity)
+    }
+
+
+
+
 }

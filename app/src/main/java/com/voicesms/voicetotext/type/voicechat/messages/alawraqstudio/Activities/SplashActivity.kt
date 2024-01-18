@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.VideoOptions
@@ -25,6 +26,7 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfi
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdManager
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.dloadLanguage
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.isInternetAvailable
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.MainApplication
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivitySplashBinding
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.NativeAdTemplateBinding
 import io.paperdb.Paper
@@ -36,9 +38,10 @@ class SplashActivity : BaseActivity() {
     lateinit var binding: ActivitySplashBinding
     private val handler = Handler()
 
+    private lateinit var adView: AdView
 
 
-    private var currentNativeAd: NativeAd? = null
+//    private var currentNativeAd: NativeAd? = null
     private val delayedVisibilityChange = Runnable {
         binding.progressSplash.visibility = android.view.View.GONE
         binding.cardStart.visibility = android.view.View.VISIBLE
@@ -48,15 +51,27 @@ class SplashActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        adView = AdView(this)
 
 
+        if (!isInternetAvailable(this@SplashActivity)) {
+            binding.shimmerViewContainer.visibility=View.VISIBLE
+            binding.adFrame.visibility=View.VISIBLE
+            binding.shimmerViewContainer.startShimmer()
+            AdManager.getInstance().loadNativeAd(this@SplashActivity, BuildConfig.native_splash,binding.adFrame, binding.shimmerViewContainer)
+        }
+        else{
+            binding.shimmerViewContainer.visibility=View.GONE
+            binding.adFrame.visibility=View.GONE
+        }
 //        refreshAd()
-        binding.shimmerViewContainer.startShimmer()
+//        binding.shimmerViewContainer.startShimmer()
 
-        AdManager.getInstance().loadNativeAd(this@SplashActivity, BuildConfig.native_splash,binding.adFrame, binding.shimmerViewContainer)
 
         downloadInitialModel()
-        AdManager.getInstance().loadInterstitial(this, BuildConfig.welcome_Screen_inter)
+        if(AdManager.getInstance().interstitialAd==null) {
+            AdManager.getInstance().loadInterstitial(this, BuildConfig.welcome_Screen_inter)
+        }
 
 
         handler.postDelayed({
@@ -67,7 +82,9 @@ class SplashActivity : BaseActivity() {
         binding.cardStart.setOnClickListener {
             if(isInternetAvailable(this@SplashActivity)) {
 //            showInterstitial()
-                AdManager.getInstance().loadInterstitial(this, BuildConfig.welcome_Screen_inter)
+                if(AdManager.getInstance().interstitialAd==null) {
+                    AdManager.getInstance().loadInterstitial(this, BuildConfig.welcome_Screen_inter)
+                }
                 AdManager.getInstance().showInterstitial(this, BuildConfig.welcome_Screen_inter) {
                     startActivity(Intent(this@SplashActivity, MainActivity::class.java))
                 }
@@ -113,8 +130,17 @@ class SplashActivity : BaseActivity() {
 
     override fun onPause() {
         super.onPause()
+        adView.pause()
+
         AdManager.getInstance().currentNativeAd=null
         AdManager.getInstance().interstitialAd=null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (application as MainApplication).loadAd(this)
+        adView.resume()
+
     }
 
     private fun getLanguageModelDownloadStatus(languageCode: String): Boolean {

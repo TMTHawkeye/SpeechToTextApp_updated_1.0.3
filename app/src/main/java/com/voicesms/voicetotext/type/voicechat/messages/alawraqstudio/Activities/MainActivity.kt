@@ -47,7 +47,6 @@ class MainActivity : BaseActivity() {
     private var exitOnBackPressed = false
     var nonZeroRating=true
 
-    private lateinit var adView: AdView
     private val initialLayoutComplete = AtomicBoolean(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +55,6 @@ class MainActivity : BaseActivity() {
         setContentView(binding.root)
         FirebaseApp.initializeApp(this);
 
-        adView = AdView(this)
 //        binding.adViewContainer.addView(adView)
 
 //        binding.adViewContainer.viewTreeObserver.addOnGlobalLayoutListener {
@@ -411,7 +409,6 @@ class MainActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         (application as MainApplication).loadAd(this)
-        adView.resume()
         if(binding.drawerLayout.isDrawerOpen(GravityCompat.START)){
             binding.drawerLayout.closeDrawer(GravityCompat.START)
         }
@@ -419,7 +416,6 @@ class MainActivity : BaseActivity() {
 
     override fun onPause() {
         super.onPause()
-        adView.pause()
 
         if(binding.drawerLayout.isDrawerOpen(GravityCompat.START)){
             binding.drawerLayout.closeDrawer(GravityCompat.START)
@@ -428,11 +424,12 @@ class MainActivity : BaseActivity() {
 
     private fun feedBack(rating:Float){
         val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
-            data = Uri.parse("mailto:alawraqmarketing@gmail.com")
+            data = Uri.parse("mailto:developer@alawraqstudio.com")
             putExtra(Intent.EXTRA_SUBJECT, "Rating for your app: ${rating.toString()}")
         }
         startActivity(Intent.createChooser(emailIntent, "Send feedback"))
     }
+
 
     private fun privacyPolicy(){
         val privacyPolicyUrl = "https://sites.google.com/view/alawraq-studio/home"

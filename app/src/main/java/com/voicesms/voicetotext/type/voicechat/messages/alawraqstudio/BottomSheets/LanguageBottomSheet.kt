@@ -60,50 +60,50 @@ class LanguageBottomSheet(var ctxt: Context) : BottomSheetDialogFragment() {
             getDownloadedmodels()
         }
 //        mExecutor.execute {
-            var listofLanguages = viewModel.getLanguages()
+        var listofLanguages = viewModel.getLanguages()
 //            mHandler.post {
-                Log.d("TAG list of languages", "onViewCreated: ${listofLanguages.size}")
-                adapter = LanguageListAdapter(ctxt, listofLanguages, null, viewModel)
-                recyclerView.adapter = adapter
-                adapter.setOnItemClickListener(object : LanguageListAdapter.OnItemClickListener {
-                    override fun onItemClick(
-                        selectedLanguage: String?,
-                        selectedCode: String?,
-                        countryName: String?
-                    ) {
-                        languageSelectionListener.onLanguageSelected(
-                            selectedLanguage!!,
-                            selectedCode!!,
-                            countryName!!,
-                            "from_target"
-                        )
-                        dismiss()
-                    }
-                })
+        Log.d("TAG list of languages", "onViewCreated: ${listofLanguages.size}")
+        adapter = LanguageListAdapter(ctxt, listofLanguages, null, viewModel)
+        recyclerView.adapter = adapter
+        adapter.setOnItemClickListener(object : LanguageListAdapter.OnItemClickListener {
+            override fun onItemClick(
+                selectedLanguage: String?,
+                selectedCode: String?,
+                countryName: String?
+            ) {
+                languageSelectionListener.onLanguageSelected(
+                    selectedLanguage!!,
+                    selectedCode!!,
+                    countryName!!,
+                    "from_target"
+                )
+                dismiss()
+            }
+        })
 
-                binding.editTextSearch.addTextChangedListener(object : TextWatcher {
-                    override fun afterTextChanged(s: Editable?) {
-                        adapter.filterList(s.toString())
-                    }
+        binding.editTextSearch.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                adapter.filterList(s.toString())
+            }
 
-                    override fun beforeTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        count: Int,
-                        after: Int
-                    ) {
-                        // Not needed
-                    }
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+                // Not needed
+            }
 
-                    override fun onTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        before: Int,
-                        count: Int
-                    ) {
-                        // Not needed
-                    }
-                })
+            override fun onTextChanged(
+                s: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
+                // Not needed
+            }
+        })
 //            }
 //        }
     }

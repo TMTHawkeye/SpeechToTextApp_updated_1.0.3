@@ -142,57 +142,6 @@ class SubCategorySearchActivity : BaseActivity() {
         })
     }
 
-    private fun refreshAd() {
-        val builder = AdLoader.Builder(this, BuildConfig.Sub_categories_native)
-
-        builder.forNativeAd { nativeAd ->
-            var activityDestroyed = false
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                activityDestroyed = isDestroyed
-            }
-            if (activityDestroyed || isFinishing || isChangingConfigurations) {
-                nativeAd.destroy()
-                return@forNativeAd
-            }
-            // You must call destroy on old ads when you are done with them,
-            // otherwise you will have a memory leak.
-            currentNativeAd?.destroy()
-            currentNativeAd = nativeAd
-            val unifiedAdBinding = NativeAdTemplateBinding.inflate(layoutInflater)
-            populateNativeAdView(nativeAd, unifiedAdBinding)
-            binding.adViewContainer.removeAllViews()
-            binding.adViewContainer.addView(unifiedAdBinding.root)
-        }
-
-        val videoOptions = VideoOptions.Builder().setStartMuted(binding.adViewContainer.isClickable).build()
-        val adOptions = NativeAdOptions.Builder().setVideoOptions(videoOptions).build()
-
-        builder.withNativeAdOptions(adOptions)
-
-        val adLoader =
-            builder
-                .withAdListener(
-                    object : AdListener() {
-                        override fun onAdFailedToLoad(loadAdError: LoadAdError) {
-                            val error =
-                                """
-           domain: ${loadAdError.domain}, code: ${loadAdError.code}, message: ${loadAdError.message}
-          """"
-//                            Toast.makeText(
-//                                this@SplashActivity,
-//                                "Failed to load native ad with error $error",
-//                                Toast.LENGTH_SHORT
-//                            )
-//                                .show()
-                        }
-                    }
-                )
-                .build()
-
-        adLoader.loadAd(AdRequest.Builder().build())
-
-    }
-
     private fun populateNativeAdView(nativeAd: NativeAd, unifiedAdBinding: NativeAdTemplateBinding) {
         val nativeAdView = unifiedAdBinding.root
 

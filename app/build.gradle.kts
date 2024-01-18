@@ -57,7 +57,7 @@ android {
                 file("proguard-rules.pro")
             )
             signingConfig = signingConfigs.getByName("release")
-            isDebuggable = false
+//            isDebuggable = false
         }
 
 
@@ -80,6 +80,12 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+
+    bundle{
+        language {
+            enableSplit = true
         }
     }
 
@@ -429,7 +435,6 @@ dependencies {
 
 
 
-    implementation("com.facebook.shimmer:shimmer:0.5.0")
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation ("androidx.lifecycle:lifecycle-process:2.6.2")
@@ -437,7 +442,7 @@ dependencies {
 
     implementation ("com.zeugmasolutions.localehelper:locale-helper-android:1.5.1")
 
-    implementation("com.facebook.shimmer:shimmer:0.5.0")
+    implementation("com.facebook.shimmer:shimmer:0.5.0@aar")
 
 
 

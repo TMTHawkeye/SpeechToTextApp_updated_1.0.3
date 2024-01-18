@@ -1,5 +1,6 @@
 package com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities
 
+import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
@@ -17,7 +18,7 @@ import com.zeugmasolutions.localehelper.LocaleHelperActivityDelegateImpl
 import java.util.Locale
 
 open class BaseActivity : AppCompatActivity() {
-    private val localeDelegate: LocaleHelperActivityDelegate = LocaleHelperActivityDelegateImpl()
+    val localeDelegate: LocaleHelperActivityDelegate = LocaleHelperActivityDelegateImpl()
 
     override fun getDelegate() = localeDelegate.getAppCompatDelegate(super.getDelegate())
 
@@ -58,8 +59,8 @@ open class BaseActivity : AppCompatActivity() {
     override fun getApplicationContext(): Context =
         localeDelegate.getApplicationContext(super.getApplicationContext())
 
-    open fun updateLocale(locale: Locale) {
-        localeDelegate.setLocale(this, locale)
+    open fun updateLocale(context: Activity, locale: Locale) {
+        localeDelegate.setLocale(context, locale)
     }
 
     fun hideNavBar() {

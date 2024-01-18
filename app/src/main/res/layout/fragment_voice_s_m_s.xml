@@ -1,4 +1,4 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -131,14 +131,15 @@
                 <EditText
                     android:id="@+id/from_text_id"
                     android:layout_width="@dimen/_230sdp"
-                    android:layout_height="@dimen/_80sdp"
+                    android:layout_height="@dimen/_120sdp"
                     android:background="@null"
                     android:gravity="top"
-                    android:textDirection="locale"
                     android:hint="@string/writetextHint"
                     android:padding="@dimen/_10ssp"
+                    android:inputType="textMultiLine"
                     android:textColor="@color/grey"
                     android:textColorHint="@color/medium_grey"
+                    android:textDirection="locale"
                     app:layout_constraintEnd_toStartOf="@+id/send_id"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -209,20 +210,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toTopOf="@+id/speak_id_from"
-                    app:layout_constraintEnd_toEndOf="parent" >
+                    app:layout_constraintEnd_toEndOf="parent">
 
                     <com.airbnb.lottie.LottieAnimationView
-                        android:paddingBottom="@dimen/_5sdp"
                         android:id="@+id/lottie_translate_from_to"
                         android:layout_width="@dimen/_50sdp"
                         android:layout_height="@dimen/_50sdp"
-                        app:lottie_rawRes="@raw/translate_icon_bg_lottie"
-                        android:layout_centerInParent="true"/>
+                        android:layout_centerInParent="true"
+                        android:paddingBottom="@dimen/_5sdp"
+                        app:lottie_rawRes="@raw/translate_icon_bg_lottie" />
 
                     <ImageView
-                        android:layout_centerInParent="true"
                         android:layout_width="@dimen/_30sdp"
                         android:layout_height="@dimen/_30sdp"
+                        android:layout_centerInParent="true"
                         android:src="@drawable/translate_enable_icon" />
 
                 </RelativeLayout>
@@ -242,19 +243,18 @@
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/translate_to_language_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_20ssp"
             android:layout_marginTop="@dimen/_10sdp"
             android:text="@string/languageName"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/from_card" />
 
 
         <androidx.cardview.widget.CardView
-            android:visibility="gone"
             android:id="@+id/to_card"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_170sdp"
@@ -269,18 +269,30 @@
                 android:layout_height="match_parent"
                 android:background="@color/white">
 
-                <TextView
-                    android:id="@+id/to_text_id"
-                    android:layout_width="@dimen/_230sdp"
-                    android:layout_height="@dimen/_80sdp"
-                    android:background="@null"
-                    android:gravity="top"
-                    android:hint="@string/translation"
-                    android:padding="@dimen/_10ssp"
-                    android:textColor="@color/dark_grey"
+                <ScrollView
+                    android:id="@+id/scroll_to"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     app:layout_constraintEnd_toStartOf="@+id/to_send_id"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:padding="@dimen/_10ssp"
+                            android:id="@+id/to_text_id"
+                            android:layout_width="@dimen/_230sdp"
+                            android:layout_height="@dimen/_120sdp"
+                            android:inputType="textMultiLine"
+                            android:background="@null"
+                            android:gravity="top"
+                            android:hint="@string/translation"
+                            android:textColor="@color/dark_grey" />
+                    </RelativeLayout>
+                </ScrollView>
 
                 <ImageView
                     android:id="@+id/to_send_id"
@@ -289,7 +301,7 @@
                     android:layout_margin="@dimen/_10ssp"
                     android:src="@drawable/send_msg_icon"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/to_text_id"
+                    app:layout_constraintStart_toEndOf="@+id/scroll_to"
                     app:layout_constraintTop_toTopOf="parent"
                     app:tint="@color/green" />
 
@@ -341,13 +353,13 @@
             android:id="@+id/shimmer_view_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginTop="@dimen/_20ssp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/to_card">
 
-            <include layout="@layout/native_ad_template_placeholder"/>
+            <include layout="@layout/native_ad_template_placeholder" />
 
         </com.facebook.shimmer.ShimmerFrameLayout>
 
@@ -355,14 +367,14 @@
             android:id="@+id/ad_frame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/transparent"
-            android:background="@color/transparent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginTop="@dimen/_20ssp"
-            app:layout_constraintTop_toBottomOf="@+id/to_card"/>
+            android:background="@color/transparent"
+            android:backgroundTint="@color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/to_card" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

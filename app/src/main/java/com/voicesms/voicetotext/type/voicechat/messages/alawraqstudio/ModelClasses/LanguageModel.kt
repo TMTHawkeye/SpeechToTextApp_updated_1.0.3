@@ -1,10 +1,3 @@
-//package com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ModelClasses
-//
-//import com.google.errorprone.annotations.Keep
-//
-//@Keep
-//data class LanguageModel(
-//    val languageCode: String = "",
-//    val languageName: String = "",
-//    val countryCode: String = ""
-//)
+import android.graphics.drawable.Drawable
+
+data class Language(val languageName:String?, val languageDrawable: Drawable?, val languageCode:String?)

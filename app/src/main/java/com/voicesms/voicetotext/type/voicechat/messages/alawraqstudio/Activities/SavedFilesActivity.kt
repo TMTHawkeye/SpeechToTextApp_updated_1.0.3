@@ -55,7 +55,8 @@ class SavedFilesActivity : BaseActivity(), RecordingsCallback {
                     binding.adViewContainer,
                     binding.shimmerViewContainer
                 )
-
+                binding.adViewContainer.visibility=View.VISIBLE
+                binding.shimmerViewContainer.visibility=View.VISIBLE
                 listofFiles = it
                 binding.noItemId.visibility = View.GONE
                 binding.savedFilesRV.visibility = View.VISIBLE
@@ -117,8 +118,8 @@ class SavedFilesActivity : BaseActivity(), RecordingsCallback {
     }
     private fun showDeleteConfirmationDialog(selectedFiles: List<FileData>) {
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Delete Files")
-        builder.setMessage("Are you sure you want to delete selected files?")
+        builder.setTitle(getString(R.string.delete_files))
+        builder.setMessage(getString(R.string.delete_dialog_text))
 
         builder.setPositiveButton("Yes") { _: DialogInterface, _: Int ->
             deleteFiles(selectedFiles)
@@ -156,7 +157,8 @@ class SavedFilesActivity : BaseActivity(), RecordingsCallback {
         if (listofFiles.size == 0) {
             showNoItem()
         }
-        Toast.makeText(this@SavedFilesActivity, "File deleted successfully!", Toast.LENGTH_SHORT)
+        Toast.makeText(this@SavedFilesActivity,
+            getString(R.string.file_deleted_successfully), Toast.LENGTH_SHORT)
             .show()
     }
     private fun shareMP3Files(files: List<FileData>) {
@@ -183,10 +185,12 @@ class SavedFilesActivity : BaseActivity(), RecordingsCallback {
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
 
-            startActivity(Intent.createChooser(intent, "Share MP3 files"))
+            startActivity(Intent.createChooser(intent, getString(R.string.share_mp3_files)))
         }
     }
     private fun showNoItem() {
+        binding.adViewContainer.visibility=View.GONE
+        binding.shimmerViewContainer.visibility=View.GONE
         binding.savedFilesRV.visibility = View.INVISIBLE
         binding.selectAllId.visibility = View.INVISIBLE
         binding.noItemId.visibility = View.VISIBLE

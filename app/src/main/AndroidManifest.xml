@@ -26,10 +26,11 @@
         <activity
             android:name=".Activities.LangungeActivity"
             android:exported="false"
-            />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.SplashActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.GuideActivity"
             android:exported="false"

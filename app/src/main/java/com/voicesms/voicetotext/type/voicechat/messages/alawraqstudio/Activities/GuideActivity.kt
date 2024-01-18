@@ -6,6 +6,7 @@ import android.content.Context
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.View
 import androidx.activity.OnBackPressedCallback
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
@@ -14,6 +15,7 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Adapters.S
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Fragments.SplashFragmentGetStarted
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Fragments.SplashFragmentNext
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.isInternetAvailable
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivityGuideBinding
 import kotlinx.coroutines.launch
@@ -46,7 +48,14 @@ class GuideActivity : BaseActivity() {
         setContentView(binding.root)
         adView = AdView(this@GuideActivity)
         binding.adViewContainer.addView(adView)
-        loadBanner()
+
+        if (!isInternetAvailable(this@GuideActivity)) {
+            binding.adViewContainer.visibility= View.VISIBLE
+            loadBanner()
+        }
+        else{
+            binding.adViewContainer.visibility= View.GONE
+        }
 
         val fragmentList = listOf(SplashFragmentNext(), SplashFragmentGetStarted())
         val adapter = SplashPagerAdapter(supportFragmentManager, fragmentList)

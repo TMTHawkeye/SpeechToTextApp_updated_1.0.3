@@ -1,5 +1,6 @@
 package com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities
 
+import Language
 import android.content.Context
 import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
@@ -14,7 +15,7 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databindin
 import com.zeugmasolutions.localehelper.LocaleHelper
 import java.util.Locale
 
-class LangungeActivity : AppCompatActivity() {
+class LangungeActivity : BaseActivity() {
     lateinit var binding:ActivityLangungeBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,4 +84,3 @@ class LangungeActivity : AppCompatActivity() {
 
 }
 
-data class Language(val languageName:String?,val languageDrawable: Drawable?,val languageCode:String?)

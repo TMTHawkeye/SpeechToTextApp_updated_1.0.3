@@ -65,18 +65,28 @@ class SavedFilesAdapter(
 
         holder.binding.sendRecId.setOnClickListener {
             if(!isSelectionMode) {
-                StrictMode.setVmPolicy(
-                    StrictMode.VmPolicy.Builder()
-                        .penaltyLog()
-                        .build()
-                )
+//                StrictMode.setVmPolicy(
+//                    StrictMode.VmPolicy.Builder()
+//                        .penaltyLog()
+//                        .build()
+//                )
 
                 val uri = Uri.fromFile(File(listofFiles.get(position).filePath))
-                val intent = Intent(Intent.ACTION_SEND).apply {
-                    type = "*/*"
-                    putExtra(Intent.EXTRA_STREAM, uri)
-                }
-                context.startActivity(Intent.createChooser(intent, "Share files"))
+//                val intent = Intent(Intent.ACTION_SEND).apply {
+//                    type = "*/*"
+//                    putExtra(Intent.EXTRA_STREAM, uri)
+//                }
+
+                FileProvider.getUriForFile(
+                    context,
+                    context.packageName + ".provider",
+                    File(listofFiles.get(position).filePath)
+                )
+
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.setDataAndType(uri, "*/*")
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                context.startActivity(Intent.createChooser(intent, "Share MP3 file"))
             }
         }
 
@@ -124,6 +134,7 @@ class SavedFilesAdapter(
         }
 
     }
+
 }
 
 

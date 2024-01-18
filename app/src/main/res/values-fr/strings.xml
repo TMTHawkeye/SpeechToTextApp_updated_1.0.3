@@ -69,12 +69,14 @@
     <string name="share_app">Partager l\'application</string>
     <string name="language">Langue</string>
     <string name="save_files">Enregistrer les fichiers</string>
+    <string name="delete_dialog_text">Êtes-vous sûr(e) de vouloir supprimer les fichiers sélectionnés ?</string>
+
+
+    <string name="share_mp3_files">Partager des fichiers MP3</string>
 
 
 
-
-
-
+    <string name="file_deleted_successfully">Fichier supprimé avec succès !</string>
 
 
 
