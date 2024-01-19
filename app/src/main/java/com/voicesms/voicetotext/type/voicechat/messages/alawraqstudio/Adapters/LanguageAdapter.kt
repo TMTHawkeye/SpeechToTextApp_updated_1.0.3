@@ -4,6 +4,8 @@ import Language
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -12,12 +14,16 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.LangungeActivity
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.MainActivity
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.SplashActivity
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ItemCategoryBinding
 import com.zeugmasolutions.localehelper.LocaleHelper
+import io.paperdb.Paper
 import java.util.Locale
 
-class LanguageAdapter(val ctxt: Context, val languagesList: ArrayList<Language>) :
+class LanguageAdapter(val ctxt: Context, val languagesList: ArrayList<Language>,var selectedPosition:Int?) :
     RecyclerView.Adapter<LanguageAdapter.viewHolder>() {
+    var languageCode="en"
+    var savedPosition=selectedPosition
 
     lateinit var binding: ItemCategoryBinding
 
@@ -39,45 +45,38 @@ class LanguageAdapter(val ctxt: Context, val languagesList: ArrayList<Language>)
         holder.itemView.setOnClickListener {
 //            ctxt.startActivity(Intent(ctxt,GuideActivity::class.java))
             changeLanguage(languagesList.get(position).languageCode!!)
+            setSelectedPosition(position)
 
         }
+
+//        holder.itemView.setBackgroundResource(
+//            if (position == selectedPosition){
+//                R.drawable.selected_language_bg
+//            } else 0
+//        )
+
+        if(position==selectedPosition){
+            holder.itemView.setBackgroundResource(
+                R.drawable.selected_card_bg
+            )
+        }
+        else{
+            holder.itemView.setBackgroundResource(
+                R.drawable.card_bg
+            )
+        }
+
+    }
+
+    private fun setSelectedPosition(position: Int) {
+        selectedPosition = position
+        Paper.book().write<Int?>("LANG_POS",position)
+        notifyDataSetChanged()
     }
 
     fun changeLanguage(languageCode: String) {
-        val locale = Locale(languageCode)
-        Locale.setDefault(locale)
-        val configuration:Configuration=ctxt.resources.configuration
-        configuration.locale=locale
-        configuration.setLayoutDirection(locale)
-       val lang=ctxt as BaseActivity
-        lang.localeDelegate.setLocale(ctxt,locale)
-        LocaleHelper.setLocale(ctxt, locale)
-        BaseActivity().updateLocale(ctxt as LangungeActivity, locale)
-
-//        val intent = Intent(ctxt, GuideActivity::class.java)
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-//        ctxt.startActivity(intent)
-
-        val intent = if (isFirstTimeLaunch()) {
-            Intent(ctxt, GuideActivity::class.java)
-        } else {
-            Intent(ctxt, MainActivity::class.java)
-        }
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-
-        ctxt.startActivity(intent)
-
-
+       this.languageCode=languageCode
     }
 
-    private fun isFirstTimeLaunch(): Boolean {
-        val preferences = ctxt.getSharedPreferences("LangPrefs", Context.MODE_PRIVATE)
-        val isFirstTime = preferences.getBoolean("isFirstTime", true)
-        if (isFirstTime) {
-            val editor = preferences.edit()
-            editor.putBoolean("isFirstTime", false)
-            editor.apply()
-        }
-        return isFirstTime
-    }
+
 }

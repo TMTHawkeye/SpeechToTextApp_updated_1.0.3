@@ -2,6 +2,8 @@ package com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activitie
 
 import Language
 import android.content.Context
+import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,9 +12,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Adapters.LanguageAdapter
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdManager
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.isFirstTimeLaunch
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivityLangungeBinding
 import com.zeugmasolutions.localehelper.LocaleHelper
+import io.paperdb.Paper
 import java.util.Locale
 
 class LangungeActivity : BaseActivity() {
@@ -30,7 +34,8 @@ class LangungeActivity : BaseActivity() {
         )
 
         val languagesList=getLanguagesList()
-        val adapter=LanguageAdapter(this@LangungeActivity,languagesList)
+        val savedPosition= Paper.book().read<Int?>("LANG_POS",0)
+        val adapter=LanguageAdapter(this@LangungeActivity,languagesList,savedPosition)
         binding.languagesRV.layoutManager= GridLayoutManager(this, 3)
         binding.languagesRV.adapter=adapter
 
@@ -42,11 +47,40 @@ class LangungeActivity : BaseActivity() {
         })
 
         binding.backBtn.setOnClickListener {
+            if(isFirstTimeLaunch()){
+                finishAffinity()
+            }
             finish()
+        }
+
+        binding.doneBtn.setOnClickListener {
+            if (adapter.savedPosition != -1) {
+                val locale = Locale(adapter.languageCode)
+                Locale.setDefault(locale)
+                val configuration: Configuration = resources.configuration
+                configuration.locale = locale
+                configuration.setLayoutDirection(locale)
+                localeDelegate.setLocale(this, locale)
+                LocaleHelper.setLocale(this, locale)
+                BaseActivity().updateLocale(this as LangungeActivity, locale)
+                val intent = if (isFirstTimeLaunch()) {
+                    Intent(this, GuideActivity::class.java)
+                } else {
+                    Intent(this, MainActivity::class.java)
+
+                }
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                Paper.book().write("LangPref",false)
+
+                startActivity(intent)
+                finish()
+            }
         }
 
 
     }
+
+
 
     override fun onPause() {
         super.onPause()

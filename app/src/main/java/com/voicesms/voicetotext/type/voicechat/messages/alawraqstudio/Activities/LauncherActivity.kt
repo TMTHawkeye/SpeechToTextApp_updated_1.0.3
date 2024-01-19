@@ -18,6 +18,7 @@ import com.google.android.ump.ConsentInformation
 import com.google.android.ump.ConsentRequestParameters
 import com.google.android.ump.UserMessagingPlatform
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.isFirstTimeLaunch
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.isInternetAvailable
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivityLauncherBinding
@@ -170,15 +171,6 @@ class LauncherActivity : BaseActivity() {
         finish()
     }
 
-    private fun isFirstTimeLaunch(): Boolean {
-        val preferences = getSharedPreferences("LaunchPrefs", Context.MODE_PRIVATE)
-        val isFirstTime = preferences.getBoolean("isFirstTime", true)
-        if (isFirstTime) {
-            val editor = preferences.edit()
-            editor.putBoolean("isFirstTime", false)
-            editor.apply()
-        }
-        return isFirstTime
-    }
+
 
 }

@@ -65,28 +65,24 @@ class SavedFilesAdapter(
 
         holder.binding.sendRecId.setOnClickListener {
             if(!isSelectionMode) {
-//                StrictMode.setVmPolicy(
-//                    StrictMode.VmPolicy.Builder()
-//                        .penaltyLog()
-//                        .build()
-//                )
-
-                val uri = Uri.fromFile(File(listofFiles.get(position).filePath))
-//                val intent = Intent(Intent.ACTION_SEND).apply {
-//                    type = "*/*"
-//                    putExtra(Intent.EXTRA_STREAM, uri)
-//                }
-
-                FileProvider.getUriForFile(
+                StrictMode.setVmPolicy(
+                    StrictMode.VmPolicy.Builder()
+                        .penaltyLog()
+                        .build()
+                )
+                val fileUri = FileProvider.getUriForFile(
                     context,
-                    context.packageName + ".provider",
+                    context.applicationContext.packageName + ".provider",
                     File(listofFiles.get(position).filePath)
                 )
 
-                val intent = Intent(Intent.ACTION_VIEW)
-                intent.setDataAndType(uri, "*/*")
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                context.startActivity(Intent.createChooser(intent, "Share MP3 file"))
+                val intent = Intent(Intent.ACTION_SEND).apply {
+                    type = "audio/*"
+                    putExtra(Intent.EXTRA_STREAM, fileUri)
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                }
+
+                context.startActivity(Intent.createChooser(intent, context.getString(R.string.share_mp3_files)))
             }
         }
 
