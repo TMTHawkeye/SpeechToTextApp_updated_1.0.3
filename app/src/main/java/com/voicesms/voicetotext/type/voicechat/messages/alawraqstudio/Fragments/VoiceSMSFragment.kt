@@ -2,6 +2,7 @@ package com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Fragments
 
 import android.animation.Animator
 import android.animation.ObjectAnimator
+import android.app.ProgressDialog
 import android.content.Context
 import android.graphics.Rect
 import android.os.Build
@@ -38,9 +39,12 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BottomShee
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdManager
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.copyToClipbard
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.dismissLoadingDialog
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.extractLanguageFromCountry
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.getCountryName
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.isInternetAvailable
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.shareText
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.showLoadingDialog
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Interfaces.LanguageSelectionListener
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ModelClasses.LanguageModel
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
@@ -79,7 +83,8 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
     private val handler = Handler()
     var mExecutor: ExecutorService = Executors.newSingleThreadExecutor()
     var mHandler = Handler(Looper.getMainLooper())
-    var searchedText=""
+    var searchedText = ""
+    lateinit var progressDialog: ProgressDialog
 
 
     private var currentNativeAd: NativeAd? = null
@@ -90,7 +95,8 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
     ): View? {
         binding = FragmentVoiceSMSBinding.inflate(layoutInflater, container, false)
 //        loadAd()
-        AdManager.getInstance().loadInterstitial(requireContext(), BuildConfig.Translate_Button_inter)
+        AdManager.getInstance()
+            .loadInterstitial(requireContext(), BuildConfig.Translate_Button_inter)
 
         initLanguages()
 
@@ -148,11 +154,28 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
         }
 
         binding.translateFromTo.setOnClickListener {
-            if (!binding.fromTextId.text.isNullOrEmpty()&&!searchedText.equals(binding.fromTextId.text.toString())) {
+            if (!binding.fromTextId.text.isNullOrEmpty() && !searchedText.equals(binding.fromTextId.text.toString())) {
                 getTranslation()
-                searchedText=binding.fromTextId.text.toString()
-                AdManager.getInstance().showInterstitial(requireActivity(),BuildConfig.Translate_Button_inter) {
-                    getTranslation()
+                searchedText = binding.fromTextId.text.toString()
+                if (isInternetAvailable(requireContext())) {
+                    progressDialog = ProgressDialog(requireContext())
+                    progressDialog.setMessage("Loading Interstitial...")
+                    progressDialog.setCancelable(false)
+                    if(AdManager.getInstance().interstitialAd!=null) {
+                        showLoadingDialog(progressDialog)
+                    }
+
+                    handler.postDelayed({
+                        AdManager.getInstance()
+                            .showInterstitial(
+                                requireActivity(),
+                                BuildConfig.Translate_Button_inter
+                            ) {
+                                dismissLoadingDialog(progressDialog)
+                                getTranslation()
+                            }
+                    }, 1000)
+
                 }
             }
             hideKeyboard()
@@ -197,8 +220,10 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
             if (!binding.sendId.imageAlpha.equals(128)) {
                 shareText(requireContext(), binding.fromTextId.text.toString())
             } else {
-                Toast.makeText(requireContext(),
-                    requireContext().getString(R.string.can_t_share_empty_text), Toast.LENGTH_SHORT)
+                Toast.makeText(
+                    requireContext(),
+                    requireContext().getString(R.string.can_t_share_empty_text), Toast.LENGTH_SHORT
+                )
                     .show()
             }
         }
@@ -208,7 +233,11 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
 
                 shareText(requireContext(), binding.toTextId.text.toString())
             } else {
-                Toast.makeText(requireContext(), requireContext().getString(R.string.can_t_share_empty_text), Toast.LENGTH_SHORT)
+                Toast.makeText(
+                    requireContext(),
+                    requireContext().getString(R.string.can_t_share_empty_text),
+                    Toast.LENGTH_SHORT
+                )
                     .show()
             }
         }
@@ -237,12 +266,10 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
 
                 if (editable.length == 0) {
                     binding.toTextId.text = null
-//                    binding.translateFromTo.visibility = View.GONE
                     binding.lottieTranslateFromTo.cancelAnimation()
 
 
                 } else {
-                    binding.translateFromTo.visibility = View.VISIBLE
                     binding.lottieTranslateFromTo.repeatCount = LottieDrawable.INFINITE
                     binding.lottieTranslateFromTo.playAnimation()
                 }
@@ -352,51 +379,51 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
     private fun initLanguages() {
         try {
 //            mExecutor.execute {
-                listLanguages = m_viewmodel.getLanguages()
+            listLanguages = m_viewmodel.getLanguages()
 //                mHandler.post {
 
 //                    sourceselectedCountryName = Locale.getDefault().language
 //                    sourceselectedCode = Locale.getDefault().country
 
-                    sourceselectedCountryName = "en"
-                    sourceselectedCode = "US"
+            sourceselectedCountryName = "en"
+            sourceselectedCode = "US"
 
-                    Log.d(
-                        "TAG",
-                        "initLanguages: $sourceselectedCode and $sourceselectedCountryName"
-                    )
+            Log.d(
+                "TAG",
+                "initLanguages: $sourceselectedCode and $sourceselectedCountryName"
+            )
 
-                    val usEnglishPosition =
-                        getCountryName(
-                            listLanguages,
-                            "$sourceselectedCode",
-                            "$sourceselectedCountryName"
-                        )
-                    val pkUrduPosition = getCountryName(listLanguages, "PK", "ur")
+            val usEnglishPosition =
+                getCountryName(
+                    listLanguages,
+                    "$sourceselectedCode",
+                    "$sourceselectedCountryName"
+                )
+            val pkUrduPosition = getCountryName(listLanguages, "PK", "ur")
 
-                    binding.fromLanguage.text =
-                        extractLanguageFromCountry(listLanguages, usEnglishPosition)
-                    binding.correspondingFromLanguageId.text =
-                        extractLanguageFromCountry(listLanguages, usEnglishPosition)
-                    binding.fromFlagId.text =
-                        m_viewmodel.countryCodeToEmojiFlag(listLanguages.get(usEnglishPosition).countryCode)
-                    binding.toLanguage.text =
-                        extractLanguageFromCountry(listLanguages, pkUrduPosition)
-                    binding.toFlagId.text =
-                        m_viewmodel.countryCodeToEmojiFlag(listLanguages.get(pkUrduPosition).countryCode)
-                    binding.translateFromLanguageId.text =
-                        getString(R.string.translateFrom) + " " + listLanguages.get(
-                            usEnglishPosition
-                        ).languageName
-                    binding.translateToLanguageId.text =
-                        getString(R.string.translateTo) + " " + listLanguages.get(pkUrduPosition).languageName
+            binding.fromLanguage.text =
+                extractLanguageFromCountry(listLanguages, usEnglishPosition)
+            binding.correspondingFromLanguageId.text =
+                extractLanguageFromCountry(listLanguages, usEnglishPosition)
+            binding.fromFlagId.text =
+                m_viewmodel.countryCodeToEmojiFlag(listLanguages.get(usEnglishPosition).countryCode)
+            binding.toLanguage.text =
+                extractLanguageFromCountry(listLanguages, pkUrduPosition)
+            binding.toFlagId.text =
+                m_viewmodel.countryCodeToEmojiFlag(listLanguages.get(pkUrduPosition).countryCode)
+            binding.translateFromLanguageId.text =
+                getString(R.string.translateFrom) + " " + listLanguages.get(
+                    usEnglishPosition
+                ).languageName
+            binding.translateToLanguageId.text =
+                getString(R.string.translateTo) + " " + listLanguages.get(pkUrduPosition).languageName
 
-                    selectedCode = listLanguages.get(pkUrduPosition).countryCode
-                    selectedCountryName = listLanguages.get(pkUrduPosition).languageCode
+            selectedCode = listLanguages.get(pkUrduPosition).countryCode
+            selectedCountryName = listLanguages.get(pkUrduPosition).languageCode
 
-                    binding.sendId.setImageAlpha(128)
+            binding.sendId.setImageAlpha(128)
 //                    binding.translateFromTo.setImageAlpha(128)
-                    binding.toSendId.setImageAlpha(128)
+            binding.toSendId.setImageAlpha(128)
 //                }
 //            }
         } catch (e: Exception) {
@@ -414,14 +441,14 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
 
     override fun onPause() {
         super.onPause()
-        AdManager.getInstance().currentNativeAd=null
-        AdManager.getInstance().interstitialAd=null
+        AdManager.getInstance().currentNativeAd = null
+        AdManager.getInstance().interstitialAd = null
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        AdManager.getInstance().currentNativeAd=null
-        AdManager.getInstance().interstitialAd=null
+        AdManager.getInstance().currentNativeAd = null
+        AdManager.getInstance().interstitialAd = null
     }
 
     override fun onResume() {
@@ -452,8 +479,10 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
                 Log.d("TAG", "speak: ${e.message}")
             }
         } else {
-            Toast.makeText(requireContext(),
-                requireContext().getString(R.string.can_t_speak_for_empty_text), Toast.LENGTH_SHORT)
+            Toast.makeText(
+                requireContext(),
+                requireContext().getString(R.string.can_t_speak_for_empty_text), Toast.LENGTH_SHORT
+            )
                 .show()
         }
     }
@@ -483,12 +512,14 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
             binding.correspondingFromLanguageId.text = selectedLanguage.split("(").first()
         }
     }
+
     override fun onDismisBottomSheet(isDismissed: Boolean) {
         if (isDismissed) {
             isBottomSheetVisible = false
             isSourceBottomSheetVisible = false
         }
     }
+
     fun getTranslation() {
         binding.toTextId.text = getString(R.string.translating)
         m_viewmodel.getTranslation(
@@ -502,6 +533,7 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
             binding.toCard.visibility = View.VISIBLE
         }
     }
+
     override fun onDestroyView() {
         // Destroy the native ad to prevent memory leaks
         currentNativeAd?.destroy()

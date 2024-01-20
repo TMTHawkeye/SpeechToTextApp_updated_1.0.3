@@ -142,7 +142,8 @@
                     android:textDirection="locale"
                     app:layout_constraintEnd_toStartOf="@+id/send_id"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/speaker_id_from"/>
 
                 <ImageView
                     android:id="@+id/send_id"
@@ -275,7 +276,9 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toStartOf="@+id/to_send_id"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:fillViewport="true"
+                    app:layout_constraintBottom_toTopOf="@+id/speaker_id_to">
 
                     <RelativeLayout
                         android:layout_width="wrap_content"

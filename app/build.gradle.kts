@@ -4,6 +4,8 @@ plugins {
     id("kotlin-kapt")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
+
+
 }
 
 android {
@@ -36,9 +38,9 @@ android {
         signingConfig = signingConfigs.getByName("debug")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
+//        vectorDrawables {
+//            useSupportLibrary = true
+//        }
 
     }
 
@@ -373,6 +375,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-android:1.5.4")
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -434,8 +437,6 @@ dependencies {
     implementation("com.google.android.ump:user-messaging-platform:2.1.0")
 
 
-
-
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation ("androidx.lifecycle:lifecycle-process:2.6.2")
     kapt ("androidx.lifecycle:lifecycle-compiler:2.6.2")
@@ -444,6 +445,7 @@ dependencies {
 
     implementation("com.facebook.shimmer:shimmer:0.5.0@aar")
 
-
-
+//    implementation(files("libs/SmrtobjAds-libs.aar"))
+//    implementation(files("libs/SmrtobjAds.aar"))
+//    implementation(project(":SmrtobjAds"))
 }

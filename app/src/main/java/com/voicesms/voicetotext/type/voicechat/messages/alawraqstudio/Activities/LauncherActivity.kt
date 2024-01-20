@@ -26,17 +26,18 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 class LauncherActivity : BaseActivity() {
     lateinit var binding: ActivityLauncherBinding
-     var appOpenAd: AppOpenAd? = null
+    var appOpenAd: AppOpenAd? = null
     private val handler = Handler()
+    var isLauncherAppOpenLoaded: Boolean = false
+
+
+
 
     private lateinit var consentInformation: ConsentInformation
+
     // Use an atomic boolean to initialize the Google Mobile Ads SDK and load ads once.
     private var isMobileAdsInitializeCalled = AtomicBoolean(false)
 
-    //    private val delayedVisibilityChange = Runnable {
-//        binding.progressSplash.visibility = android.view.View.GONE
-////        binding.cardStart.visibility = android.view.View.VISIBLE
-//    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLauncherBinding.inflate(layoutInflater)
@@ -44,20 +45,19 @@ class LauncherActivity : BaseActivity() {
         binding.launcherLottieId.repeatCount = LottieDrawable.INFINITE
         binding.launcherLottieId.playAnimation()
 
-        if(isInternetAvailable(this@LauncherActivity)) {
+        if (isInternetAvailable(this@LauncherActivity)) {
             showConsentForm()
-            loadAppOpenAd(BuildConfig.app_open_launcher)
-        }
-        else {
+//            loadAppOpenAd(BuildConfig.app_open_launcher)
+        } else {
 
-        handler.postDelayed({
-            binding.progressSplash.visibility = android.view.View.GONE
-            if (appOpenAd != null) {
-                appOpenAd?.show(this)
-            } else {
-                startMainActivity()
-            }
-        }, 3000)
+//            handler.postDelayed({
+//                binding.progressSplash.visibility = android.view.View.GONE
+//                if (appOpenAd != null) {
+//                    appOpenAd?.show(this)
+//                } else {
+                    startMainActivity()
+//                }
+//            }, 3000)
         }
 
 
@@ -77,32 +77,49 @@ class LauncherActivity : BaseActivity() {
             {
                 UserMessagingPlatform.loadAndShowConsentFormIfRequired(
                     this@LauncherActivity,
-                    ConsentForm.OnConsentFormDismissedListener {
-                            loadAndShowError ->
+                    ConsentForm.OnConsentFormDismissedListener { loadAndShowError ->
                         // Consent gathering failed.
-                        Log.w("TAG", String.format("%s: %s",
-                            loadAndShowError?.errorCode,
-                            loadAndShowError?.message))
+                        Log.w(
+                            "TAG", String.format(
+                                "%s: %s",
+                                loadAndShowError?.errorCode,
+                                loadAndShowError?.message
+                            )
+                        )
 
                         // Consent has been gathered.
                         if (consentInformation.canRequestAds()) {
                             initializeMobileAdsSdk()
                         }
+
+//                        handler.postDelayed({
+////                            binding.progressSplash.visibility = android.view.View.GONE
+////                            if (appOpenAd != null) {
+////                                appOpenAd?.show(this)
+////                            } else {
+//                                startMainActivity()
+////                            }
+//                        }, 3000)
                     }
                 )
             },
-            {
-                    requestConsentError ->
+            { requestConsentError ->
                 // Consent gathering failed.
-                Log.w("TAG", String.format("%s: %s",
-                    requestConsentError.errorCode,
-                    requestConsentError.message))
+                Log.w(
+                    "TAG", String.format(
+                        "%s: %s",
+                        requestConsentError.errorCode,
+                        requestConsentError.message
+                    )
+                )
             })
 
         if (consentInformation.canRequestAds()) {
             initializeMobileAdsSdk()
 
         }
+
+
     }
 
     private fun initializeMobileAdsSdk() {
@@ -111,18 +128,10 @@ class LauncherActivity : BaseActivity() {
         }
         MobileAds.initialize(this)
 
-        handler.postDelayed({
-            binding.progressSplash.visibility = android.view.View.GONE
-            if (appOpenAd != null) {
-                appOpenAd?.show(this)
-            } else {
-                startMainActivity()
-            }
-        }, 3000)
     }
 
 
-    private fun loadAppOpenAd(adUnitId:String) {
+    private fun loadAppOpenAd(adUnitId: String) {
         val adRequest = AdRequest.Builder().build()
 
         AppOpenAd.load(
@@ -160,7 +169,7 @@ class LauncherActivity : BaseActivity() {
     private fun startMainActivity() {
 
         binding.launcherLottieId.cancelAnimation()
-        this.appOpenAd=null
+        this.appOpenAd = null
         val intent = if (isFirstTimeLaunch()) {
             Intent(this@LauncherActivity, LangungeActivity::class.java)
         } else {
@@ -170,7 +179,6 @@ class LauncherActivity : BaseActivity() {
         startActivity(intent)
         finish()
     }
-
 
 
 }

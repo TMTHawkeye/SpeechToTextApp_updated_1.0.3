@@ -8,6 +8,8 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
@@ -49,12 +51,15 @@ class GuideActivity : BaseActivity() {
         adView = AdView(this@GuideActivity)
         binding.adViewContainer.addView(adView)
 
-        if (!isInternetAvailable(this@GuideActivity)) {
-            binding.adViewContainer.visibility= View.VISIBLE
+        if (isInternetAvailable(this@GuideActivity)) {
+            binding.shimmerLayout.visibility=View.VISIBLE
+            binding.adViewContainer.visibility=View.VISIBLE
+            binding.shimmerLayout.startShimmer()
             loadBanner()
         }
         else{
-            binding.adViewContainer.visibility= View.GONE
+            binding.shimmerLayout.visibility=View.GONE
+            binding.adViewContainer.visibility=View.GONE
         }
 
         val fragmentList = listOf(SplashFragmentNext(), SplashFragmentGetStarted())
@@ -76,6 +81,38 @@ class GuideActivity : BaseActivity() {
         adView.background = getDrawable(R.color.white)
         val adRequest = AdRequest.Builder().build()
         adView.loadAd(adRequest)
+
+        adView.adListener = object : AdListener() {
+            override fun onAdOpened() {
+                val layoutParams = adView.layoutParams as ConstraintLayout.LayoutParams
+                layoutParams.setMargins(
+                    layoutParams.leftMargin,
+                    layoutParams.topMargin,
+                    layoutParams.rightMargin,
+                    20
+                )
+                adView.layoutParams = layoutParams
+            }
+
+            override fun onAdClosed() {
+                val layoutParams = adView.layoutParams as ConstraintLayout.LayoutParams
+                layoutParams.setMargins(
+                    layoutParams.leftMargin,
+                    layoutParams.topMargin,
+                    layoutParams.rightMargin,
+                    0
+                )
+                adView.layoutParams = layoutParams
+            }
+
+            override fun onAdLoaded() {
+                super.onAdLoaded()
+                binding.shimmerLayout.stopShimmer()
+                binding.shimmerLayout.visibility = View.GONE
+
+            }
+        }
+
     }
 
     fun navigateToNextFragment() {

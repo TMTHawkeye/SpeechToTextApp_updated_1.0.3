@@ -12,13 +12,16 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ViewModel.VoiceSearchViewModel
 import com.zeugmasolutions.localehelper.LocaleHelper
 import com.zeugmasolutions.localehelper.LocaleHelperActivityDelegate
 import com.zeugmasolutions.localehelper.LocaleHelperActivityDelegateImpl
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Locale
 
 open class BaseActivity : AppCompatActivity() {
     val localeDelegate: LocaleHelperActivityDelegate = LocaleHelperActivityDelegateImpl()
+    val v_model: VoiceSearchViewModel by viewModel()
 
     override fun getDelegate() = localeDelegate.getAppCompatDelegate(super.getDelegate())
 

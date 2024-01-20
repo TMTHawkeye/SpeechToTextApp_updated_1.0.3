@@ -13,8 +13,12 @@ dependencyResolutionManagement {
         mavenCentral()
         maven("https://jitpack.io")
 
+
     }
 }
 
 rootProject.name = "SpeechToTextApp"
 include(":app")
+//include(":SmrtobjAds")
+
+

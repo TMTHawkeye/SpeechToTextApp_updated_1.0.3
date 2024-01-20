@@ -13,10 +13,12 @@ import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.LoadAdError
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Adapters.CategoryAdapter
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.isInternetAvailable
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.MainApplication
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ModelClasses.CategoryModel
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ViewModel.VoiceSearchViewModel
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivityVoiceSearchCategoryBinding
@@ -26,7 +28,6 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 class VoiceSearchCategoryActivity : BaseActivity() {
     lateinit var binding: ActivityVoiceSearchCategoryBinding
-    val v_model: VoiceSearchViewModel by viewModel()
     private lateinit var adView: AdView
     private val initialLayoutComplete = AtomicBoolean(false)
 
@@ -53,7 +54,7 @@ class VoiceSearchCategoryActivity : BaseActivity() {
         setContentView(binding.root)
         adView = AdView(this@VoiceSearchCategoryActivity)
 //        binding.adViewContainer.addView(adView)
-        if (!isInternetAvailable(this@VoiceSearchCategoryActivity)) {
+        if (isInternetAvailable(this@VoiceSearchCategoryActivity)) {
             binding.shimmerLayout.visibility=View.VISIBLE
             binding.adViewContainer.visibility=View.VISIBLE
             binding.shimmerLayout.startShimmer()
@@ -72,8 +73,9 @@ class VoiceSearchCategoryActivity : BaseActivity() {
 
         Log.d("TAG", "LanguageData: $categoryName")
         binding.categoryTitle.text = categoryName
-        v_model.getListofCategories(categoryName) {
-            binding.categoryRV.layoutManager = GridLayoutManager(this, 3)
+//        v_model.getListofCategories(categoryName) {
+//            binding.categoryRV.layoutManager = GridLayoutManager(this, 3)
+        getListofCategories(categoryName){
             binding.categoryRV.adapter = CategoryAdapter(this, it)
             val fixedSpacing = 8
             val spacing = (fixedSpacing * resources.displayMetrics.density).toInt()
@@ -147,11 +149,70 @@ class VoiceSearchCategoryActivity : BaseActivity() {
                 binding.shimmerLayout.visibility = View.GONE
 
             }
+
+            override fun onAdFailedToLoad(p0: LoadAdError) {
+                super.onAdFailedToLoad(p0)
+                binding.shimmerLayout.visibility=View.GONE
+                binding.adViewContainer.visibility=View.GONE
+            }
         }
         adView.loadAd(adRequest)
 
         binding.adViewContainer.addView(adView)
 
     }
+
+    fun getListofCategories(categoryName: String?, callback:(ArrayList<CategoryModel>)->Unit) {
+
+        var listOfCategories = ArrayList<CategoryModel>()
+
+        val categoryMap = mapOf(
+            getString(R.string.communication_title) to listOf(
+                CategoryModel(getString(R.string.reddit), R.drawable.reddit_icon),
+                CategoryModel(getString(R.string.quora), R.drawable.quora_icon),
+                CategoryModel(getString(R.string.flipboard), R.drawable.flipboard_icon),
+                CategoryModel(getString(R.string.msn), R.drawable.msn_icon)
+            ),
+            getString(R.string.shopping_title) to listOf(
+                CategoryModel(getString(R.string.alibaba), R.drawable.alibaba_icon),
+                CategoryModel(getString(R.string.amazon), R.drawable.amazon_icon),
+                CategoryModel(getString(R.string.daraz), R.drawable.daraz_icon),
+                CategoryModel(getString(R.string.olx), R.drawable.olx_icon),
+                CategoryModel(getString(R.string.ebay), R.drawable.ebay_icon),
+                CategoryModel(getString(R.string.aliexpress), R.drawable.aliexpress_icon)
+            ),
+            getString(R.string.social_title) to listOf(
+                CategoryModel(getString(R.string.youtube), R.drawable.youtube_icon),
+                CategoryModel(getString(R.string.insta), R.drawable.insta_icon),
+                CategoryModel(getString(R.string.pintrest), R.drawable.pintrest_icon),
+                CategoryModel(getString(R.string.facebook), R.drawable.facebook_icon),
+                CategoryModel(getString(R.string.twitter), R.drawable.twitter_icon),
+                CategoryModel(getString(R.string.tiktok), R.drawable.tiktok_icon)
+            ),
+            getString(R.string.searchEngine_title) to listOf(
+                CategoryModel(getString(R.string.google), R.drawable.google_icon),
+                CategoryModel(getString(R.string.bing), R.drawable.bing_icon),
+                CategoryModel(getString(R.string.duckgo), R.drawable.duckgo_icon),
+                CategoryModel(getString(R.string.yahoo), R.drawable.yahoo_icon),
+                CategoryModel(getString(R.string.wikipedia), R.drawable.wikipedia_icon),
+            ),
+            getString(R.string.more_title) to listOf(
+                CategoryModel(getString(R.string.playstore), R.drawable.playstore_icon),
+                CategoryModel(getString(R.string.weather), R.drawable.weather_icon),
+                CategoryModel(getString(R.string.location), R.drawable.location_icon),
+                CategoryModel(getString(R.string.imdb), R.drawable.imdb_icon),
+            )
+
+        )
+
+        categoryName?.let {
+            if (categoryMap.containsKey(it)) {
+                listOfCategories.addAll(categoryMap[it]!!)
+            }
+        }
+
+        callback(listOfCategories)
+    }
+
 
 }

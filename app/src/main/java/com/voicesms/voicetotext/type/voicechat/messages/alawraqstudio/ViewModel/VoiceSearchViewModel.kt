@@ -6,7 +6,7 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Repositori
 
 class VoiceSearchViewModel(val repository: VoiceSearchRepository) : ViewModel() {
 
-    fun getListofCategories(categoryName:String?,callback:(ArrayList<CategoryModel>)->Unit){
-        repository.getListofCategories(categoryName,callback)
-    }
+//    fun getListofCategories(categoryName:String?,callback:(ArrayList<CategoryModel>)->Unit){
+//        repository.getListofCategories(categoryName,callback)
+//    }
 }

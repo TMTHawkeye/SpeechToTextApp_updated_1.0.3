@@ -1,5 +1,6 @@
 package com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Adapters
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Handler
@@ -15,6 +16,7 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databindin
 class CategoryAdapter(var context: Context, var categoryList: ArrayList<CategoryModel>) :
     RecyclerView.Adapter<CategoryAdapter.viewHolder>() {
     lateinit var binding: ItemCategoryBinding
+    lateinit var progressDialog: ProgressDialog
 
     inner class viewHolder(var binding: ItemCategoryBinding) : RecyclerView.ViewHolder(binding.root)
 
