@@ -32,8 +32,8 @@ android {
         applicationId = "com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio"
         minSdk = 24
         targetSdk = 34
-        versionCode = 3
-        versionName = "1.0.2"
+        versionCode = 4
+        versionName = "1.0.3"
         setProperty("archivesBaseName", "alawraq-voicetotext-$versionName")
         signingConfig = signingConfigs.getByName("debug")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
