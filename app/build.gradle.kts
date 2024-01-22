@@ -36,7 +36,6 @@ android {
         versionName = "1.0.2"
         setProperty("archivesBaseName", "alawraq-voicetotext-$versionName")
         signingConfig = signingConfigs.getByName("debug")
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 //        vectorDrawables {
 //            useSupportLibrary = true
@@ -59,7 +58,8 @@ android {
                 file("proguard-rules.pro")
             )
             signingConfig = signingConfigs.getByName("release")
-//            isDebuggable = false
+            isDebuggable = false
+
         }
 
 
