@@ -57,7 +57,7 @@ class SplashActivity : BaseActivity() {
         adView = AdView(this)
 
 
-        if (!isInternetAvailable(this@SplashActivity)) {
+        if (isInternetAvailable(this@SplashActivity)) {
             binding.shimmerViewContainer.visibility = View.VISIBLE
             binding.adFrame.visibility = View.VISIBLE
             binding.shimmerViewContainer.startShimmer()

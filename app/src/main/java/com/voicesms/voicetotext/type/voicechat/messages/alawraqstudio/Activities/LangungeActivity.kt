@@ -9,10 +9,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.gms.ads.AdView
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Adapters.LanguageAdapter
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdManager
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.isFirstTimeLaunch
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.MainApplication
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivityLangungeBinding
 import com.zeugmasolutions.localehelper.LocaleHelper
@@ -21,10 +23,13 @@ import java.util.Locale
 
 class LangungeActivity : BaseActivity() {
     lateinit var binding:ActivityLangungeBinding
+    private lateinit var adView: AdView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=ActivityLangungeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        adView = AdView(this)
 
         AdManager.getInstance().loadNativeAd(
             this@LangungeActivity,
@@ -77,10 +82,14 @@ class LangungeActivity : BaseActivity() {
             }
         }
 
-
     }
 
+    override fun onResume() {
+        super.onResume()
+        (application as MainApplication).loadAd(this)
+        adView.resume()
 
+    }
 
     override fun onPause() {
         super.onPause()

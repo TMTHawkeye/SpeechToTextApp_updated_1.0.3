@@ -13,7 +13,6 @@
         android:background="@drawable/border_background"
         android:orientation="vertical">
 
-
         <ImageView
             android:id="@+id/ad_app_icon"
             android:layout_width="@dimen/_33sdp"
