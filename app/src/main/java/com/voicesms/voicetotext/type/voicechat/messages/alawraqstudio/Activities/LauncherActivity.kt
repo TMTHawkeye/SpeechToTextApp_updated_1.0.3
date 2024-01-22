@@ -23,6 +23,7 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClas
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.isInternetAvailable
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.MainApplication
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivityLauncherBinding
+import io.paperdb.Paper
 import java.util.concurrent.atomic.AtomicBoolean
 
 class LauncherActivity : BaseActivity() {
@@ -44,11 +45,14 @@ class LauncherActivity : BaseActivity() {
         setContentView(binding.root)
         binding.launcherLottieId.repeatCount = LottieDrawable.INFINITE
         binding.launcherLottieId.playAnimation()
+        Paper.init(this@LauncherActivity)
+
         val shar: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
 
         if (isInternetAvailable(this@LauncherActivity)) {
             val gpdrDJ = GPDRDJ(shar, this@LauncherActivity) { hasConsent ->
                 if (hasConsent) {
+                    saveConsentState(true)
                     loadAppOpenAd(BuildConfig.app_open_launcher)
 
                     handler.postDelayed({
@@ -84,6 +88,9 @@ class LauncherActivity : BaseActivity() {
                             startMainActivity()
                         }
                     }, 5000)
+                }
+                else{
+//                    startMainActivity()
                 }
 
 

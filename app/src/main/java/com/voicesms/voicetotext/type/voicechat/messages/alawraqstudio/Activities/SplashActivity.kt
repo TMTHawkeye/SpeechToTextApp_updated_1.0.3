@@ -161,7 +161,7 @@ class SplashActivity : BaseActivity() {
         adView.pause()
 
         AdManager.getInstance().currentNativeAd = null
-        AdManager.getInstance().interstitialAd = null
+//        AdManager.getInstance().interstitialAd = null
     }
 
     override fun onResume() {

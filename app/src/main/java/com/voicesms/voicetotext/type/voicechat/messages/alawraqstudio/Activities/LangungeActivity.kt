@@ -71,7 +71,7 @@ class LangungeActivity : BaseActivity() {
                 val intent = if (isFirstTimeLaunch()) {
                     Intent(this, GuideActivity::class.java)
                 } else {
-                    Intent(this, MainActivity::class.java)
+                    Intent(this, SplashActivity::class.java)
 
                 }
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)

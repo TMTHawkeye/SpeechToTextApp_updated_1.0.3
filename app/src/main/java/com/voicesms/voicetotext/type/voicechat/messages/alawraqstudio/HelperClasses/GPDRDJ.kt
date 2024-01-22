@@ -7,7 +7,11 @@ import android.util.Log
 import com.google.android.ump.*
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.MainApplication
 
-class GPDRDJ(var share:SharedPreferences, private val context: Context, private val consentDjCallback: (Boolean) -> Unit) {
+class GPDRDJ(
+    var share: SharedPreferences,
+    private val context: Context,
+    private val consentDjCallback: (Boolean) -> Unit
+) {
     var applicationClass: MainApplication
 
     private var consentInformation: ConsentInformation? = null
@@ -15,21 +19,27 @@ class GPDRDJ(var share:SharedPreferences, private val context: Context, private 
 
     init {
         initializeConsentInformation()
-        applicationClass= MainApplication()
+        applicationClass = MainApplication()
     }
-    private fun initializeConsentInformation() {
-        consentInformation = UserMessagingPlatform.getConsentInformation(context)
-        val debugSettings = ConsentDebugSettings.Builder(context)
-            .setDebugGeography(ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_EEA)
-            .build()
 
-        val parameters = ConsentRequestParameters.Builder()
-            .setConsentDebugSettings(debugSettings)
-            .setTagForUnderAgeOfConsent(false)
+    private fun initializeConsentInformation() {
+//        consentInformation = UserMessagingPlatform.getConsentInformation(context)
+//        val debugSettings = ConsentDebugSettings.Builder(context)
+//            .setDebugGeography(ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_EEA)
+//            .build()
+
+//        val parameters = ConsentRequestParameters.Builder()
+//            .setConsentDebugSettings(debugSettings)
+//            .setTagForUnderAgeOfConsent(false)
+//            .build()
+
+        val params = ConsentRequestParameters
+            .Builder()
             .build()
+        consentInformation = UserMessagingPlatform.getConsentInformation(context)
 
         consentInformation!!.requestConsentInfoUpdate(
-            context as Activity, parameters,
+            context as Activity, params,
             {
                 if (consentInformation!!.isConsentFormAvailable) {
                     loadConsentForm()
@@ -42,6 +52,7 @@ class GPDRDJ(var share:SharedPreferences, private val context: Context, private 
             }
         )
     }
+
     private fun loadConsentForm() {
         UserMessagingPlatform.loadConsentForm(context,
             { consentForm ->
@@ -53,6 +64,7 @@ class GPDRDJ(var share:SharedPreferences, private val context: Context, private 
             }
         )
     }
+
     private fun handleConsentStatus() {
         when (consentInformation!!.consentStatus) {
             ConsentInformation.ConsentStatus.REQUIRED -> showConsentForm()
