@@ -139,15 +139,15 @@ class VoiceTalkFragment : Fragment(), LanguageSelectionListener, ConversationAda
         }
 
         binding.speakIdFrom.setOnClickListener {
-            val isDloaded=Paper.book().read<Boolean>("initialModel",false)
-            if(isDloaded!!) {
+//            val isDloaded=Paper.book().read<Boolean>("initialModel",false)
+//            if(isDloaded!!) {
                 m_model.getSpeech(sourceselectedCountryName) {
                     speechRecognitionLauncherFrom.launch(it)
                 }
-            }
-            else{
-                Toast.makeText(requireContext(), "Model is being downloaded", Toast.LENGTH_SHORT).show()
-            }
+//            }
+//            else{
+//                Toast.makeText(requireContext(), "Model is being downloaded", Toast.LENGTH_SHORT).show()
+//            }
         }
 
         binding.reverseLangId.setOnClickListener {
@@ -157,15 +157,15 @@ class VoiceTalkFragment : Fragment(), LanguageSelectionListener, ConversationAda
         }
 
         binding.speakIdTo.setOnClickListener {
-            val isDloaded=Paper.book().read<Boolean>("initialModel",false)
-            if(isDloaded!!) {
+//            val isDloaded=Paper.book().read<Boolean>("initialModel",false)
+//            if(isDloaded!!) {
                 m_model.getSpeech(selectedCountryName) {
                     speechRecognitionLauncherTo.launch(it)
                 }
-            }
-            else{
-                Toast.makeText(requireContext(), "Model is being downloaded", Toast.LENGTH_SHORT).show()
-            }
+//            }
+//            else{
+//                Toast.makeText(requireContext(), "Model is being downloaded", Toast.LENGTH_SHORT).show()
+//            }
         }
 
         return binding.root

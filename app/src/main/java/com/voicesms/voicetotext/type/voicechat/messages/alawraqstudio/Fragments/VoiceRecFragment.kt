@@ -3,6 +3,7 @@ package com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Fragments
 import android.Manifest
 import android.Manifest.permission
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -34,6 +35,8 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.SavedFilesActivity
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdManager
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.dismissLoadingDialog
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.showLoadingDialog
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ViewModel.RecordingViewModel
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.CustomDialogSaveFileBinding
@@ -50,6 +53,8 @@ class VoiceRecFragment : Fragment() {
     val m_viewmodel: RecordingViewModel by viewModel()
     var recordingThresh = 0
     lateinit var tempFilePath: String
+    lateinit var progressDialog: ProgressDialog
+    private val mhandler = Handler()
 
     private var isRecording = false
     private var startTimeMillis: Long = 0
@@ -115,13 +120,14 @@ class VoiceRecFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        AdManager.getInstance().currentNativeAd=null
-        AdManager.getInstance().interstitialAd=null
+        AdManager.getInstance().currentNativeAd = null
+        AdManager.getInstance().interstitialAd = null
     }
+
     override fun onDestroy() {
         super.onDestroy()
-        AdManager.getInstance().currentNativeAd=null
-        AdManager.getInstance().interstitialAd=null
+        AdManager.getInstance().currentNativeAd = null
+        AdManager.getInstance().interstitialAd = null
     }
 
     private fun updateRecordingTime() {
@@ -176,7 +182,8 @@ class VoiceRecFragment : Fragment() {
     }
 
     fun stopRecordingDialog() {
-        AdManager.getInstance().loadInterstitial(requireContext(), BuildConfig.interstitial_voice_rec_save_btn)
+        AdManager.getInstance()
+            .loadInterstitial(requireContext(), BuildConfig.interstitial_voice_rec_save_btn)
 
         val pairDialog = showSaveFileDialog()
 
@@ -218,6 +225,11 @@ class VoiceRecFragment : Fragment() {
                 var tempFile = File(tempFilePath)
                 val destFile = File(requireContext().getExternalFilesDir("recordings"), "")
 
+                progressDialog = ProgressDialog(requireContext())
+                progressDialog.setMessage("Loading Interstitial...")
+                progressDialog.setCancelable(false)
+
+
                 var isSaved = m_viewmodel.saveRecordingToFile(
                     tempFile,
                     destFile,
@@ -231,11 +243,36 @@ class VoiceRecFragment : Fragment() {
 //                        Toast.LENGTH_SHORT
 //                    )
 //                        .show()
-                    lifecycleScope.launch(Dispatchers.Main) {
-                        AdManager.getInstance().showInterstitial(requireActivity(),BuildConfig.interstitial_voice_rec_save_btn) {
-                            startActivity(Intent(requireContext(), SavedFilesActivity::class.java))
-                        }
+                    if (AdManager.getInstance().interstitialAd != null) {
+                        showLoadingDialog(progressDialog)
                     }
+                    mhandler.postDelayed({
+                        dismissLoadingDialog(progressDialog)
+                        if (AdManager.getInstance().interstitialAd != null) {
+
+                            lifecycleScope.launch(Dispatchers.Main) {
+                                AdManager.getInstance().showInterstitial(
+                                    requireActivity(),
+                                    BuildConfig.interstitial_voice_rec_save_btn
+                                ) {
+                                    startActivity(
+                                        Intent(
+                                            requireContext(),
+                                            SavedFilesActivity::class.java
+                                        )
+                                    )
+                                }
+                            }
+                        }
+                        else{
+                            startActivity(
+                                Intent(
+                                    requireContext(),
+                                    SavedFilesActivity::class.java
+                                )
+                            )
+                        }
+                    }, 1000)
                 } else {
                     Toast.makeText(
                         requireContext(),
@@ -244,6 +281,7 @@ class VoiceRecFragment : Fragment() {
                     ).show()
 
                 }
+
                 dialog.dismiss()
             } else {
                 Toast.makeText(
@@ -396,7 +434,10 @@ class VoiceRecFragment : Fragment() {
 //        binding.adFrame.addView(unifiedAdBinding.root)
     }
 
-    private fun populateNativeAdView(nativeAd: NativeAd, unifiedAdBinding: NativeAdTemplateBinding) {
+    private fun populateNativeAdView(
+        nativeAd: NativeAd,
+        unifiedAdBinding: NativeAdTemplateBinding
+    ) {
         val nativeAdView = unifiedAdBinding.root
 
         // Set the media view.
@@ -470,8 +511,6 @@ class VoiceRecFragment : Fragment() {
         // This method tells the Google Mobile Ads SDK that you have finished populating your
         // native ad view with this native ad.
         nativeAdView.setNativeAd(nativeAd)
-
-
 
 
     }

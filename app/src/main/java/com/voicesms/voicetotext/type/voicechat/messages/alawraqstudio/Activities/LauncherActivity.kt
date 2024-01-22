@@ -32,14 +32,8 @@ class LauncherActivity : BaseActivity() , UMPResultListener{
     lateinit var binding: ActivityLauncherBinding
     var appOpenAd: AppOpenAd? = null
     private val handler = Handler()
-    var isLauncherAppOpenLoaded: Boolean = false
     private val CONSENT_PREFERENCE_KEY = "user_consent"
     var enableUmp = true
-
-    private lateinit var consentInformation: ConsentInformation
-
-    // Use an atomic boolean to initialize the Google Mobile Ads SDK and load ads once.
-    private var isMobileAdsInitializeCalled = AtomicBoolean(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,70 +44,8 @@ class LauncherActivity : BaseActivity() , UMPResultListener{
         Paper.init(this@LauncherActivity)
 
         enableUmp=loadConsentState()
-//        val shar: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
 
-//        if (isInternetAvailable(this@LauncherActivity)) {
-//            val gpdrDJ = GPDRDJ(shar, this@LauncherActivity) { hasConsent ->
-//                if (hasConsent) {
-//                    saveConsentState(true)
-//                    loadAppOpenAd(BuildConfig.app_open_launcher)
-//
-//                    handler.postDelayed({
-//                        binding.progressSplash.visibility = android.view.View.GONE
-//                        if (appOpenAd != null) {
-//                            appOpenAd?.show(this)
-//                            appOpenAd?.fullScreenContentCallback =
-//                                object : FullScreenContentCallback() {
-//                                    override fun onAdDismissedFullScreenContent() {
-//                                        appOpenAd = null
-//                                        Log.d("LOG_TAG", "onAdDismissedFullScreenContent.")
-////                        if (googleMobileAdsConsentManager.canRequestAds) {
-////                        }
-//                                        startMainActivity()
-//
-//                                    }
-//
-//                                    override fun onAdFailedToShowFullScreenContent(adError: AdError) {
-//                                        appOpenAd = null
-//                                        Log.d("LOG_TAG", "onAdFailedToShowFullScreenContent: " + adError.message)
-//                                        startMainActivity()
-//
-////                        if (googleMobileAdsConsentManager.canRequestAds) {
-////                        }
-//                                    }
-//
-//                                    override fun onAdShowedFullScreenContent() {
-//                                        Log.d("LOG_TAG", "onAdShowedFullScreenContent.")
-//
-//                                    }
-//                                }
-//                        } else {
-//                            startMainActivity()
-//                        }
-//                    }, 5000)
-//                }
-//                else{
-////                    startMainActivity()
-//                }
-//
-//
-//            }
-////        }
-////            showConsentForm()
-////            loadAppOpenAd(BuildConfig.app_open_launcher)
-//        } else {
-////
-//////            handler.postDelayed({
-//////                binding.progressSplash.visibility = android.view.View.GONE
-//////                if (appOpenAd != null) {
-//////                    appOpenAd?.show(this)
-//////                } else {
-//            startMainActivity()
-////                }
-//////            }, 3000)
-//        }
         if (isInternetAvailable(this@LauncherActivity)) {
-
             if (enableUmp) {
                 val adsConsentManager = AdsConsentManager(this)
                 adsConsentManager.requestUMP({
@@ -129,12 +61,8 @@ class LauncherActivity : BaseActivity() , UMPResultListener{
                                         override fun onAdDismissedFullScreenContent() {
                                             appOpenAd = null
                                             Log.d("LOG_TAG", "onAdDismissedFullScreenContent.")
-//                        if (googleMobileAdsConsentManager.canRequestAds) {
-//                        }
                                             startMainActivity()
-
                                         }
-
                                         override fun onAdFailedToShowFullScreenContent(adError: AdError) {
                                             appOpenAd = null
                                             Log.d(
@@ -142,45 +70,24 @@ class LauncherActivity : BaseActivity() , UMPResultListener{
                                                 "onAdFailedToShowFullScreenContent: " + adError.message
                                             )
                                             startMainActivity()
-
-//                        if (googleMobileAdsConsentManager.canRequestAds) {
-//                        }
                                         }
-
                                         override fun onAdShowedFullScreenContent() {
                                             Log.d("LOG_TAG", "onAdShowedFullScreenContent.")
-
                                         }
                                     }
                             } else {
                                 startMainActivity()
                             }
                         }, 5000)
-//                    handleFetchedRemoteConfig()
-//                    loadWelcomeNative()
-//                    if (DataStoreUtils.getLanguageSelected(this, false)){
-//                        loadLanguageNative()
-//                    }
                     }
                 }, false)
-//        } else {
-//            SmartAds.getInstance().initAdsNetwork()
-//            handleFetchedRemoteConfig()
-//            loadWelcomeNative()
-//            if ( DataStoreUtils.getLanguageSelected(this, false)){
-//                loadLanguageNative()
-//            }
             } else {
                 startMainActivity()
-
             }
         }
         else{
             startMainActivity()
-
         }
-
-
     }
 
 
