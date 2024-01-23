@@ -408,7 +408,7 @@ class MainActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        (application as MainApplication).loadAd(this)
+//        (application as MainApplication).loadAd(this)
         if(binding.drawerLayout.isDrawerOpen(GravityCompat.START)){
             binding.drawerLayout.closeDrawer(GravityCompat.START)
         }

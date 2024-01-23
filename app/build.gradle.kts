@@ -15,11 +15,11 @@ android {
             keyPassword = "alawraq"
             storePassword = "alawraq"
             storeFile =
-                file("C:\\Users\\H.A.R\\Desktop\\SpeechToTextApp1.3-master\\KeyStoreValues/speechToTextKey.jks")
+                file("D:\\Hammad Projects\\SpeechToTextApp1.3-master\\KeyStoreValues/speechToTextKey.jks")
         }
         create("release") {
             storeFile =
-                file("C:\\Users\\H.A.R\\Desktop\\SpeechToTextApp1.3-master\\KeyStoreValues/speechToTextKey.jks")
+                file("D:\\Hammad Projects\\SpeechToTextApp1.3-master\\KeyStoreValues/speechToTextKey.jks")
             storePassword = "alawraq"
             keyPassword = "alawraq"
             keyAlias = "alawraq"
@@ -32,8 +32,8 @@ android {
         applicationId = "com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio"
         minSdk = 24
         targetSdk = 34
-        versionCode = 4
-        versionName = "1.0.3"
+        versionCode = 5
+        versionName = "1.0.4"
         setProperty("archivesBaseName", "alawraq-voicetotext-$versionName")
         signingConfig = signingConfigs.getByName("debug")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -444,8 +444,7 @@ dependencies {
     implementation ("com.zeugmasolutions.localehelper:locale-helper-android:1.5.1")
 
     implementation("com.facebook.shimmer:shimmer:0.5.0@aar")
-
 //    implementation(files("libs/SmrtobjAds-libs.aar"))
 //    implementation(files("libs/SmrtobjAds.aar"))
-//    implementation(project(":SmrtobjAds"))
+    implementation(project(":SmrtobjAds"))
 }

@@ -4,6 +4,7 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
@@ -23,47 +24,57 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ViewModel.VoiceSearchViewModel
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivityVoiceSearchCategoryBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.smrtobjads.ads.SmartAds
+import org.smrtobjads.ads.ads.models.AdmobNative
+import org.smrtobjads.ads.ads.models.ApAdError
+import org.smrtobjads.ads.billings.AppPurchase
+import org.smrtobjads.ads.callbacks.AdCallback
+import org.smrtobjads.ads.callbacks.AperoAdCallback
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicBoolean
 
 class VoiceSearchCategoryActivity : BaseActivity() {
     lateinit var binding: ActivityVoiceSearchCategoryBinding
-    private lateinit var adView: AdView
+//    private lateinit var adView: AdView
     private val initialLayoutComplete = AtomicBoolean(false)
 
-    private val adSize: AdSize
-        get() {
-            val display = windowManager.defaultDisplay
-            val outMetrics = DisplayMetrics()
-            display.getMetrics(outMetrics)
-
-            val density = outMetrics.density
-
-            var adWidthPixels = binding.adViewContainer.width.toFloat()
-            if (adWidthPixels == 0f) {
-                adWidthPixels = outMetrics.widthPixels.toFloat()
-            }
-
-            val adWidth = (adWidthPixels / density).toInt()
-            return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
-        }
+//    private val adSize: AdSize
+//        get() {
+//            val display = windowManager.defaultDisplay
+//            val outMetrics = DisplayMetrics()
+//            display.getMetrics(outMetrics)
+//
+//            val density = outMetrics.density
+//
+//            var adWidthPixels = binding.adViewContainer.width.toFloat()
+//            if (adWidthPixels == 0f) {
+//                adWidthPixels = outMetrics.widthPixels.toFloat()
+//            }
+//
+//            val adWidth = (adWidthPixels / density).toInt()
+//            return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
+//        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityVoiceSearchCategoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        adView = AdView(this@VoiceSearchCategoryActivity)
+//        adView = AdView(this@VoiceSearchCategoryActivity)
+
+        loadsubCategoryNative()
+        SmartAds.getInstance().loadCollapsibleBanner(this@VoiceSearchCategoryActivity, BuildConfig.guide_Screen_banner,"bottom",AdCallback())
+
 //        binding.adViewContainer.addView(adView)
-        if (isInternetAvailable(this@VoiceSearchCategoryActivity)) {
-            binding.shimmerLayout.visibility=View.VISIBLE
-            binding.adViewContainer.visibility=View.VISIBLE
-            binding.shimmerLayout.startShimmer()
-            loadBanner()
-        }
-        else{
-            binding.shimmerLayout.visibility=View.GONE
-            binding.adViewContainer.visibility=View.GONE
-        }
+//        if (isInternetAvailable(this@VoiceSearchCategoryActivity)) {
+//            binding.shimmerLayout.visibility=View.VISIBLE
+//            binding.adViewContainer.visibility=View.VISIBLE
+//            binding.shimmerLayout.startShimmer()
+//            loadBanner()
+//        }
+//        else{
+//            binding.shimmerLayout.visibility=View.GONE
+//            binding.adViewContainer.visibility=View.GONE
+//        }
 
 
         val categoryName = intent.getStringExtra("category")
@@ -105,62 +116,62 @@ class VoiceSearchCategoryActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        (application as MainApplication).loadAd(this)
+//        (application as MainApplication).loadAd(this)
     }
 
-    private fun loadBanner() {
-        adView.adUnitId = BuildConfig.categoriesScreen_colapsible_Banner
-        adView.setAdSize(adSize)
-        adView.setBackgroundColor(getColor(R.color.light_green))
-
-        val extras = Bundle()
-        extras.putString("collapsible", "bottom")
-        extras.putString("collapsible_request_id", UUID.randomUUID().toString());
-        val adRequest = AdRequest.Builder()
-            .addNetworkExtrasBundle(AdMobAdapter::class.java, extras)
-            .build()
-
-        adView.adListener = object : AdListener() {
-            override fun onAdOpened() {
-                val layoutParams = adView.layoutParams as ConstraintLayout.LayoutParams
-                layoutParams.setMargins(
-                    layoutParams.leftMargin,
-                    layoutParams.topMargin,
-                    layoutParams.rightMargin,
-                    20
-                )
-                adView.layoutParams = layoutParams
-            }
-
-            override fun onAdClosed() {
-                val layoutParams = adView.layoutParams as ConstraintLayout.LayoutParams
-                layoutParams.setMargins(
-                    layoutParams.leftMargin,
-                    layoutParams.topMargin,
-                    layoutParams.rightMargin,
-                    0
-                )
-                adView.layoutParams = layoutParams
-            }
-
-            override fun onAdLoaded() {
-                super.onAdLoaded()
-                binding.shimmerLayout.stopShimmer()
-                binding.shimmerLayout.visibility = View.GONE
-
-            }
-
-            override fun onAdFailedToLoad(p0: LoadAdError) {
-                super.onAdFailedToLoad(p0)
-                binding.shimmerLayout.visibility=View.GONE
-                binding.adViewContainer.visibility=View.GONE
-            }
-        }
-        adView.loadAd(adRequest)
-
-        binding.adViewContainer.addView(adView)
-
-    }
+//    private fun loadBanner() {
+//        adView.adUnitId = BuildConfig.categoriesScreen_colapsible_Banner
+//        adView.setAdSize(adSize)
+//        adView.setBackgroundColor(getColor(R.color.light_green))
+//
+//        val extras = Bundle()
+//        extras.putString("collapsible", "bottom")
+//        extras.putString("collapsible_request_id", UUID.randomUUID().toString());
+//        val adRequest = AdRequest.Builder()
+//            .addNetworkExtrasBundle(AdMobAdapter::class.java, extras)
+//            .build()
+//
+//        adView.adListener = object : AdListener() {
+//            override fun onAdOpened() {
+//                val layoutParams = adView.layoutParams as ConstraintLayout.LayoutParams
+//                layoutParams.setMargins(
+//                    layoutParams.leftMargin,
+//                    layoutParams.topMargin,
+//                    layoutParams.rightMargin,
+//                    20
+//                )
+//                adView.layoutParams = layoutParams
+//            }
+//
+//            override fun onAdClosed() {
+//                val layoutParams = adView.layoutParams as ConstraintLayout.LayoutParams
+//                layoutParams.setMargins(
+//                    layoutParams.leftMargin,
+//                    layoutParams.topMargin,
+//                    layoutParams.rightMargin,
+//                    0
+//                )
+//                adView.layoutParams = layoutParams
+//            }
+//
+//            override fun onAdLoaded() {
+//                super.onAdLoaded()
+////                binding.shimmerLayout.stopShimmer()
+////                binding.shimmerLayout.visibility = View.GONE
+//
+//            }
+//
+//            override fun onAdFailedToLoad(p0: LoadAdError) {
+//                super.onAdFailedToLoad(p0)
+////                binding.shimmerLayout.visibility=View.GONE
+//                binding.adViewContainer.visibility=View.GONE
+//            }
+//        }
+//        adView.loadAd(adRequest)
+//
+//        binding.adViewContainer.addView(adView)
+//
+//    }
 
     fun getListofCategories(categoryName: String?, callback:(ArrayList<CategoryModel>)->Unit) {
 
@@ -213,6 +224,30 @@ class VoiceSearchCategoryActivity : BaseActivity() {
 
         callback(listOfCategories)
     }
+
+    fun loadsubCategoryNative(nativeAdId: String = BuildConfig.Sub_categories_native) {
+        if (MainApplication.getAdApplication().getStorageCommon()?.subCategoryNative?.getValue() == null
+            && !AppPurchase.getInstance().isPurchased) {
+
+            SmartAds.getInstance().loadNativeAdResultCallback(
+                applicationContext,
+                nativeAdId,
+                org.smrtobjads.ads.R.layout.custom_native_admob_free_size_btn_bottom,
+                object : AperoAdCallback() {
+                    override fun onNativeAdLoaded(nativeAd: AdmobNative) {
+                        super.onNativeAdLoaded(nativeAd)
+                        MainApplication.getAdApplication()?.getStorageCommon()?.subCategoryNative?.postValue(nativeAd)
+                    }
+
+                    override fun onAdFailedToLoad(adError: ApAdError?) {
+                        super.onAdFailedToLoad(adError)
+                        MainApplication.getAdApplication()?.getStorageCommon()?.subCategoryNative?.postValue(null)
+                    }
+                }
+            )
+        }
+    }
+
 
 
 }

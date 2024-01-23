@@ -71,17 +71,17 @@
     </androidx.cardview.widget.CardView>
 
 
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmer_layout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_40sdp"
-        android:layout_centerInParent="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/_5sdp"
-        android:background="@color/dark_grey"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+<!--    <com.facebook.shimmer.ShimmerFrameLayout-->
+<!--        android:id="@+id/shimmer_layout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="@dimen/_40sdp"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_marginBottom="@dimen/_5sdp"-->
+<!--        android:background="@color/dark_grey"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"/>-->
 
 
     <FrameLayout
@@ -96,7 +96,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="@dimen/_5sdp"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <include
+            android:id="@+id/splashNativeAd"
+            layout="@layout/banner_shimmer"/>
+
+    </FrameLayout>
 
 
 

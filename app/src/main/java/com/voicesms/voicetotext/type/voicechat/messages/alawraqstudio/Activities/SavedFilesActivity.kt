@@ -12,7 +12,7 @@ import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Adapters.SavedFilesAdapter
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdManager
+//import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdManager
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Interfaces.RecordingsCallback
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.MainApplication
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ModelClasses.FileData
@@ -20,6 +20,11 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ViewModel.RecordingViewModel
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivitySavedFilesBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.smrtobjads.ads.SmartAds
+import org.smrtobjads.ads.ads.models.AdmobNative
+import org.smrtobjads.ads.ads.models.ApAdError
+import org.smrtobjads.ads.billings.AppPurchase
+import org.smrtobjads.ads.callbacks.AperoAdCallback
 import java.io.File
 
 class SavedFilesActivity : BaseActivity(), RecordingsCallback {
@@ -31,32 +36,33 @@ class SavedFilesActivity : BaseActivity(), RecordingsCallback {
 
     override fun onPause() {
         super.onPause()
-        AdManager.getInstance().currentNativeAd=null
-        AdManager.getInstance().interstitialAd=null
+//        AdManager.getInstance().currentNativeAd=null
+//        AdManager.getInstance().interstitialAd=null
     }
     override fun onDestroy() {
         super.onDestroy()
-        AdManager.getInstance().currentNativeAd=null
-        AdManager.getInstance().interstitialAd=null
+//        AdManager.getInstance().currentNativeAd=null
+//        AdManager.getInstance().interstitialAd=null
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySavedFilesBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         val folderPath = File(getExternalFilesDir("recordings"), "")
         m_viewmodel.getListofFilesFromStorage(folderPath.absolutePath) {
             Log.d(TAG, "size of saved file list: ${it?.size}")
             if (it!!.size != 0) {
-                AdManager.getInstance().loadNativeAd(
-                    this@SavedFilesActivity,
-                    BuildConfig.Save_file_Screen_Native,
-                    binding.adViewContainer,
-                    binding.shimmerViewContainer
-                )
+                savedFilesNativeAd()
+
+//                AdManager.getInstance().loadNativeAd(
+//                    this@SavedFilesActivity,
+//                    BuildConfig.Save_file_Screen_Native,
+//                    binding.adViewContainer,
+//                    binding.shimmerViewContainer
+//                )
                 binding.adViewContainer.visibility=View.VISIBLE
-                binding.shimmerViewContainer.visibility=View.VISIBLE
+//                binding.shimmerViewContainer.visibility=View.VISIBLE
                 listofFiles = it
                 binding.noItemId.visibility = View.GONE
                 binding.savedFilesRV.visibility = View.VISIBLE
@@ -190,7 +196,7 @@ class SavedFilesActivity : BaseActivity(), RecordingsCallback {
     }
     private fun showNoItem() {
         binding.adViewContainer.visibility=View.GONE
-        binding.shimmerViewContainer.visibility=View.GONE
+//        binding.shimmerViewContainer.visibility=View.GONE
         binding.savedFilesRV.visibility = View.INVISIBLE
         binding.selectAllId.visibility = View.INVISIBLE
         binding.noItemId.visibility = View.VISIBLE
@@ -216,7 +222,46 @@ class SavedFilesActivity : BaseActivity(), RecordingsCallback {
 
     override fun onResume() {
         super.onResume()
-        (application as MainApplication).loadAd(this)
+//        (application as MainApplication).loadAd(this)
     }
+
+    private fun savedFilesNativeAd(){
+
+        MainApplication.getAdApplication()?.getStorageCommon()?.savedFilesNative.let { appNative->
+            if (appNative == null || appNative.value == null && !AppPurchase.getInstance().isPurchased) {
+                SmartAds.getInstance().loadNativeAdResultCallback(this@SavedFilesActivity,
+                    BuildConfig.Save_file_Screen_Native,  org.smrtobjads.ads.R.layout.custom_native_admob_free_size, object :
+                        AperoAdCallback(){
+                        override fun onNativeAdLoaded(nativeAd: AdmobNative) {
+                            super.onNativeAdLoaded(nativeAd)
+                            SmartAds.getInstance().populateNativeAdView(this@SavedFilesActivity, nativeAd, binding.adViewContainer, binding.splashNativeAd.shimmerContainerNative)
+                        }
+
+                        override fun onAdFailedToLoad(adError: ApAdError?) {
+                            super.onAdFailedToLoad(adError)
+                            binding.adViewContainer.visibility = View.GONE
+                        }
+
+                        override fun onAdFailedToShow(adError: ApAdError?) {
+                            super.onAdFailedToShow(adError)
+                            binding.adViewContainer.visibility = View.GONE
+                        }
+
+                        override fun onAdImpression() {
+                            super.onAdImpression()
+
+                        }
+                    })
+            }else{
+                SmartAds.getInstance().populateNativeAdView(
+                    this@SavedFilesActivity,
+                    appNative.value,
+                    binding.adViewContainer,
+                    binding.splashNativeAd.shimmerContainerNative)
+            }
+        }
+
+    }
+
 
 }

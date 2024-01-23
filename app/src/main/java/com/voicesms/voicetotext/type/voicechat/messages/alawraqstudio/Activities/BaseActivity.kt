@@ -21,7 +21,6 @@ import java.util.Locale
 
 open class BaseActivity : AppCompatActivity() {
     val localeDelegate: LocaleHelperActivityDelegate = LocaleHelperActivityDelegateImpl()
-    val v_model: VoiceSearchViewModel by viewModel()
 
     override fun getDelegate() = localeDelegate.getAppCompatDelegate(super.getDelegate())
 
@@ -32,6 +31,7 @@ open class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         localeDelegate.onCreate(this)
+
     }
 
     override fun onStop() {
@@ -67,11 +67,13 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     fun hideNavBar() {
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        val insetsController = WindowCompat.getInsetsController(window, window.decorView)
-        insetsController.systemBarsBehavior =
-            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        insetsController.hide(WindowInsetsCompat.Type.statusBars())
-        insetsController.hide(WindowInsetsCompat.Type.navigationBars())
+//        WindowCompat.setDecorFitsSystemWindows(window, false)
+//        val insetsController = WindowCompat.getInsetsController(window, window.decorView)
+//        insetsController.systemBarsBehavior =
+//            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+//        insetsController.hide(WindowInsetsCompat.Type.statusBars())
+//        insetsController.hide(WindowInsetsCompat.Type.navigationBars())
     }
+
+
 }

@@ -3,6 +3,13 @@
 
     <style name="Theme.SpeechToTextApp" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowFullscreen">true</item>
+        <item name="android:statusBarColor">
+            @color/green
+        </item>
+
+        <item name="android:navigationBarColor">
+            @color/green
+        </item>
     </style>
 
 

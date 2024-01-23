@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.app.ProgressDialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
@@ -37,7 +38,9 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BottomSheets.LanguageBottomSheet
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BottomSheets.SourceLanguageBottomSheet
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdManager
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdsInterCallBack
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.PreloadAdsUtils
+//import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdManager
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.copyToClipbard
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.dismissLoadingDialog
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.extractLanguageFromCountry
@@ -46,12 +49,19 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClas
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.shareText
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.showLoadingDialog
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Interfaces.LanguageSelectionListener
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.MainApplication
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ModelClasses.LanguageModel
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ViewModel.SMSViewModel
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.FragmentVoiceSMSBinding
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.NativeAdTemplateBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.smrtobjads.ads.SmartAds
+import org.smrtobjads.ads.ads.models.AdmobNative
+import org.smrtobjads.ads.ads.models.ApAdError
+import org.smrtobjads.ads.ads.models.ApInterstitialAd
+import org.smrtobjads.ads.billings.AppPurchase
+import org.smrtobjads.ads.callbacks.AperoAdCallback
 import java.util.Locale
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -95,18 +105,22 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
     ): View? {
         binding = FragmentVoiceSMSBinding.inflate(layoutInflater, container, false)
 //        loadAd()
-        AdManager.getInstance()
-            .loadInterstitial(requireContext(), BuildConfig.Translate_Button_inter)
+//        AdManager.getInstance()
+//            .loadInterstitial(requireContext(), BuildConfig.Translate_Button_inter)
+        splashNativeAd()
+        PreloadAdsUtils.getInstance().loadIntersAlternate(requireContext(), BuildConfig.Translate_Button_inter, BuildConfig.Translate_Button_inter, 2)
 
+        loadVoiceRecNative()
+        loadVoiceSearchNative()
         initLanguages()
 
 //        loadNativeAd()
-        AdManager.getInstance().loadNativeAd(
-            requireContext(),
-            BuildConfig.native_voice_SMS,
-            binding.adFrame,
-            binding.shimmerViewContainer
-        )
+//        AdManager.getInstance().loadNativeAd(
+//            requireContext(),
+//            BuildConfig.native_voice_SMS,
+//            binding.adFrame,
+//            binding.shimmerViewContainer
+//        )
 
         speakText = TextToSpeech(requireContext(), OnInitListener { status ->
             if (status == TextToSpeech.SUCCESS) {
@@ -155,27 +169,59 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
 
         binding.translateFromTo.setOnClickListener {
             if (!binding.fromTextId.text.isNullOrEmpty() && !searchedText.equals(binding.fromTextId.text.toString())) {
-                getTranslation()
+//                getTranslation()
                 searchedText = binding.fromTextId.text.toString()
                 if (isInternetAvailable(requireContext())) {
-                    progressDialog = ProgressDialog(requireContext())
-                    progressDialog.setMessage("Loading Interstitial...")
-                    progressDialog.setCancelable(false)
-                    if(AdManager.getInstance().interstitialAd!=null) {
-                        showLoadingDialog(progressDialog)
-                    }
+//                    loadInterstitialTranslateBtn()
+//                    progressDialog = ProgressDialog(requireContext())
+//                    progressDialog.setMessage("Loading Interstitial...")
+//                    progressDialog.setCancelable(false)
+//                    if(AdManager.getInstance().interstitialAd!=null) {
+//                        showLoadingDialog(progressDialog)
+//                    }
+//
+//                    handler.postDelayed({
+//                        AdManager.getInstance()
+//                            .showInterstitial(
+//                                requireActivity(),
+//                                BuildConfig.Translate_Button_inter
+//                            ) {
+//                                dismissLoadingDialog(progressDialog)
+//                                getTranslation()
+//                            }
+//                    }, 1000)
 
-                    handler.postDelayed({
-                        AdManager.getInstance()
-                            .showInterstitial(
-                                requireActivity(),
-                                BuildConfig.Translate_Button_inter
-                            ) {
-                                dismissLoadingDialog(progressDialog)
-                                getTranslation()
+                    PreloadAdsUtils.getInstance().showInterAlternateByForce(
+                        requireContext(),
+                        MainApplication.getAdApplication().getStorageCommon().splashInterstitial,
+                        false,
+                        object : AdsInterCallBack {
+                            override fun onInterstitialPriorityShowed() {
+
                             }
-                    }, 1000)
 
+                            override fun onInterstitialNormalShowed() {
+                            }
+
+                            override fun onInterstitialShowed() {
+                                Log.d("TAG_interst", "onInterstitialShowed: Ad showed")
+                            }
+
+                            override fun onAdClosed() {
+                                Log.d("TAG_interst", "onAdClosed: Ad Closed")
+                                getTranslation()
+                                MainApplication.getAdApplication().getStorageCommon().splashInterstitial=null
+                                PreloadAdsUtils.getInstance().loadIntersAlternate(requireContext(), BuildConfig.Translate_Button_inter, BuildConfig.Translate_Button_inter, 2)
+
+                            }
+
+                            override fun onAdClicked() {
+                                Log.d("TAG_interst", "onAdClicked: Ad clicked")
+                            }
+
+                            override fun onNextAction() {
+                            }
+                        })
                 }
             }
             hideKeyboard()
@@ -441,14 +487,14 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
 
     override fun onPause() {
         super.onPause()
-        AdManager.getInstance().currentNativeAd = null
-        AdManager.getInstance().interstitialAd = null
+//        AdManager.getInstance().currentNativeAd = null
+//        AdManager.getInstance().interstitialAd = null
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        AdManager.getInstance().currentNativeAd = null
-        AdManager.getInstance().interstitialAd = null
+//        AdManager.getInstance().currentNativeAd = null
+//        AdManager.getInstance().interstitialAd = null
     }
 
     override fun onResume() {
@@ -541,6 +587,135 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
 
         super.onDestroyView()
     }
+
+
+    private fun splashNativeAd(){
+        MainApplication.getAdApplication()?.getStorageCommon()?.voiceSMSNative.let { appNative->
+            if (appNative == null || appNative.value == null && !AppPurchase.getInstance().isPurchased) {
+                SmartAds.getInstance().loadNativeAdResultCallback(requireContext(),
+                    BuildConfig.native_voice_SMS,  org.smrtobjads.ads.R.layout.custom_native_admob_free_size, object :
+                        AperoAdCallback(){
+                        override fun onNativeAdLoaded(nativeAd: AdmobNative) {
+                            super.onNativeAdLoaded(nativeAd)
+                            SmartAds.getInstance().populateNativeAdView(requireContext(), nativeAd, binding.adFrame, binding.splashNativeAd.shimmerContainerNative)
+                        }
+
+                        override fun onAdFailedToLoad(adError: ApAdError?) {
+                            super.onAdFailedToLoad(adError)
+                            binding.adFrame.visibility = View.GONE
+                        }
+
+                        override fun onAdFailedToShow(adError: ApAdError?) {
+                            super.onAdFailedToShow(adError)
+                            binding.adFrame.visibility = View.GONE
+                        }
+
+                        override fun onAdImpression() {
+                            super.onAdImpression()
+
+                        }
+                    })
+            }else{
+                SmartAds.getInstance().populateNativeAdView(
+                    requireContext(),
+                    appNative.value,
+                    binding.adFrame,
+                    binding.splashNativeAd.shimmerContainerNative)
+            }
+        }
+
+    }
+
+    fun loadVoiceRecNative(nativeAdId: String = BuildConfig.native_voice_Rec) {
+        if (MainApplication.getAdApplication().getStorageCommon()?.voiceRecNative?.getValue() == null
+            && !AppPurchase.getInstance().isPurchased) {
+
+            SmartAds.getInstance().loadNativeAdResultCallback(
+                requireContext(),
+                nativeAdId,
+                org.smrtobjads.ads.R.layout.custom_native_admob_free_size_btn_bottom,
+                object : AperoAdCallback() {
+                    override fun onNativeAdLoaded(nativeAd: AdmobNative) {
+                        super.onNativeAdLoaded(nativeAd)
+                        MainApplication.getAdApplication()?.getStorageCommon()?.voiceRecNative?.postValue(nativeAd)
+                    }
+
+                    override fun onAdFailedToLoad(adError: ApAdError?) {
+                        super.onAdFailedToLoad(adError)
+                        MainApplication.getAdApplication()?.getStorageCommon()?.voiceRecNative?.postValue(null)
+                    }
+                }
+            )
+        }
+    }
+    fun loadVoiceSearchNative(nativeAdId: String = BuildConfig.Voice_Search_Screen_Native) {
+        if (MainApplication.getAdApplication().getStorageCommon()?.voiceSearchNative?.getValue() == null
+            && !AppPurchase.getInstance().isPurchased) {
+
+            SmartAds.getInstance().loadNativeAdResultCallback(
+                requireContext(),
+                nativeAdId,
+                org.smrtobjads.ads.R.layout.custom_native_admob_free_size_btn_bottom,
+                object : AperoAdCallback() {
+                    override fun onNativeAdLoaded(nativeAd: AdmobNative) {
+                        super.onNativeAdLoaded(nativeAd)
+                        MainApplication.getAdApplication()?.getStorageCommon()?.voiceSearchNative?.postValue(nativeAd)
+                    }
+
+                    override fun onAdFailedToLoad(adError: ApAdError?) {
+                        super.onAdFailedToLoad(adError)
+                        MainApplication.getAdApplication()?.getStorageCommon()?.voiceSearchNative?.postValue(null)
+                    }
+                }
+            )
+        }
+    }
+
+    fun loadInterstitialTranslateBtn() {
+//        if (MainApplication.getAdApplication()
+//                .getStorageCommon()?.splashInterstitial?.getValue() == null
+//            && !AppPurchase.getInstance().isPurchased
+//        ) {
+        SmartAds.getInstance().loadSplashInterstitialAds(
+            requireContext(),
+            BuildConfig.Translate_Button_inter,
+            2000,
+            500,
+            object : AperoAdCallback() {
+
+                override fun onInterstitialLoad(interstitialAd: ApInterstitialAd?) {
+                    super.onInterstitialLoad(interstitialAd)
+                    Log.d("TAG_interst", "onInterstitialLoad: adLoaded")
+//                        MainApplication.getAdApplication()
+//                            ?.getStorageCommon()?.splashInterstitial?.postValue(interstitialAd)
+                }
+
+                override fun onAdFailedToLoad(adError: ApAdError?) {
+                    super.onAdFailedToLoad(adError)
+                    Log.d("TAG_interst", "onAdFailedToLoad: $adError")
+                    getTranslation()
+//                    startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+//                        MainApplication.getAdApplication()
+//                            ?.getStorageCommon()?.splashInterstitial?.postValue(null)
+                }
+
+                override fun onAdFailedToShow(adError: ApAdError?) {
+                    super.onAdFailedToShow(adError)
+                    Log.d("TAG_interst", "onAdFailedToLoad: $adError")
+                    getTranslation()
+//                    MainApplication.getAdApplication()
+//                        ?.getStorageCommon()?.splashInterstitial?.postValue(null)
+//                    startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                }
+
+                override fun onAdClosed() {
+                    super.onAdClosed()
+                    Log.d("TAG_interst", "onAdClosed: Ad Closed")
+                    getTranslation()
+                }
+            })
+    }
+
 
 
 }

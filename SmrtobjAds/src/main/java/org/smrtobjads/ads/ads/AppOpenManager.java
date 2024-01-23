@@ -29,6 +29,7 @@ import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.appopen.AppOpenAd;
 
 import org.smrtobjads.ads.R;
+import org.smrtobjads.ads.ads.models.SmartObjAdmob;
 import org.smrtobjads.ads.billings.AppPurchase;
 import org.smrtobjads.ads.callbacks.AdCallback;
 import org.smrtobjads.ads.dialogs.ResumeLoadingDialog;

@@ -22,6 +22,8 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClas
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivityGuideBinding
 import kotlinx.coroutines.launch
+import org.smrtobjads.ads.SmartAds
+import org.smrtobjads.ads.callbacks.AperoAdCallback
 
 class GuideActivity : BaseActivity() {
     private lateinit var binding: ActivityGuideBinding
@@ -53,13 +55,12 @@ class GuideActivity : BaseActivity() {
         binding.adViewContainer.addView(adView)
 
         if (isInternetAvailable(this@GuideActivity)) {
-            binding.shimmerLayout.visibility=View.VISIBLE
-            binding.adViewContainer.visibility=View.VISIBLE
-            binding.shimmerLayout.startShimmer()
-            loadBanner()
+
+//            SmartAds.getInstance().loadBanner(this, BuildConfig.guide_Screen_banner)
+            SmartAds.getInstance().loadBanner(this@GuideActivity,BuildConfig.guide_Screen_banner,AperoAdCallback())
         }
         else{
-            binding.shimmerLayout.visibility=View.GONE
+//            binding.shimmerLayout.visibility=View.GONE
             binding.adViewContainer.visibility=View.GONE
         }
 
@@ -76,52 +77,52 @@ class GuideActivity : BaseActivity() {
         })
     }
 
-    private fun loadBanner() {
-        adView.adUnitId = BuildConfig.banner_voice_talk
-        adView.setAdSize(adSize)
-        adView.background = getDrawable(R.color.white)
-        val adRequest = AdRequest.Builder().build()
-        adView.loadAd(adRequest)
-
-        adView.adListener = object : AdListener() {
-            override fun onAdOpened() {
-                val layoutParams = adView.layoutParams as ConstraintLayout.LayoutParams
-                layoutParams.setMargins(
-                    layoutParams.leftMargin,
-                    layoutParams.topMargin,
-                    layoutParams.rightMargin,
-                    20
-                )
-                adView.layoutParams = layoutParams
-            }
-
-            override fun onAdClosed() {
-                val layoutParams = adView.layoutParams as ConstraintLayout.LayoutParams
-                layoutParams.setMargins(
-                    layoutParams.leftMargin,
-                    layoutParams.topMargin,
-                    layoutParams.rightMargin,
-                    0
-                )
-                adView.layoutParams = layoutParams
-            }
-
-            override fun onAdLoaded() {
-                super.onAdLoaded()
-                binding.shimmerLayout.stopShimmer()
-                binding.shimmerLayout.visibility = View.GONE
-
-            }
-
-            override fun onAdFailedToLoad(p0: LoadAdError) {
-                super.onAdFailedToLoad(p0)
-                binding.shimmerLayout.visibility = View.GONE
-                binding.adViewContainer.visibility = View.GONE
-
-            }
-        }
-
-    }
+//    private fun loadBanner() {
+//        adView.adUnitId = BuildConfig.guide_Screen_banner
+//        adView.setAdSize(adSize)
+//        adView.background = getDrawable(R.color.white)
+//        val adRequest = AdRequest.Builder().build()
+//        adView.loadAd(adRequest)
+//
+//        adView.adListener = object : AdListener() {
+//            override fun onAdOpened() {
+//                val layoutParams = adView.layoutParams as ConstraintLayout.LayoutParams
+//                layoutParams.setMargins(
+//                    layoutParams.leftMargin,
+//                    layoutParams.topMargin,
+//                    layoutParams.rightMargin,
+//                    20
+//                )
+//                adView.layoutParams = layoutParams
+//            }
+//
+//            override fun onAdClosed() {
+//                val layoutParams = adView.layoutParams as ConstraintLayout.LayoutParams
+//                layoutParams.setMargins(
+//                    layoutParams.leftMargin,
+//                    layoutParams.topMargin,
+//                    layoutParams.rightMargin,
+//                    0
+//                )
+//                adView.layoutParams = layoutParams
+//            }
+//
+//            override fun onAdLoaded() {
+//                super.onAdLoaded()
+////                binding.shimmerLayout.stopShimmer()
+////                binding.shimmerLayout.visibility = View.GONE
+//
+//            }
+//
+//            override fun onAdFailedToLoad(p0: LoadAdError) {
+//                super.onAdFailedToLoad(p0)
+////                binding.shimmerLayout.visibility = View.GONE
+////                binding.adViewContainer.visibility = View.GONE
+//
+//            }
+//        }
+//
+//    }
 
     fun navigateToNextFragment() {
         binding.viewPager.currentItem = 1

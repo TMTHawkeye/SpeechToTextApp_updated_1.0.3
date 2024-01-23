@@ -55,4 +55,8 @@ public class AperoAdCallback {
     public void onInterstitialShow() {
 
     }
+
+    public void onInterPriorityLoaded(ApInterstitialAd interstitialAd) {
+
+    }
 }

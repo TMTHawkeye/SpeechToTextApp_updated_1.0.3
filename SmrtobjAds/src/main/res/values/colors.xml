@@ -12,9 +12,13 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="lightTransparent">#F3ECEB</color>
+    <color name="lightTransparent">#00FFFFFF</color>
     <color name="colorAds">#068abf</color>
     <color name="grey">#DAD1D0</color>
+    <color name="green">#3AAF59</color>
+    <color name="light_green">#DAF8DF</color>
+    <color name="transparent">#00FFFFFF</color>
+
     <color name="colorWhite">#FDFDFD</color>
     <color name="ads_bg_color">#EFEFEF</color>
 

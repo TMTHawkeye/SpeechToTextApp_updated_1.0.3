@@ -90,19 +90,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recording_card" />
 
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/shimmer_view_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20ssp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/record_voice">
-
-            <include layout="@layout/native_ad_template_placeholder" />
-
-        </com.facebook.shimmer.ShimmerFrameLayout>
-
 
         <FrameLayout
             android:id="@+id/ad_frame"
@@ -113,7 +100,12 @@
             android:backgroundTint="@color/transparent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/record_voice" />
+            app:layout_constraintTop_toBottomOf="@+id/record_voice" >
+
+            <include
+                android:id="@+id/splashNativeAd"
+                layout="@layout/native_with_media_shimmer" />
+        </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

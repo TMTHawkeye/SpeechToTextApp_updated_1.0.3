@@ -34,9 +34,12 @@ import com.google.android.gms.ads.nativead.NativeAdOptions
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.MainActivity
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.SavedFilesActivity
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdManager
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdsInterCallBack
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.PreloadAdsUtils
+//import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdManager
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.dismissLoadingDialog
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.showLoadingDialog
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.MainApplication
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ViewModel.RecordingViewModel
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.CustomDialogSaveFileBinding
@@ -45,6 +48,11 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databindin
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.smrtobjads.ads.SmartAds
+import org.smrtobjads.ads.ads.models.AdmobNative
+import org.smrtobjads.ads.ads.models.ApAdError
+import org.smrtobjads.ads.billings.AppPurchase
+import org.smrtobjads.ads.callbacks.AperoAdCallback
 import java.io.File
 
 
@@ -73,17 +81,16 @@ class VoiceRecFragment : Fragment() {
         binding = FragmentVoiceRecBinding.inflate(layoutInflater, container, false)
         binding.recordingLottie.visibility = View.GONE
         retainInstance = true
-
+        RecordingScreenNative()
 //        loadNativeAd()
+        PreloadAdsUtils.getInstance().loadIntersAlternate(requireContext(), BuildConfig.interstitial_voice_rec_save_btn, BuildConfig.Translate_Button_inter, 2)
 
-        AdManager.getInstance().loadNativeAd(
-            requireContext(),
-            BuildConfig.native_voice_Rec,
-            binding.adFrame,
-            binding.shimmerViewContainer
-        )
-
-
+//        AdManager.getInstance().loadNativeAd(
+//            requireContext(),
+//            BuildConfig.native_voice_Rec,
+//            binding.adFrame,
+//            binding.shimmerViewContainer
+//        )
 
 
         binding.recordVoice.setOnClickListener {
@@ -91,6 +98,52 @@ class VoiceRecFragment : Fragment() {
         }
         return binding.root
     }
+
+    private fun RecordingScreenNative() {
+        MainApplication.getAdApplication()?.getStorageCommon()?.voiceRecNative.let { appNative ->
+            if (appNative == null || appNative.value == null && !AppPurchase.getInstance().isPurchased) {
+                SmartAds.getInstance().loadNativeAdResultCallback(requireContext(),
+                    BuildConfig.native_voice_Rec,
+                    org.smrtobjads.ads.R.layout.custom_native_admob_free_size,
+                    object :
+                        AperoAdCallback() {
+                        override fun onNativeAdLoaded(nativeAd: AdmobNative) {
+                            super.onNativeAdLoaded(nativeAd)
+                            SmartAds.getInstance().populateNativeAdView(
+                                requireContext(),
+                                nativeAd,
+                                binding.adFrame,
+                                binding.splashNativeAd.shimmerContainerNative
+                            )
+                        }
+
+                        override fun onAdFailedToLoad(adError: ApAdError?) {
+                            super.onAdFailedToLoad(adError)
+                            binding.adFrame.visibility = View.GONE
+                        }
+
+                        override fun onAdFailedToShow(adError: ApAdError?) {
+                            super.onAdFailedToShow(adError)
+                            binding.adFrame.visibility = View.GONE
+                        }
+
+                        override fun onAdImpression() {
+                            super.onAdImpression()
+
+                        }
+                    })
+            } else {
+                SmartAds.getInstance().populateNativeAdView(
+                    requireContext(),
+                    appNative.value,
+                    binding.adFrame,
+                    binding.splashNativeAd.shimmerContainerNative
+                )
+            }
+        }
+
+    }
+
 
     private fun recordVoice() {
         if (!isRecording) {
@@ -120,14 +173,14 @@ class VoiceRecFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        AdManager.getInstance().currentNativeAd = null
-        AdManager.getInstance().interstitialAd = null
+//        AdManager.getInstance().currentNativeAd = null
+//        AdManager.getInstance().interstitialAd = null
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        AdManager.getInstance().currentNativeAd = null
-        AdManager.getInstance().interstitialAd = null
+//        AdManager.getInstance().currentNativeAd = null
+//        AdManager.getInstance().interstitialAd = null
     }
 
     private fun updateRecordingTime() {
@@ -182,8 +235,8 @@ class VoiceRecFragment : Fragment() {
     }
 
     fun stopRecordingDialog() {
-        AdManager.getInstance()
-            .loadInterstitial(requireContext(), BuildConfig.interstitial_voice_rec_save_btn)
+//        AdManager.getInstance()
+//            .loadInterstitial(requireContext(), BuildConfig.interstitial_voice_rec_save_btn)
 
         val pairDialog = showSaveFileDialog()
 
@@ -243,36 +296,72 @@ class VoiceRecFragment : Fragment() {
 //                        Toast.LENGTH_SHORT
 //                    )
 //                        .show()
-                    if (AdManager.getInstance().interstitialAd != null) {
-                        showLoadingDialog(progressDialog)
-                    }
-                    mhandler.postDelayed({
-                        dismissLoadingDialog(progressDialog)
-                        if (AdManager.getInstance().interstitialAd != null) {
+//                    if (AdManager.getInstance().interstitialAd != null) {
+//                        showLoadingDialog(progressDialog)
+//                    }
+                    PreloadAdsUtils.getInstance().showInterAlternateByTime(
+                        requireContext(),
+                        MainApplication.getAdApplication().getStorageCommon().splashInterstitial,
+                        false,
+                        object : AdsInterCallBack {
+                            override fun onInterstitialPriorityShowed() {
 
-                            lifecycleScope.launch(Dispatchers.Main) {
-                                AdManager.getInstance().showInterstitial(
-                                    requireActivity(),
-                                    BuildConfig.interstitial_voice_rec_save_btn
-                                ) {
-                                    startActivity(
-                                        Intent(
-                                            requireContext(),
-                                            SavedFilesActivity::class.java
-                                        )
-                                    )
-                                }
                             }
-                        }
-                        else{
-                            startActivity(
-                                Intent(
-                                    requireContext(),
-                                    SavedFilesActivity::class.java
+
+                            override fun onInterstitialNormalShowed() {
+                            }
+
+                            override fun onInterstitialShowed() {
+                                Log.d("TAG_interst", "onInterstitialShowed: Ad showed")
+                            }
+
+                            override fun onAdClosed() {
+                                Log.d("TAG_interst", "onAdClosed: Ad Closed")
+                                MainApplication.getAdApplication().getStorageCommon().splashInterstitial=null
+                                PreloadAdsUtils.getInstance().loadIntersAlternate(requireContext(), BuildConfig.interstitial_voice_search_category, BuildConfig.Translate_Button_inter, 2)
+                                startActivity(
+                                    Intent(
+                                        requireContext(),
+                                        SavedFilesActivity::class.java
+                                    )
                                 )
-                            )
-                        }
-                    }, 1000)
+                            }
+
+                            override fun onAdClicked() {
+                                Log.d("TAG_interst", "onAdClicked: Ad clicked")
+                            }
+
+                            override fun onNextAction() {
+                            }
+                        })
+
+//                    mhandler.postDelayed({
+//                        dismissLoadingDialog(progressDialog)
+//                        if (AdManager.getInstance().interstitialAd != null) {
+//
+//                            lifecycleScope.launch(Dispatchers.Main) {
+//                                AdManager.getInstance().showInterstitial(
+//                                    requireActivity(),
+//                                    BuildConfig.interstitial_voice_rec_save_btn
+//                                ) {
+//                                    startActivity(
+//                                        Intent(
+//                                            requireContext(),
+//                                            SavedFilesActivity::class.java
+//                                        )
+//                                    )
+//                                }
+//                            }
+//                        }
+//                        else{
+//                        startActivity(
+//                            Intent(
+//                                requireContext(),
+//                                SavedFilesActivity::class.java
+//                            )
+//                        )
+////                        }
+//                    }, 1000)
                 } else {
                     Toast.makeText(
                         requireContext(),

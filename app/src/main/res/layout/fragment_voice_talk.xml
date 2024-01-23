@@ -200,6 +200,7 @@
 
 
     <FrameLayout
+        android:paddingVertical="@dimen/_2sdp"
         android:id="@+id/ad_view_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

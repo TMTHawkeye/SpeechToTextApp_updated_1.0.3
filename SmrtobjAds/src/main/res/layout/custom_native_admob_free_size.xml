@@ -2,15 +2,19 @@
 <com.google.android.gms.ads.nativead.NativeAdView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/lightTransparent"
+    android:padding="@dimen/_4sdp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:background="@drawable/border_background">
 
         <TextView
             android:id="@+id/textView3"
             style="@style/AppTheme.Ads"
+            android:background="@drawable/rounded_top_right_corner"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,7 +25,7 @@
             android:layout_marginStart="@dimen/_6sdp"
             android:layout_marginTop="@dimen/_6sdp"
             android:adjustViewBounds="true"
-            android:src="@color/colorPrimary"
+            android:src="@color/green"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -59,7 +63,7 @@
             android:lines="1"
             android:layout_marginTop="@dimen/_3sdp"
             android:text="@string/bottom_sheet_behavior"
-            android:textColor="@color/colorAds"
+            android:textColor="@color/green"
             android:textSize="@dimen/_8sdp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/ad_media"
@@ -88,7 +92,7 @@
             android:layout_height="wrap_content"
 
             android:layout_marginBottom="8dp"
-            android:background="@drawable/ads_button_bg"
+            android:background="@drawable/circular_background"
             android:gravity="center"
             android:text="Install"
             app:layout_constraintTop_toBottomOf="@+id/ad_media"

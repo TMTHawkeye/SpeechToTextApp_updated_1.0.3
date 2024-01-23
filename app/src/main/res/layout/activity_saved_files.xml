@@ -129,21 +129,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/ad_view_container"/>
 
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmer_view_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_alignParentBottom="true"
-        android:backgroundTint="@color/transparent"
-        android:background="@color/transparent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
 
-        <include layout="@layout/native_ad_template_placeholder"/>
-
-    </com.facebook.shimmer.ShimmerFrameLayout>
 
     <FrameLayout
         android:id="@+id/ad_view_container"
@@ -151,11 +137,17 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/_5sdp"
         android:backgroundTint="@color/transparent"
         android:background="@color/transparent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <include
+            android:id="@+id/splashNativeAd"
+            layout="@layout/native_with_media_shimmer" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/noItem_id"

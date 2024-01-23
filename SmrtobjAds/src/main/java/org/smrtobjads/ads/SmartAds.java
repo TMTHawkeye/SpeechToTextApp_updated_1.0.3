@@ -24,8 +24,8 @@ import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
 
+import org.smrtobjads.ads.ads.models.SmartObjAdmob;
 import org.smrtobjads.ads.callbacks.AdCallback;
-import org.smrtobjads.ads.ads.SmartObjAdmob;
 import org.smrtobjads.ads.ads.SmartAdsConfig;
 import org.smrtobjads.ads.ads.AppOpenManager;
 import org.smrtobjads.ads.ads.models.ApAdError;

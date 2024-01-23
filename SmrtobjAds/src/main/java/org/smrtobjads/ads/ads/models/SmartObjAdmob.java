@@ -1,4 +1,4 @@
-package org.smrtobjads.ads.ads;
+package org.smrtobjads.ads.ads.models;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -61,6 +61,9 @@ import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
 
 import org.smrtobjads.ads.R;
+import org.smrtobjads.ads.ads.AdsLoadingDialoge;
+import org.smrtobjads.ads.ads.AperoLogEventManager;
+import org.smrtobjads.ads.ads.AppOpenManager;
 import org.smrtobjads.ads.adsutils.AdType;
 import org.smrtobjads.ads.adsutils.AdmodHelper;
 import org.smrtobjads.ads.adsutils.AppUtil;

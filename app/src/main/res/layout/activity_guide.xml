@@ -12,19 +12,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/shimmer_layout" />
+        app:layout_constraintBottom_toTopOf="@id/ad_view_container" />
 
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmer_layout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_40sdp"
-        android:layout_centerInParent="true"
-        android:layout_alignParentBottom="true"
-        android:backgroundTint="@color/white"
-        android:background="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+
 
 
     <FrameLayout
@@ -33,12 +23,16 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_alignParentBottom="true"
-        android:backgroundTint="@color/white"
-        android:background="@color/white"
+        android:background="@color/transparent"
         android:paddingVertical="@dimen/_2sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent">
+        <include
+            android:id="@+id/splashNativeAd"
+            layout="@layout/banner_shimmer"/>
+
+    </FrameLayout>
 
 
 
