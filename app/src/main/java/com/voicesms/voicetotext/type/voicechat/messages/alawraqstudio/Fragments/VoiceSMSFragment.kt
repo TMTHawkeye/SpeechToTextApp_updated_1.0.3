@@ -4,7 +4,6 @@ import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.app.ProgressDialog
 import android.content.Context
-import android.content.Intent
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
@@ -27,13 +26,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.airbnb.lottie.LottieDrawable
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdLoader
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.VideoOptions
 import com.google.android.gms.ads.nativead.NativeAd
-import com.google.android.gms.ads.nativead.NativeAdOptions
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.MainActivity
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BottomSheets.LanguageBottomSheet
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BottomSheets.SourceLanguageBottomSheet
@@ -42,21 +35,19 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClas
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.PreloadAdsUtils
 //import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdManager
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.copyToClipbard
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.dismissLoadingDialog
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.extractLanguageFromCountry
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.getCountryName
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.isInternetAvailable
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.loadLang
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.shareText
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.showLoadingDialog
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Interfaces.LanguageSelectionListener
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.MainApplication
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ModelClasses.LanguageModel
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ViewModel.SMSViewModel
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.FragmentVoiceSMSBinding
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.NativeAdTemplateBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.smrtobjads.ads.SmartAds
+import org.smrtobjads.ads.ads.SmartAds
 import org.smrtobjads.ads.ads.models.AdmobNative
 import org.smrtobjads.ads.ads.models.ApAdError
 import org.smrtobjads.ads.ads.models.ApInterstitialAd
@@ -422,10 +413,12 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
         }
     }
 
+
+
     private fun initLanguages() {
         try {
 //            mExecutor.execute {
-            listLanguages = m_viewmodel.getLanguages()
+            listLanguages = loadLang()
 //                mHandler.post {
 
 //                    sourceselectedCountryName = Locale.getDefault().language

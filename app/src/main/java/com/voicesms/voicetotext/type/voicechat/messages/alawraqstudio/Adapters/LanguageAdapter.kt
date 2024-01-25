@@ -2,23 +2,12 @@ package com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Adapters
 
 import Language
 import android.content.Context
-import android.content.Intent
-import android.content.res.Configuration
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.BaseActivity
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.GuideActivity
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.LangungeActivity
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.MainActivity
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.SplashActivity
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ItemCategoryBinding
-import com.zeugmasolutions.localehelper.LocaleHelper
 import io.paperdb.Paper
-import java.util.Locale
 
 class LanguageAdapter(val ctxt: Context, val languagesList: ArrayList<Language>,var selectedPosition:Int?) :
     RecyclerView.Adapter<LanguageAdapter.viewHolder>() {

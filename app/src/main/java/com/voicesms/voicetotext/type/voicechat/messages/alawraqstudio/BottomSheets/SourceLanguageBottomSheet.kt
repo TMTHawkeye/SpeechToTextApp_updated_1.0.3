@@ -21,6 +21,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.mlkit.common.model.RemoteModelManager
 import com.google.mlkit.nl.translate.TranslateRemoteModel
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Adapters.LanguageListAdapter
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.loadLang
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Interfaces.LanguageSelectionListener
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ViewModel.SMSViewModel
@@ -60,7 +61,7 @@ class SourceLanguageBottomSheet(var ctxt: Context) : BottomSheetDialogFragment()
             getDownloadedmodels()
         }
 //        mExecutor.execute {
-        val langList = viewModel.getLanguages()
+        val langList = loadLang()
 //            mHandler.post {
         adapter = LanguageListAdapter(ctxt, langList, null, viewModel)
         recyclerView.adapter = adapter

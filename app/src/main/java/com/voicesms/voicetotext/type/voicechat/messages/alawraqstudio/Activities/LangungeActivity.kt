@@ -16,7 +16,7 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivityLangungeBinding
 import com.zeugmasolutions.localehelper.LocaleHelper
 import io.paperdb.Paper
-import org.smrtobjads.ads.SmartAds
+import org.smrtobjads.ads.ads.SmartAds
 import org.smrtobjads.ads.ads.models.AdmobNative
 import org.smrtobjads.ads.ads.models.ApAdError
 import org.smrtobjads.ads.billings.AppPurchase

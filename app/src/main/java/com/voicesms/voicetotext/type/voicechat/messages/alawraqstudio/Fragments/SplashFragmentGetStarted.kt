@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.GuideActivity
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.MainActivity
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.SplashActivity
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.FragmentSplashGetStartedBinding
 

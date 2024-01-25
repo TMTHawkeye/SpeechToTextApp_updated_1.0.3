@@ -3,7 +3,6 @@ package com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activitie
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.text.Editable
@@ -13,13 +12,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdLoader
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.VideoOptions
 import com.google.android.gms.ads.nativead.NativeAd
-import com.google.android.gms.ads.nativead.NativeAdOptions
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
 //import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdManager
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.copyToClipbard
@@ -29,7 +22,7 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ViewModel.
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivitySubCategorySearchBinding
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.NativeAdTemplateBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.smrtobjads.ads.SmartAds
+import org.smrtobjads.ads.ads.SmartAds
 import org.smrtobjads.ads.ads.models.AdmobNative
 import org.smrtobjads.ads.ads.models.ApAdError
 import org.smrtobjads.ads.billings.AppPurchase

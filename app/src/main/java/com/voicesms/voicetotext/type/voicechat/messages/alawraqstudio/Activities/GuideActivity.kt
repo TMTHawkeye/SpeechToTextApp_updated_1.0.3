@@ -2,18 +2,14 @@
 
 package com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities
 
-import android.content.Context
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.View
+import android.widget.FrameLayout
 import androidx.activity.OnBackPressedCallback
-import androidx.constraintlayout.widget.ConstraintLayout
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdRequest
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.LoadAdError
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Adapters.SplashPagerAdapter
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Fragments.SplashFragmentGetStarted
@@ -21,47 +17,33 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Fragments.
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.isInternetAvailable
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivityGuideBinding
-import kotlinx.coroutines.launch
-import org.smrtobjads.ads.SmartAds
+import org.smrtobjads.ads.ads.SmartAds
+import org.smrtobjads.ads.callbacks.AdCallback
 import org.smrtobjads.ads.callbacks.AperoAdCallback
 
 class GuideActivity : BaseActivity() {
     private lateinit var binding: ActivityGuideBinding
-    private lateinit var adView: AdView
-    private val adSize: AdSize
-        get() {
-            val display = windowManager.defaultDisplay
-            val outMetrics = DisplayMetrics()
-            display.getMetrics(outMetrics)
 
-            val density = outMetrics.density
-
-            var adWidthPixels = binding.adViewContainer.width.toFloat()
-            if (adWidthPixels == 0f) {
-                adWidthPixels = outMetrics.widthPixels.toFloat()
-            }
-
-            val adWidth = (adWidthPixels / density).toInt()
-            return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
-                this@GuideActivity,
-                adWidth
-            )
-        }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGuideBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        adView = AdView(this@GuideActivity)
-        binding.adViewContainer.addView(adView)
 
         if (isInternetAvailable(this@GuideActivity)) {
 
 //            SmartAds.getInstance().loadBanner(this, BuildConfig.guide_Screen_banner)
-            SmartAds.getInstance().loadBanner(this@GuideActivity,BuildConfig.guide_Screen_banner,AperoAdCallback())
+//            SmartAds.getInstance().loadBanner(this@GuideActivity,
+//                BuildConfig.guide_Screen_banner,AperoAdCallback())
+
+
+            val welcomeAdContainer = binding.welcomeNativecontainer.findViewById<View>(R.id.welcomeBannerAd)
+            val fl_adplaceholder = welcomeAdContainer.findViewById<FrameLayout>(org.smrtobjads.ads.R.id.banner_container)
+            val shimmerFrameLayout = welcomeAdContainer.findViewById<ShimmerFrameLayout>(org.smrtobjads.ads.R.id.shimmer_container_banner)
+            SmartAds.getInstance().loadBanner(this@GuideActivity,BuildConfig.categoriesScreen_colapsible_Banner,fl_adplaceholder,shimmerFrameLayout)
         }
         else{
 //            binding.shimmerLayout.visibility=View.GONE
-            binding.adViewContainer.visibility=View.GONE
+            binding.welcomeNativecontainer.visibility=View.GONE
         }
 
         val fragmentList = listOf(SplashFragmentNext(), SplashFragmentGetStarted())

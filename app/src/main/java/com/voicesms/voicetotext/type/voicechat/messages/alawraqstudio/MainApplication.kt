@@ -18,9 +18,9 @@ import org.jetbrains.annotations.NotNull
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
-import org.smrtobjads.ads.SmartAds
 import org.smrtobjads.ads.ads.AdsParent
 import org.smrtobjads.ads.ads.AppOpenManager
+import org.smrtobjads.ads.ads.SmartAds
 import org.smrtobjads.ads.ads.SmartAdsConfig
 import org.smrtobjads.ads.ads.models.SmartObjAdmob
 import org.smrtobjads.ads.adsutils.StorageCommon
@@ -195,7 +195,6 @@ class MainApplication : AdsParent() {
         SmartObjAdmob.getInstance().setDisableAdResumeWhenClickAds(true)
         SmartObjAdmob.getInstance().setOpenActivityAfterShowInterAds(false)
         SmartAds.getInstance().setCountClickToShowAds(1)
-
 //        initBilling();
     }
 

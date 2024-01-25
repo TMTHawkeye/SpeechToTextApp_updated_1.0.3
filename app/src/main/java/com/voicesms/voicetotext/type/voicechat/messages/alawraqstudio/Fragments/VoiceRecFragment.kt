@@ -22,7 +22,6 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import com.airbnb.lottie.LottieDrawable
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdLoader
@@ -37,18 +36,14 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfi
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdsInterCallBack
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.PreloadAdsUtils
 //import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdManager
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.dismissLoadingDialog
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.showLoadingDialog
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.MainApplication
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ViewModel.RecordingViewModel
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.CustomDialogSaveFileBinding
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.FragmentVoiceRecBinding
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.NativeAdTemplateBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.smrtobjads.ads.SmartAds
+import org.smrtobjads.ads.ads.SmartAds
 import org.smrtobjads.ads.ads.models.AdmobNative
 import org.smrtobjads.ads.ads.models.ApAdError
 import org.smrtobjads.ads.billings.AppPurchase

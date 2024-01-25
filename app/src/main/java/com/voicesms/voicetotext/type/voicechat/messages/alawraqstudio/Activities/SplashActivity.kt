@@ -18,7 +18,7 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.MainApplic
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivitySplashBinding
 import io.paperdb.Paper
 import kotlinx.coroutines.launch
-import org.smrtobjads.ads.SmartAds
+import org.smrtobjads.ads.ads.SmartAds
 import org.smrtobjads.ads.ads.models.AdmobNative
 import org.smrtobjads.ads.ads.models.ApAdError
 import org.smrtobjads.ads.ads.models.ApInterstitialAd

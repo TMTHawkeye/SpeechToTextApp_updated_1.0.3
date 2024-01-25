@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.SavedFilesActivity
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.VoiceSearchCategoryActivity
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdsInterCallBack
@@ -19,10 +18,9 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClas
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.MainApplication
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.FragmentVoiceSearchBinding
-import org.smrtobjads.ads.SmartAds
+import org.smrtobjads.ads.ads.SmartAds
 import org.smrtobjads.ads.ads.models.AdmobNative
 import org.smrtobjads.ads.ads.models.ApAdError
-import org.smrtobjads.ads.ads.models.ApInterstitialAd
 import org.smrtobjads.ads.billings.AppPurchase
 import org.smrtobjads.ads.callbacks.AperoAdCallback
 

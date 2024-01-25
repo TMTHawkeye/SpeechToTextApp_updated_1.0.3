@@ -20,7 +20,7 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ViewModel.RecordingViewModel
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivitySavedFilesBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.smrtobjads.ads.SmartAds
+import org.smrtobjads.ads.ads.SmartAds
 import org.smrtobjads.ads.ads.models.AdmobNative
 import org.smrtobjads.ads.ads.models.ApAdError
 import org.smrtobjads.ads.billings.AppPurchase

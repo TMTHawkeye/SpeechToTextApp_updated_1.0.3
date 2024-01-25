@@ -3,7 +3,6 @@
     android:id="@+id/ll_ads"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/ads_bg"
     android:orientation="vertical">
 
     <FrameLayout
@@ -11,12 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
+
     <FrameLayout
         android:id="@+id/fl_shimemr"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent">
-        <include layout="@layout/banner_shimmer" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/load_fb_banner" />
     </FrameLayout>
 </RelativeLayout>

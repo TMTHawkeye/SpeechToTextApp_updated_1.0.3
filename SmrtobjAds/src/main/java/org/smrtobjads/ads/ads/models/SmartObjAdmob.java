@@ -886,10 +886,10 @@ public class SmartObjAdmob {
      * @param mActivity
      * @param id
      */
-    public void loadBanner(final Activity mActivity, String id) {
-        final FrameLayout adContainer = mActivity.findViewById(R.id.banner_container);
-        final ShimmerFrameLayout containerShimmer = mActivity.findViewById(R.id.shimmer_container_banner);
-        loadBanner(mActivity, id, adContainer, containerShimmer, null, false, BANNER_INLINE_LARGE_STYLE);
+    public void loadBanner(final Activity mActivity, String id,FrameLayout frame, ShimmerFrameLayout shimmer) {
+//        final FrameLayout adContainer = mActivity.findViewById(R.id.banner_container);
+//        final ShimmerFrameLayout containerShimmer = mActivity.findViewById(R.id.shimmer_container_banner);
+        loadBanner(mActivity, id, frame, shimmer, null, false, BANNER_INLINE_LARGE_STYLE);
     }
 
     /**
@@ -1158,8 +1158,8 @@ public class SmartObjAdmob {
         }
     }
 
-    private void loadCollapsibleBanner(final Activity mActivity, String id, String gravity, final FrameLayout adContainer,
-                                       final ShimmerFrameLayout containerShimmer, final AdCallback callback) {
+    public void loadCollapsibleBanner(final Activity mActivity, String id, String gravity,  FrameLayout adContainer,
+                                        ShimmerFrameLayout containerShimmer, final AdCallback callback) {
         if (Arrays.asList(mActivity.getResources().getStringArray(R.array.list_id_test)).contains(id)) {
             showTestIdAlert(mActivity, BANNER_ADS, id);
         }

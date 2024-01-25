@@ -2,35 +2,23 @@ package com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activitie
 
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.util.Log
-import android.view.Gravity
 import android.view.View
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.recyclerview.widget.GridLayoutManager
+import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.google.ads.mediation.admob.AdMobAdapter
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
-import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.LoadAdError
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Adapters.CategoryAdapter
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.isInternetAvailable
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.MainApplication
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ModelClasses.CategoryModel
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ViewModel.VoiceSearchViewModel
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivityVoiceSearchCategoryBinding
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.smrtobjads.ads.SmartAds
+import org.smrtobjads.ads.ads.SmartAds
 import org.smrtobjads.ads.ads.models.AdmobNative
 import org.smrtobjads.ads.ads.models.ApAdError
 import org.smrtobjads.ads.billings.AppPurchase
 import org.smrtobjads.ads.callbacks.AdCallback
 import org.smrtobjads.ads.callbacks.AperoAdCallback
-import java.util.UUID
 import java.util.concurrent.atomic.AtomicBoolean
 
 class VoiceSearchCategoryActivity : BaseActivity() {
@@ -59,10 +47,17 @@ class VoiceSearchCategoryActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityVoiceSearchCategoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        adView = AdView(this@VoiceSearchCategoryActivity)
+
+        val welcomeAdContainer = binding.welcomeNativecontainer.findViewById<View>(R.id.welcomeBannerAd)
+        val fl_adplaceholder = welcomeAdContainer.findViewById<FrameLayout>(org.smrtobjads.ads.R.id.banner_container)
+        val shimmerFrameLayout = welcomeAdContainer.findViewById<ShimmerFrameLayout>(org.smrtobjads.ads.R.id.shimmer_container_banner)
+        SmartAds.getInstance().loadCollapsibleBanner(this@VoiceSearchCategoryActivity,BuildConfig.categoriesScreen_colapsible_Banner,"bottom",fl_adplaceholder,shimmerFrameLayout,object : AdCallback(){
+
+        })
+
 
         loadsubCategoryNative()
-        SmartAds.getInstance().loadCollapsibleBanner(this@VoiceSearchCategoryActivity, BuildConfig.guide_Screen_banner,"bottom",AdCallback())
+//        SmartAds.getInstance().loadCollapsibleBanner(this, BuildConfig.categoriesScreen_colapsible_Banner,"bottom",fl_adplaceholder,shimmerFrameLayout,AdCallback())
 
 //        binding.adViewContainer.addView(adView)
 //        if (isInternetAvailable(this@VoiceSearchCategoryActivity)) {

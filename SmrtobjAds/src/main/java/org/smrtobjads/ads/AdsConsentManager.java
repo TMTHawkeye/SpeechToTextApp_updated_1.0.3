@@ -10,6 +10,8 @@ import com.google.android.ump.ConsentInformation;
 import com.google.android.ump.ConsentRequestParameters;
 import com.google.android.ump.UserMessagingPlatform;
 
+import org.smrtobjads.ads.ads.SmartAds;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AdsConsentManager {

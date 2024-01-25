@@ -28,6 +28,7 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfi
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Entities.ConversationEntity
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.extractLanguageFromCountry
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.getCountryName
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.loadLang
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Interfaces.ConversationAdapterListener
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Interfaces.LanguageSelectionListener
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ModelClasses.LanguageModel
@@ -344,7 +345,9 @@ class VoiceTalkFragment : Fragment(), LanguageSelectionListener, ConversationAda
     private fun initLanguages() {
         try {
 //            mExecutor.execute {
-                listLanguages = m_viewmodel.getLanguages()
+            listLanguages = loadLang()
+
+//                listLanguages = m_viewmodel.getLanguages()
 //                mHandler.post {
 //                    sourceselectedCountryName = Locale.getDefault().language
 //                    sourceselectedCode = Locale.getDefault().country

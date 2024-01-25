@@ -1,26 +1,18 @@
 package com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
-import android.view.View;
-import android.widget.FrameLayout;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
- 
-import com.facebook.shimmer.ShimmerFrameLayout;
-import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.nativead.NativeAd;
+
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig;
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.MainApplication;
 
 import org.smrtobjads.ads.AdFuntionsKt;
-import org.smrtobjads.ads.SmartAds;
+import org.smrtobjads.ads.ads.SmartAds;
 import org.smrtobjads.ads.ads.models.ApAdError;
 import org.smrtobjads.ads.ads.models.ApInterstitialAd;
 import org.smrtobjads.ads.billings.AppPurchase;
-import org.smrtobjads.ads.callbacks.AdCallback;
 import org.smrtobjads.ads.callbacks.AperoAdCallback;
  
 

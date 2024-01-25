@@ -1,4 +1,4 @@
-package org.smrtobjads.ads;
+package org.smrtobjads.ads.ads;
 
 
 import android.annotation.SuppressLint;
@@ -26,8 +26,6 @@ import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
 
 import org.smrtobjads.ads.ads.models.SmartObjAdmob;
 import org.smrtobjads.ads.callbacks.AdCallback;
-import org.smrtobjads.ads.ads.SmartAdsConfig;
-import org.smrtobjads.ads.ads.AppOpenManager;
 import org.smrtobjads.ads.ads.models.ApAdError;
 import org.smrtobjads.ads.ads.models.ApInterstitialAd;
 import org.smrtobjads.ads.ads.models.AdmobNative;
@@ -134,10 +132,10 @@ public class SmartAds {
         return adConfig;
     }
 
-    public void loadBanner(final Activity mActivity, String id) {
+    public void loadBanner(final Activity mActivity, String id,FrameLayout frame, ShimmerFrameLayout shimmer) {
         switch (adConfig.getMediationProvider()) {
             case SmartAdsConfig.PROVIDER_ADMOB:
-                SmartObjAdmob.getInstance().loadBanner(mActivity, id);
+                SmartObjAdmob.getInstance().loadBanner(mActivity, id,frame, shimmer);
                 break;
 
         }
@@ -176,8 +174,8 @@ public class SmartAds {
         }
     }
 
-    public void loadCollapsibleBanner(final Activity activity, String id, String gravity, AdCallback adCallback) {
-        SmartObjAdmob.getInstance().loadCollapsibleBanner(activity, id, gravity, adCallback);
+    public void loadCollapsibleBanner(final Activity activity, String id, String gravity,FrameLayout frame, ShimmerFrameLayout shimmer, AdCallback adCallback) {
+        SmartObjAdmob.getInstance().loadCollapsibleBanner(activity, id, gravity,frame,shimmer, adCallback);
     }
 
     public void loadBannerFragment(final Activity mActivity, String id, final View rootView) {
@@ -626,8 +624,8 @@ public class SmartAds {
 
     public void loadNativeAd(final Activity activity, String id,
                              int layoutCustomNative) {
-        FrameLayout adPlaceHolder = activity.findViewById(R.id.fl_adplaceholder);
-        ShimmerFrameLayout containerShimmerLoading = activity.findViewById(R.id.shimmer_container_native);
+        FrameLayout adPlaceHolder = activity.findViewById(org.smrtobjads.ads.R.id.fl_adplaceholder);
+        ShimmerFrameLayout containerShimmerLoading = activity.findViewById(org.smrtobjads.ads.R.id.shimmer_container_native);
 
         if (AppPurchase.getInstance().isPurchased(activity)) {
             if (containerShimmerLoading != null) {

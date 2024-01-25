@@ -12,27 +12,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/ad_view_container" />
+        app:layout_constraintBottom_toTopOf="@id/welcomeNativecontainer" />
 
 
 
 
-    <FrameLayout
-        android:id="@+id/ad_view_container"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/welcomeNativecontainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_height="@dimen/_40sdp"
         android:layout_alignParentBottom="true"
-        android:background="@color/transparent"
-        android:paddingVertical="@dimen/_2sdp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:background="@color/dark_grey"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
-        <include
-            android:id="@+id/splashNativeAd"
-            layout="@layout/banner_shimmer"/>
+        app:layout_constraintStart_toStartOf="parent">
 
-    </FrameLayout>
+        <include
+            android:id="@+id/welcomeBannerAd"
+            layout="@layout/layout_banner_control"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
 
