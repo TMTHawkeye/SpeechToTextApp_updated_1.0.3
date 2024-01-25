@@ -357,6 +357,10 @@ android {
 
         }
     }
+
+    lintOptions {
+        isCheckReleaseBuilds = false
+    }
 }
 
 dependencies {

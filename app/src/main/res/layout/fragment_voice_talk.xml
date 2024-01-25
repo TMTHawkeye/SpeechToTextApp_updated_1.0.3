@@ -195,13 +195,13 @@
         android:layout_marginEnd="@dimen/_20ssp"
         android:layout_marginBottom="@dimen/_10ssp"
         android:src="@drawable/speak_icon"
-        app:layout_constraintBottom_toTopOf="@id/ad_view_container"
+        app:layout_constraintBottom_toTopOf="@id/welcomeNativecontainer"
         app:layout_constraintEnd_toEndOf="parent" />
 
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/welcomeNativecontainer"
         android:paddingVertical="@dimen/_2sdp"
-        android:id="@+id/ad_view_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -210,7 +210,18 @@
         android:background="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <include
+            android:id="@+id/welcomeBannerAd"
+            layout="@layout/layout_banner_control"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

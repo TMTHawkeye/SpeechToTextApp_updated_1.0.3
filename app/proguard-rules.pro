@@ -29,6 +29,7 @@
 #-keep class com.google.mlkit.common.** { *; }
 #-keep class com.google.mlkit.vision.** { *; }
 #-keep class com.google.mlkit.common.sdkinternal.** { *; }
-
+-dontwarn com.facebook.infer.annotation.Nullsafe$Mode
+-dontwarn com.facebook.infer.annotation.Nullsafe
 -dontwarn com.google.mlkit.common.sdkinternal.LibraryVersion
 

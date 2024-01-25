@@ -31,6 +31,7 @@ class MainApplication : AdsParent() {
 
     private var currentActivity: Activity? = null
 
+
     companion object {
         private lateinit var adsClass: MainApplication
 

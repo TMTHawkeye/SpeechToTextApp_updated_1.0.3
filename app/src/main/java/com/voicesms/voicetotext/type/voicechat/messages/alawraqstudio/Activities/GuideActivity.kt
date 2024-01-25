@@ -30,19 +30,13 @@ class GuideActivity : BaseActivity() {
         setContentView(binding.root)
 
         if (isInternetAvailable(this@GuideActivity)) {
-
-//            SmartAds.getInstance().loadBanner(this, BuildConfig.guide_Screen_banner)
-//            SmartAds.getInstance().loadBanner(this@GuideActivity,
-//                BuildConfig.guide_Screen_banner,AperoAdCallback())
-
-
+            binding.welcomeNativecontainer.visibility=View.VISIBLE
             val welcomeAdContainer = binding.welcomeNativecontainer.findViewById<View>(R.id.welcomeBannerAd)
             val fl_adplaceholder = welcomeAdContainer.findViewById<FrameLayout>(org.smrtobjads.ads.R.id.banner_container)
             val shimmerFrameLayout = welcomeAdContainer.findViewById<ShimmerFrameLayout>(org.smrtobjads.ads.R.id.shimmer_container_banner)
             SmartAds.getInstance().loadBanner(this@GuideActivity,BuildConfig.categoriesScreen_colapsible_Banner,fl_adplaceholder,shimmerFrameLayout)
         }
         else{
-//            binding.shimmerLayout.visibility=View.GONE
             binding.welcomeNativecontainer.visibility=View.GONE
         }
 
@@ -58,53 +52,6 @@ class GuideActivity : BaseActivity() {
 
         })
     }
-
-//    private fun loadBanner() {
-//        adView.adUnitId = BuildConfig.guide_Screen_banner
-//        adView.setAdSize(adSize)
-//        adView.background = getDrawable(R.color.white)
-//        val adRequest = AdRequest.Builder().build()
-//        adView.loadAd(adRequest)
-//
-//        adView.adListener = object : AdListener() {
-//            override fun onAdOpened() {
-//                val layoutParams = adView.layoutParams as ConstraintLayout.LayoutParams
-//                layoutParams.setMargins(
-//                    layoutParams.leftMargin,
-//                    layoutParams.topMargin,
-//                    layoutParams.rightMargin,
-//                    20
-//                )
-//                adView.layoutParams = layoutParams
-//            }
-//
-//            override fun onAdClosed() {
-//                val layoutParams = adView.layoutParams as ConstraintLayout.LayoutParams
-//                layoutParams.setMargins(
-//                    layoutParams.leftMargin,
-//                    layoutParams.topMargin,
-//                    layoutParams.rightMargin,
-//                    0
-//                )
-//                adView.layoutParams = layoutParams
-//            }
-//
-//            override fun onAdLoaded() {
-//                super.onAdLoaded()
-////                binding.shimmerLayout.stopShimmer()
-////                binding.shimmerLayout.visibility = View.GONE
-//
-//            }
-//
-//            override fun onAdFailedToLoad(p0: LoadAdError) {
-//                super.onAdFailedToLoad(p0)
-////                binding.shimmerLayout.visibility = View.GONE
-////                binding.adViewContainer.visibility = View.GONE
-//
-//            }
-//        }
-//
-//    }
 
     fun navigateToNextFragment() {
         binding.viewPager.currentItem = 1

@@ -85,10 +85,10 @@ class LauncherActivity : BaseActivity() , UMPResultListener{
     private val typeAdsSplash = "app_open_start"
     private fun loadAdsSplash() {
         if (AppPurchase.getInstance().isPurchased(this)) {
-            MainApplication.getAdApplication()?.isAdCloseSplash?.postValue(true)
+            MainApplication.getAdApplication().isAdCloseSplash?.postValue(true)
             startMainActivity()
         } else {
-            MainApplication.getAdApplication()?.isAdCloseSplash?.postValue(false)
+           MainApplication.getAdApplication()?.isAdCloseSplash?.postValue(false)
 
 //            if (typeAdsSplash == "app_open_start"){
                 AppOpenManager.getInstance().loadOpenAppAdSplash(
@@ -106,14 +106,14 @@ class LauncherActivity : BaseActivity() , UMPResultListener{
                         override fun onNextAction() {
                             super.onNextAction()
                             if (isDestroyed || isFinishing) return
-                            MainApplication.getAdApplication()?.isAdCloseSplash?.postValue(true)
+                           MainApplication.getAdApplication()?.isAdCloseSplash?.postValue(true)
                             startMainActivity()
                         }
 
                         override fun onAdFailedToLoad(i: LoadAdError?) {
                             super.onAdFailedToLoad(i)
                             if (isDestroyed || isFinishing) return
-                            MainApplication.getAdApplication()?.isAdCloseSplash?.postValue(true)
+                           MainApplication.getAdApplication()?.isAdCloseSplash?.postValue(true)
                             startMainActivity()
                         }
                     }
@@ -129,13 +129,13 @@ class LauncherActivity : BaseActivity() , UMPResultListener{
 //                        override fun onAdFailedToLoad(adError: ApAdError?) {
 //                            super.onAdFailedToLoad(adError)
 //                            if (isDestroyed || isFinishing) return
-//                            AdsClass.getAdApplication()?.isAdCloseSplash?.postValue(true)
+//                            MainApplication.getAdApplication()?.isAdCloseSplash?.postValue(true)
 //                        }
 //
 //                        override fun onNextAction() {
 //                            super.onNextAction()
 //                            if (isDestroyed || isFinishing) return
-//                            AdsClass.getAdApplication()?.isAdCloseSplash?.postValue(true)
+//                            MainApplication.getAdApplication()?.isAdCloseSplash?.postValue(true)
 //                            LoadTheNextActivity()
 //                        }
 //
@@ -163,14 +163,14 @@ class LauncherActivity : BaseActivity() , UMPResultListener{
                 override fun onAdFailedToShow(adError: AdError?) {
                     super.onAdFailedToShow(adError)
                     if (isDestroyed || isFinishing) return
-                    MainApplication.getAdApplication()?.isAdCloseSplash?.postValue(true)
+                   MainApplication.getAdApplication()?.isAdCloseSplash?.postValue(true)
                     startMainActivity()
                 }
 
                 override fun onAdClosed() {
                     super.onAdClosed()
                     if (isDestroyed || isFinishing) return
-                    MainApplication.getAdApplication()?.isAdCloseSplash?.postValue(true)
+                   MainApplication.getAdApplication()?.isAdCloseSplash?.postValue(true)
                     startMainActivity()
                 }
             }
@@ -188,12 +188,12 @@ class LauncherActivity : BaseActivity() , UMPResultListener{
                 object : AperoAdCallback() {
                     override fun onNativeAdLoaded(nativeAd: AdmobNative) {
                         super.onNativeAdLoaded(nativeAd)
-                        MainApplication.getAdApplication()?.getStorageCommon()?.nativeAdsLanguage?.postValue(nativeAd)
+                       MainApplication.getAdApplication()?.getStorageCommon()?.nativeAdsLanguage?.postValue(nativeAd)
                     }
 
                     override fun onAdFailedToLoad(adError: ApAdError?) {
                         super.onAdFailedToLoad(adError)
-                        MainApplication.getAdApplication()?.getStorageCommon()?.nativeAdsLanguage?.postValue(null)
+                       MainApplication.getAdApplication()?.getStorageCommon()?.nativeAdsLanguage?.postValue(null)
                     }
                 }
             )
@@ -211,12 +211,12 @@ class LauncherActivity : BaseActivity() , UMPResultListener{
                 object : AperoAdCallback() {
                     override fun onNativeAdLoaded(nativeAd: AdmobNative) {
                         super.onNativeAdLoaded(nativeAd)
-                        MainApplication.getAdApplication()?.getStorageCommon()?.welcomeNative?.postValue(nativeAd)
+                       MainApplication.getAdApplication()?.getStorageCommon()?.welcomeNative?.postValue(nativeAd)
                     }
 
                     override fun onAdFailedToLoad(adError: ApAdError?) {
                         super.onAdFailedToLoad(adError)
-                        MainApplication.getAdApplication()?.getStorageCommon()?.welcomeNative?.postValue(null)
+                       MainApplication.getAdApplication()?.getStorageCommon()?.welcomeNative?.postValue(null)
                     }
                 }
             )
@@ -306,7 +306,7 @@ class LauncherActivity : BaseActivity() , UMPResultListener{
                 override fun onAdFailedToShow(adError: ApAdError?) {
                     super.onAdFailedToShow(adError)
                     if (isDestroyed || isFinishing) return
-                    MainApplication.getAdApplication()?.isAdCloseSplash?.postValue(true)
+                   MainApplication.getAdApplication()?.isAdCloseSplash?.postValue(true)
                 }
 
                 override fun onNextAction() {
@@ -318,7 +318,7 @@ class LauncherActivity : BaseActivity() , UMPResultListener{
                 override fun onAdClosed() {
                     super.onAdClosed()
                     if (isDestroyed || isFinishing) return
-                    MainApplication.getAdApplication()?.isAdCloseSplash?.postValue(true)
+                   MainApplication.getAdApplication()?.isAdCloseSplash?.postValue(true)
                 }
             }, 1000)
         } else {
@@ -334,14 +334,14 @@ class LauncherActivity : BaseActivity() , UMPResultListener{
                     override fun onAdFailedToShow(adError: AdError?) {
                         super.onAdFailedToShow(adError)
                         if (isDestroyed || isFinishing) return
-                        MainApplication.getAdApplication()?.isAdCloseSplash?.postValue(true)
+                       MainApplication.getAdApplication()?.isAdCloseSplash?.postValue(true)
                         startMainActivity()
                     }
 
                     override fun onAdClosed() {
                         super.onAdClosed()
                         if (isDestroyed || isFinishing) return
-                        MainApplication.getAdApplication()?.isAdCloseSplash?.postValue(true)
+                       MainApplication.getAdApplication()?.isAdCloseSplash?.postValue(true)
                         startMainActivity()
                     }
                 },

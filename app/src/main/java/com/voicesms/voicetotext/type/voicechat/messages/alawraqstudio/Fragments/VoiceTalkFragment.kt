@@ -13,11 +13,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
@@ -28,6 +30,7 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfi
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Entities.ConversationEntity
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.extractLanguageFromCountry
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.getCountryName
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.isInternetAvailable
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.loadLang
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Interfaces.ConversationAdapterListener
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Interfaces.LanguageSelectionListener
@@ -41,6 +44,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.smrtobjads.ads.ads.SmartAds
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
@@ -62,29 +66,7 @@ class VoiceTalkFragment : Fragment(), LanguageSelectionListener, ConversationAda
     var isSourceBottomSheetVisible = false
     var isRotationInProgress = false
 
-    var mExecutor: ExecutorService = Executors.newSingleThreadExecutor()
-    var mHandler = Handler(Looper.getMainLooper())
 
-    private lateinit var adView: AdView
-    private val adSize: AdSize
-        get() {
-            val display = requireActivity().windowManager.defaultDisplay
-            val outMetrics = DisplayMetrics()
-            display.getMetrics(outMetrics)
-
-            val density = outMetrics.density
-
-            var adWidthPixels = binding.adViewContainer.width.toFloat()
-            if (adWidthPixels == 0f) {
-                adWidthPixels = outMetrics.widthPixels.toFloat()
-            }
-
-            val adWidth = (adWidthPixels / density).toInt()
-            return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
-                requireContext(),
-                adWidth
-            )
-        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -92,12 +74,19 @@ class VoiceTalkFragment : Fragment(), LanguageSelectionListener, ConversationAda
     ): View? {
         binding = FragmentVoiceTalkBinding.inflate(layoutInflater, container, false)
 
-        adView = AdView(requireContext())
 
         initLanguages()
-        binding.adViewContainer.visibility=View.VISIBLE
-        binding.adViewContainer.addView(adView)
-        loadBanner()
+        binding.welcomeNativecontainer.visibility=View.VISIBLE
+        if (isInternetAvailable(requireContext())) {
+            binding.welcomeNativecontainer.visibility=View.VISIBLE
+            val welcomeAdContainer = binding.welcomeNativecontainer.findViewById<View>(R.id.welcomeBannerAd)
+            val fl_adplaceholder = welcomeAdContainer.findViewById<FrameLayout>(org.smrtobjads.ads.R.id.banner_container)
+            val shimmerFrameLayout = welcomeAdContainer.findViewById<ShimmerFrameLayout>(org.smrtobjads.ads.R.id.shimmer_container_banner)
+            SmartAds.getInstance().loadBanner(requireActivity(),BuildConfig.categoriesScreen_colapsible_Banner,fl_adplaceholder,shimmerFrameLayout)
+        }
+        else{
+            binding.welcomeNativecontainer.visibility=View.GONE
+        }
         //     AdManager.getInstance().loadBanner(requireContext(),BuildConfig.banner_voice_talk,adSize)
 
 
@@ -173,15 +162,6 @@ class VoiceTalkFragment : Fragment(), LanguageSelectionListener, ConversationAda
     }
 
 
-
-    override fun onDestroy() {
-        binding.adViewContainer.removeView(adView)
-        // Destroy the AdView to release resources
-        adView.destroy()
-        super.onDestroy()
-
-    }
-
     private fun performRotation() {
         val rotationAnimator = ObjectAnimator.ofFloat(binding.reverseLangId, "rotation", 0f, 360f)
         rotationAnimator.duration = 1000
@@ -242,7 +222,7 @@ class VoiceTalkFragment : Fragment(), LanguageSelectionListener, ConversationAda
 //                        binding.adViewContainer.visibility = View.VISIBLE
                         binding.conversationRV.scrollToPosition(conversations.size - 1)
 //                        binding.adViewContainer.addView(adView)
-                        binding.adViewContainer.visibility = View.VISIBLE
+                        binding.welcomeNativecontainer.visibility = View.VISIBLE
 
 //                        isListAvailable = true
 
@@ -250,7 +230,7 @@ class VoiceTalkFragment : Fragment(), LanguageSelectionListener, ConversationAda
 //                        isListAvailable = false
                         binding.conversationRV.visibility = View.GONE
                         binding.noConversationFoundId.visibility = View.VISIBLE
-                        binding.adViewContainer.visibility = View.GONE
+                        binding.welcomeNativecontainer.visibility = View.GONE
                     }
                 }
             }
@@ -301,7 +281,7 @@ class VoiceTalkFragment : Fragment(), LanguageSelectionListener, ConversationAda
                 ) {
                     lifecycleScope.launch(Dispatchers.IO) {
                         requireActivity().runOnUiThread {
-                            binding.adViewContainer.visibility = View.VISIBLE
+                            binding.welcomeNativecontainer.visibility = View.VISIBLE
                             binding.conversationRV.visibility = View.VISIBLE
                             binding.noConversationFoundId.visibility = View.GONE
                         }
@@ -326,7 +306,7 @@ class VoiceTalkFragment : Fragment(), LanguageSelectionListener, ConversationAda
                 ) {
                     lifecycleScope.launch(Dispatchers.IO) {
                         requireActivity().runOnUiThread {
-                            binding.adViewContainer.visibility = View.VISIBLE
+                            binding.welcomeNativecontainer.visibility = View.VISIBLE
                             binding.conversationRV.visibility = View.VISIBLE
                             binding.noConversationFoundId.visibility = View.GONE
                         }
@@ -403,29 +383,7 @@ class VoiceTalkFragment : Fragment(), LanguageSelectionListener, ConversationAda
     override fun onResume() {
         super.onResume()
         binding.root.clearFocus()
-//        binding.adViewContainer.visibility = View.VISIBLE
-
-//        if (isListAvailable) {
-//            binding.adViewContainer.visibility = View.VISIBLE
-//            binding.adViewContainer.viewTreeObserver.addOnGlobalLayoutListener {
-//                if (!initialLayoutComplete.getAndSet(true)) {
-//                    loadBanner()
-////                                AdManager.getInstance().loadBanner(requireContext(),BuildConfig.banner_voice_talk,adSize)
-//                }
-//            }
-//        } else {
-//            binding.adViewContainer.visibility = View.GONE
-//        }
-//        binding.adViewContainer.visibility=View.VISIBLE
-//        binding.adViewContainer.addView(adView)
-//        loadBanner()
     }
 
-    private fun loadBanner() {
-        adView.adUnitId = BuildConfig.banner_voice_talk
-        adView.setAdSize(adSize)
-        adView.background = requireContext().getDrawable(R.color.white)
-        val adRequest = AdRequest.Builder().build()
-        adView.loadAd(adRequest)
-    }
+
 }
