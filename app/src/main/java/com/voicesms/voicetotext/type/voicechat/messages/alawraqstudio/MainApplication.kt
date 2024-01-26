@@ -63,12 +63,7 @@ class MainApplication : AdsParent() {
 
     override fun onCreate() {
         super.onCreate()
-        FirebaseApp.initializeApp(this);
-//        registerActivityLifecycleCallbacks(this)
-
-//        ProcessLifecycleOwner.get().lifecycle.addObserver(this)
-//        appOpenAdManager = AppOpenAdManager()
-
+        FirebaseApp.initializeApp(this)
         Paper.init(applicationContext)
 
 
@@ -82,99 +77,6 @@ class MainApplication : AdsParent() {
         initAds()
 
     }
-
-    /*private void initBilling() {
-        List<PurchaseItem> listPurchaseItem = new ArrayList<>();
-        listPurchaseItem.add(new PurchaseItem("PRODUCT_ID", AppPurchase.TYPE_IAP.PURCHASE));
-        listPurchaseItem.add(new PurchaseItem("ID_SUBS_WITH_FREE_TRIAL", "trial_id", AppPurchase.TYPE_IAP.SUBSCRIPTION));
-        listPurchaseItem.add(new PurchaseItem("ID_SUBS_WITHOUT_FREE_TRIAL", AppPurchase.TYPE_IAP.SUBSCRIPTION));
-        AppPurchase.getInstance().initBilling(this, listPurchaseItem);
-
-    }*/
-
-
-
-//    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-//    fun onMoveToForeground() {
-//        if(!AdManager.getInstance().isInterstitialShowing) {
-//            currentActivity?.let { AdManager.getInstance().showAdIfAvailable(it) }
-//        }
-//        else{
-//            Log.d("TAG", "onMoveToForeground: interstitial is showing so app open will not be shown")
-//        }
-//    }
-
-//    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-//    fun onMoveToForeground() {
-//        if (!AdManager.getInstance().isInterstitialShowing) {
-//            currentActivity?.let {
-//                if (!isLauncherActivity(it)) {
-//                    AdManager.getInstance().showAdIfAvailable(it)
-//                } else {
-//                    Log.d("TAG", "onMoveToForeground: Launcher activity, ad will not be shown.")
-//                }
-//            }
-//        } else {
-//            Log.d("TAG", "onMoveToForeground: Interstitial is showing, so app open will not be shown.")
-//        }
-//    }
-
-    private fun isLauncherActivity(activity: Activity): Boolean {
-        val packageName = activity.packageName
-        val mainIntent = Intent(Intent.ACTION_MAIN, null)
-        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER)
-
-        val pm = activity.packageManager
-        val resolveInfoList: List<ResolveInfo> = pm.queryIntentActivities(mainIntent, 0)
-
-        for (info in resolveInfoList) {
-            if (info.activityInfo.packageName == packageName && info.activityInfo.name == activity.javaClass.name) {
-                return true
-            }
-        }
-
-        return false
-    }
-
-//    override fun onActivityCreated(p0: Activity, p1: Bundle?) {
-//
-//    }
-//
-//    override fun onActivityStarted(activity: Activity) {
-//        if (!AdManager.getInstance().isShowingAd && !AdManager.getInstance().isInterstitialShowing) {
-//            currentActivity = activity
-//        }
-//    }
-//    fun showAdIfAvailable(activity: Activity, onShowAdCompleteListener: OnShowAdCompleteListener) {
-//        // We wrap the showAdIfAvailable to enforce that other classes only interact with MyApplication
-//        // class.
-//        AdManager.getInstance().showAdIfAvailable(activity, onShowAdCompleteListener)
-//    }
-//
-//    interface OnShowAdCompleteListener {
-//        fun onShowAdComplete()
-//    }
-
-//    fun loadAd(activity: Activity) {
-//        if(!AdManager.getInstance().isInterstitialShowing) {
-//            AdManager.getInstance().loadAd(activity)
-//        }
-//    }
-
-//    override fun onActivityResumed(p0: Activity) {
-//    }
-//
-//    override fun onActivityPaused(p0: Activity) {
-//    }
-//
-//    override fun onActivityStopped(p0: Activity) {
-//    }
-//
-//    override fun onActivitySaveInstanceState(p0: Activity, p1: Bundle) {
-//    }
-//
-//    override fun onActivityDestroyed(p0: Activity) {
-//    }
 
 
     private fun initAds() {

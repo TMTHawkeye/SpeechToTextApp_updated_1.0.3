@@ -181,38 +181,50 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
 //                                getTranslation()
 //                            }
 //                    }, 1000)
+                    if(MainApplication.getAdApplication().getStorageCommon().splashInterstitial!=null) {
 
-                    PreloadAdsUtils.getInstance().showInterAlternateByForce(
-                        requireContext(),
-                        MainApplication.getAdApplication().getStorageCommon().splashInterstitial,
-                        false,
-                        object : AdsInterCallBack {
-                            override fun onInterstitialPriorityShowed() {
+                        PreloadAdsUtils.getInstance().showInterAlternateByForce(
+                            requireContext(),
+                            MainApplication.getAdApplication()
+                                .getStorageCommon().splashInterstitial,
+                            false,
+                            object : AdsInterCallBack {
+                                override fun onInterstitialPriorityShowed() {
 
-                            }
+                                }
 
-                            override fun onInterstitialNormalShowed() {
-                            }
+                                override fun onInterstitialNormalShowed() {
+                                }
 
-                            override fun onInterstitialShowed() {
-                                Log.d("TAG_interst", "onInterstitialShowed: Ad showed")
-                            }
+                                override fun onInterstitialShowed() {
+                                    Log.d("TAG_interst", "onInterstitialShowed: Ad showed")
+                                }
 
-                            override fun onAdClosed() {
-                                Log.d("TAG_interst", "onAdClosed: Ad Closed")
-                                getTranslation()
-                                MainApplication.getAdApplication().getStorageCommon().splashInterstitial=null
-                                PreloadAdsUtils.getInstance().loadIntersAlternate(requireContext(), BuildConfig.Translate_Button_inter, BuildConfig.Translate_Button_inter, 2)
+                                override fun onAdClosed() {
+                                    Log.d("TAG_interst", "onAdClosed: Ad Closed")
+                                    getTranslation()
+                                    MainApplication.getAdApplication()
+                                        .getStorageCommon().splashInterstitial = null
+                                    PreloadAdsUtils.getInstance().loadIntersAlternate(
+                                        requireContext(),
+                                        BuildConfig.Translate_Button_inter,
+                                        BuildConfig.Translate_Button_inter,
+                                        2
+                                    )
 
-                            }
+                                }
 
-                            override fun onAdClicked() {
-                                Log.d("TAG_interst", "onAdClicked: Ad clicked")
-                            }
+                                override fun onAdClicked() {
+                                    Log.d("TAG_interst", "onAdClicked: Ad clicked")
+                                }
 
-                            override fun onNextAction() {
-                            }
-                        })
+                                override fun onNextAction() {
+                                }
+                            })
+                    }
+                    else{
+                        getTranslation()
+                    }
                 }
             }
             hideKeyboard()

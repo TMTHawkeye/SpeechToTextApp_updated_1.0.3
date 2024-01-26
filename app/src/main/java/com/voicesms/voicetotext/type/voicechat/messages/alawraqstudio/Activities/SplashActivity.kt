@@ -49,20 +49,20 @@ class SplashActivity : BaseActivity() {
         loadVoiceSMSNative()
 //        loadVoiceRecNative()
 //        loadVoiceSearchNative()
-        if (isInternetAvailable(this@SplashActivity)) {
-//            binding.shimmerViewContainer.visibility = View.VISIBLE
-            binding.frameLayout.visibility = View.VISIBLE
-//            binding.shimmerViewContainer.startShimmer()
-//            AdManager.getInstance().loadNativeAd(
-//                this@SplashActivity,
-//                BuildConfig.native_splash,
-//                binding.adFrame,
-//                binding.shimmerViewContainer
-//            )
-        } else {
-//            binding.shimmerViewContainer.visibility = View.GONE
-            binding.frameLayout.visibility = View.GONE
-        }
+//        if (isInternetAvailable(this@SplashActivity)) {
+////            binding.shimmerViewContainer.visibility = View.VISIBLE
+//            binding.frameLayout.visibility = View.VISIBLE
+////            binding.shimmerViewContainer.startShimmer()
+////            AdManager.getInstance().loadNativeAd(
+////                this@SplashActivity,
+////                BuildConfig.native_splash,
+////                binding.adFrame,
+////                binding.shimmerViewContainer
+////            )
+//        } else {
+////            binding.shimmerViewContainer.visibility = View.GONE
+//            binding.frameLayout.visibility = View.GONE
+//        }
 //        refreshAd()
 //        binding.shimmerViewContainer.startShimmer()
 
@@ -105,35 +105,42 @@ class SplashActivity : BaseActivity() {
 //                        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
 //                    }
 //                })
-            PreloadAdsUtils.getInstance().showInterAlternateByForce(
-                this@SplashActivity,
-                MainApplication.getAdApplication().getStorageCommon().splashInterstitial,
-                false,
-                object : AdsInterCallBack{
-                    override fun onInterstitialPriorityShowed() {
+            if(MainApplication.getAdApplication().getStorageCommon().splashInterstitial!=null) {
+                PreloadAdsUtils.getInstance().showInterAlternateByForce(
+                    this@SplashActivity,
+                    MainApplication.getAdApplication().getStorageCommon().splashInterstitial,
+                    false,
+                    object : AdsInterCallBack {
+                        override fun onInterstitialPriorityShowed() {
 
-                    }
+                        }
 
-                    override fun onInterstitialNormalShowed() {
-                    }
+                        override fun onInterstitialNormalShowed() {
+                        }
 
-                    override fun onInterstitialShowed() {
-                        Log.d("TAG_interst", "onInterstitialShowed: Ad showed")
-                    }
+                        override fun onInterstitialShowed() {
+                            Log.d("TAG_interst", "onInterstitialShowed: Ad showed")
+                        }
 
-                    override fun onAdClosed() {
-                        Log.d("TAG_interst", "onAdClosed: Ad Closed")
-                        MainApplication.getAdApplication().getStorageCommon().splashInterstitial=null
-                        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-                    }
+                        override fun onAdClosed() {
+                            Log.d("TAG_interst", "onAdClosed: Ad Closed")
+                            MainApplication.getAdApplication()
+                                .getStorageCommon().splashInterstitial = null
+                            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                        }
 
-                    override fun onAdClicked() {
-                        Log.d("TAG_interst", "onAdClicked: Ad clicked")
-                    }
+                        override fun onAdClicked() {
+                            Log.d("TAG_interst", "onAdClicked: Ad clicked")
+                        }
 
-                    override fun onNextAction() {
-                    }
-                })
+                        override fun onNextAction() {
+                        }
+
+                    })
+            }
+            else{
+                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+            }
 //            loadInterstitialSplash()
 
 //                }
@@ -185,8 +192,6 @@ class SplashActivity : BaseActivity() {
                 }
             }
         }
-
-
     }
 
     override fun onPause() {

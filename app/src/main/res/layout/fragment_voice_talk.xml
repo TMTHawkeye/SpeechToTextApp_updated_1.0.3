@@ -81,7 +81,7 @@
                     android:layout_marginHorizontal="@dimen/_10ssp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
 
                 <TextView
                     android:id="@+id/toFlag_id"
@@ -102,38 +102,38 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginVertical="@dimen/_10sdp"
+        android:paddingHorizontal="@dimen/_20ssp"
+        app:layout_constraintBottom_toTopOf="@+id/relative_from"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView"
-        app:layout_constraintBottom_toTopOf="@+id/relative_from"
-        android:paddingHorizontal="@dimen/_20ssp" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
     <TextView
         android:id="@+id/no_conversation_found_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:paddingHorizontal="@dimen/_10ssp"
         android:text="@string/no_conversation_found"
         android:textColor="@color/green"
         android:textSize="@dimen/_14ssp"
         android:textStyle="italic"
         android:visibility="gone"
-        android:paddingHorizontal="@dimen/_10ssp"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <RelativeLayout
         android:id="@+id/relative_from"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/_29sdp"
-        android:layout_marginTop="@dimen/_20ssp"
         android:layout_marginStart="@dimen/_20ssp"
+        android:layout_marginTop="@dimen/_20ssp"
         android:layout_marginBottom="@dimen/_10ssp"
         android:background="@drawable/bg_mic"
         app:cardCornerRadius="60dp"
         app:cardElevation="0dp"
-        app:layout_constraintBottom_toTopOf="@id/ad_view_container"
+        app:layout_constraintBottom_toTopOf="@id/welcomeNativecontainer"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
@@ -158,7 +158,8 @@
         android:layout_marginTop="@dimen/_20ssp"
         android:layout_marginBottom="@dimen/_10ssp"
         android:src="@drawable/speak_icon"
-        app:layout_constraintBottom_toTopOf="@id/ad_view_container"        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toTopOf="@id/welcomeNativecontainer"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
     <RelativeLayout
@@ -170,7 +171,7 @@
         android:background="@drawable/bg_mic"
         app:cardCornerRadius="60dp"
         app:cardElevation="0dp"
-        app:layout_constraintBottom_toTopOf="@id/ad_view_container"
+        app:layout_constraintBottom_toTopOf="@id/welcomeNativecontainer"
         app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
@@ -201,16 +202,16 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/welcomeNativecontainer"
-        android:paddingVertical="@dimen/_2sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:layout_alignParentBottom="true"
-        android:backgroundTint="@color/white"
-        android:background="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:background="@color/light_green"
+        android:paddingVertical="@dimen/_2sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
 
         <include
             android:id="@+id/welcomeBannerAd"

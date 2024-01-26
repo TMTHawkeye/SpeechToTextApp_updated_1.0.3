@@ -59,7 +59,6 @@ class LauncherActivity : BaseActivity() , UMPResultListener{
                                 loadLanguageNative()
                             }
                         },4000)
-
                     }
                 }, false)
             } else {
@@ -79,6 +78,7 @@ class LauncherActivity : BaseActivity() , UMPResultListener{
     private fun handleFetchedRemoteConfig() {
         AppPurchase.getInstance().setBillingListener({ integer: Int -> loadAdsSplash() }, 1000)
     }
+
     private val TIMEOUT_SPLASH: Long = 30000
     private val TIME_DELAY_SPLASH: Long = 5000
     //    private val typeAdsSplash = "inter"
@@ -275,21 +275,6 @@ class LauncherActivity : BaseActivity() , UMPResultListener{
         finish()
     }
 
-    override fun onPause() {
-        super.onPause()
-//        appOpenAd = null
-    }
-
-//    override fun onResume() {
-//        super.onResume()
-//        appOpenAd = null
-//    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-//        appOpenAd = null
-    }
-
     override fun onCheckUMPSuccess(consentResult: Boolean) {
         saveConsentState(consentResult)
     }
@@ -349,11 +334,5 @@ class LauncherActivity : BaseActivity() , UMPResultListener{
             )
         }
     }
-
-
-
-
-
-
-
+    
 }
