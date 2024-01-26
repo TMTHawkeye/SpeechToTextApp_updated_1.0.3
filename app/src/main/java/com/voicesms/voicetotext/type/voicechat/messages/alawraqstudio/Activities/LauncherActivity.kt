@@ -71,7 +71,9 @@ class LauncherActivity : BaseActivity() , UMPResultListener{
             }
         }
         else{
-            startMainActivity()
+            Handler().postDelayed({
+                startMainActivity()
+            },5000)
         }
     }
 

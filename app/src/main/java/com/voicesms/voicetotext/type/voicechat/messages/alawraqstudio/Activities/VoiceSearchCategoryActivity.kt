@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.android.gms.ads.LoadAdError
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Adapters.CategoryAdapter
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.MainApplication
@@ -52,7 +53,16 @@ class VoiceSearchCategoryActivity : BaseActivity() {
         val fl_adplaceholder = welcomeAdContainer.findViewById<FrameLayout>(org.smrtobjads.ads.R.id.banner_container)
         val shimmerFrameLayout = welcomeAdContainer.findViewById<ShimmerFrameLayout>(org.smrtobjads.ads.R.id.shimmer_container_banner)
         SmartAds.getInstance().loadCollapsibleBanner(this@VoiceSearchCategoryActivity,BuildConfig.categoriesScreen_colapsible_Banner,"bottom",fl_adplaceholder,shimmerFrameLayout,object : AdCallback(){
+            override fun onAdFailedToLoad(i: LoadAdError?) {
+                super.onAdFailedToLoad(i)
+                binding.welcomeNativecontainer.visibility=View.GONE
+            }
 
+            override fun onAdLoaded() {
+                super.onAdLoaded()
+                binding.welcomeNativecontainer.visibility=View.VISIBLE
+
+            }
         })
 
 

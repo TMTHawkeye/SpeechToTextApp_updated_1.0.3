@@ -35,6 +35,7 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdsInterCallBack
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.PreloadAdsUtils
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.isInternetAvailable
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.MainApplication
 //import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdManager
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
@@ -294,41 +295,57 @@ class VoiceRecFragment : Fragment() {
 //                    if (AdManager.getInstance().interstitialAd != null) {
 //                        showLoadingDialog(progressDialog)
 //                    }
-                    PreloadAdsUtils.getInstance().showInterAlternateByTime(
-                        requireContext(),
-                        MainApplication.getAdApplication().getStorageCommon().splashInterstitial,
-                        false,
-                        object : AdsInterCallBack {
-                            override fun onInterstitialPriorityShowed() {
+                    if(isInternetAvailable(requireContext())) {
+                        PreloadAdsUtils.getInstance().showInterAlternateByTime(
+                            requireContext(),
+                            MainApplication.getAdApplication()
+                                .getStorageCommon().splashInterstitial,
+                            false,
+                            object : AdsInterCallBack {
+                                override fun onInterstitialPriorityShowed() {
 
-                            }
+                                }
 
-                            override fun onInterstitialNormalShowed() {
-                            }
+                                override fun onInterstitialNormalShowed() {
+                                }
 
-                            override fun onInterstitialShowed() {
-                                Log.d("TAG_interst", "onInterstitialShowed: Ad showed")
-                            }
+                                override fun onInterstitialShowed() {
+                                    Log.d("TAG_interst", "onInterstitialShowed: Ad showed")
+                                }
 
-                            override fun onAdClosed() {
-                                Log.d("TAG_interst", "onAdClosed: Ad Closed")
-                                MainApplication.getAdApplication().getStorageCommon().splashInterstitial=null
-                                PreloadAdsUtils.getInstance().loadIntersAlternate(requireContext(), BuildConfig.interstitial_voice_search_category, BuildConfig.Translate_Button_inter, 2)
-                                startActivity(
-                                    Intent(
+                                override fun onAdClosed() {
+                                    Log.d("TAG_interst", "onAdClosed: Ad Closed")
+                                    MainApplication.getAdApplication()
+                                        .getStorageCommon().splashInterstitial = null
+                                    PreloadAdsUtils.getInstance().loadIntersAlternate(
                                         requireContext(),
-                                        SavedFilesActivity::class.java
+                                        BuildConfig.interstitial_voice_search_category,
+                                        BuildConfig.Translate_Button_inter,
+                                        2
                                     )
-                                )
-                            }
+                                    startActivity(
+                                        Intent(
+                                            requireContext(),
+                                            SavedFilesActivity::class.java
+                                        )
+                                    )
+                                }
 
-                            override fun onAdClicked() {
-                                Log.d("TAG_interst", "onAdClicked: Ad clicked")
-                            }
+                                override fun onAdClicked() {
+                                    Log.d("TAG_interst", "onAdClicked: Ad clicked")
+                                }
 
-                            override fun onNextAction() {
-                            }
-                        })
+                                override fun onNextAction() {
+                                }
+                            })
+                    }else{
+                        startActivity(
+                            Intent(
+                                requireContext(),
+                                SavedFilesActivity::class.java
+                            )
+                        )
+                    }
 
 //                    mhandler.postDelayed({
 //                        dismissLoadingDialog(progressDialog)
