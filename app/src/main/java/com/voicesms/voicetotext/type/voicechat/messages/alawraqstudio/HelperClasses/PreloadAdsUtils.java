@@ -8,8 +8,7 @@ import androidx.annotation.Nullable;
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig;
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.MainApplication;
 
-import org.smrtobjads.ads.AdFuntionsKt;
-import org.smrtobjads.ads.ads.SmartAds;
+import org.smrtobjads.ads.SmartAds;
 import org.smrtobjads.ads.ads.models.ApAdError;
 import org.smrtobjads.ads.ads.models.ApInterstitialAd;
 import org.smrtobjads.ads.billings.AppPurchase;
@@ -50,21 +49,22 @@ public class PreloadAdsUtils {
     }
 
     public void loadIntersAlternate(final Context context, String idAdInterPriority, String idAdInterNormal, int interPriority ) {
-        if (AppPurchase.getInstance().isPurchased(context) || MainApplication.getAdApplication().getStorageCommon().splashInterstitial != null) {
+
+        if (AppPurchase.getInstance().isPurchased(context) || MainApplication.getAdApplication().getStorageCommon().interNormal != null) {
             return;
         }
 
-        AdFuntionsKt.getInterstitialAdObject(context,"",idAdInterPriority, idAdInterNormal, interPriority, new AperoAdCallback(){
+        AdsFunctionKtKt.getInterstitialAdObject(context,"",idAdInterPriority, idAdInterNormal, interPriority, new AperoAdCallback(){
             @Override
             public void onInterstitialLoad(@Nullable ApInterstitialAd interstitialAd) {
                 super.onInterstitialLoad(interstitialAd);
-                MainApplication.getAdApplication().getStorageCommon().splashInterstitial = interstitialAd;
+                MainApplication.getAdApplication().getStorageCommon().interNormal = interstitialAd;
             }
 
             @Override
             public void onAdFailedToLoad(@Nullable ApAdError adError) {
                 super.onAdFailedToLoad(adError);
-                MainApplication.getAdApplication().getStorageCommon().splashInterstitial = null;
+                MainApplication.getAdApplication().getStorageCommon().interNormal = null;
             }
 
             @Override
@@ -102,7 +102,7 @@ public class PreloadAdsUtils {
             @Override
             public void onInterstitialLoad(@Nullable ApInterstitialAd interstitialAd) {
                 super.onInterstitialLoad(interstitialAd);
-                adListener.onInterPriorityLoaded(interstitialAd);
+//                adListener.onInterPriorityLoaded(interstitialAd);
             }
 
             @Override

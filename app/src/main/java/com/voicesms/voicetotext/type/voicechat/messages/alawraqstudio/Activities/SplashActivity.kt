@@ -9,16 +9,18 @@ import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.lifecycleScope
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.AdsClass
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdsInterCallBack
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.PreloadAdsUtils
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.dloadLanguage
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.isInternetAvailable
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.MainApplication
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivitySplashBinding
 import io.paperdb.Paper
 import kotlinx.coroutines.launch
-import org.smrtobjads.ads.ads.SmartAds
+import org.smrtobjads.ads.SmartAds
 import org.smrtobjads.ads.ads.models.AdmobNative
 import org.smrtobjads.ads.ads.models.ApAdError
 import org.smrtobjads.ads.ads.models.ApInterstitialAd
@@ -97,7 +99,7 @@ class SplashActivity : BaseActivity() {
 
 
 //            SmartAds.getInstance()
-//                .forceShowInterstitial(this@SplashActivity,MainApplication.getAdApplication()
+//                .forceShowInterstitial(this@SplashActivity,AdsClass.getAdApplication()
 //                    .getStorageCommon()?.splashInterstitial?.getValue() , object : AperoAdCallback() {
 //                    override fun onAdClosed() {
 //                        super.onAdClosed()
@@ -105,10 +107,10 @@ class SplashActivity : BaseActivity() {
 //                        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
 //                    }
 //                })
-            if(MainApplication.getAdApplication().getStorageCommon().splashInterstitial!=null) {
+            if(AdsClass.getAdApplication().getStorageCommon().interNormal!=null) {
                 PreloadAdsUtils.getInstance().showInterAlternateByForce(
                     this@SplashActivity,
-                    MainApplication.getAdApplication().getStorageCommon().splashInterstitial,
+                    AdsClass.getAdApplication().getStorageCommon().interNormal,
                     false,
                     object : AdsInterCallBack {
                         override fun onInterstitialPriorityShowed() {
@@ -124,8 +126,8 @@ class SplashActivity : BaseActivity() {
 
                         override fun onAdClosed() {
                             Log.d("TAG_interst", "onAdClosed: Ad Closed")
-                            MainApplication.getAdApplication()
-                                .getStorageCommon().splashInterstitial = null
+                            AdsClass.getAdApplication()
+                                .getStorageCommon().interNormal = null
                             startActivity(Intent(this@SplashActivity, MainActivity::class.java))
                         }
 
@@ -232,11 +234,11 @@ class SplashActivity : BaseActivity() {
 
     private fun splashNativeAd() {
 
-        MainApplication.getAdApplication()?.getStorageCommon()?.welcomeNative.let { appNative ->
+        AdsClass.getAdApplication()?.getStorageCommon()?.welcomeNative.let { appNative ->
             if (appNative == null || appNative.value == null && !AppPurchase.getInstance().isPurchased) {
                 SmartAds.getInstance().loadNativeAdResultCallback(this@SplashActivity,
                     BuildConfig.native_splash,
-                    org.smrtobjads.ads.R.layout.custom_native_admob_free_size,
+                    R.layout.native_ad_template,
                     object :
                         AperoAdCallback() {
                         override fun onNativeAdLoaded(nativeAd: AdmobNative) {
@@ -277,8 +279,8 @@ class SplashActivity : BaseActivity() {
     }
 
     fun loadVoiceSMSNative(nativeAdId: String = BuildConfig.native_voice_SMS) {
-        if (MainApplication.getAdApplication()
-                .getStorageCommon()?.voiceSMSNative?.getValue() == null
+        if (AdsClass.getAdApplication()
+                .getStorageCommon()?.welcomeNative?.getValue() == null
             && !AppPurchase.getInstance().isPurchased
         ) {
 
@@ -289,14 +291,14 @@ class SplashActivity : BaseActivity() {
                 object : AperoAdCallback() {
                     override fun onNativeAdLoaded(nativeAd: AdmobNative) {
                         super.onNativeAdLoaded(nativeAd)
-                        MainApplication.getAdApplication()
-                            ?.getStorageCommon()?.voiceSMSNative?.postValue(nativeAd)
+                        AdsClass.getAdApplication()
+                            ?.getStorageCommon()?.welcomeNative?.postValue(nativeAd)
                     }
 
                     override fun onAdFailedToLoad(adError: ApAdError?) {
                         super.onAdFailedToLoad(adError)
-                        MainApplication.getAdApplication()
-                            ?.getStorageCommon()?.voiceSMSNative?.postValue(null)
+                        AdsClass.getAdApplication()
+                            ?.getStorageCommon()?.welcomeNative?.postValue(null)
                     }
                 }
             )
@@ -331,7 +333,7 @@ class SplashActivity : BaseActivity() {
 
 
     fun loadInterstitialSplash() {
-//        if (MainApplication.getAdApplication()
+//        if (AdsClass.getAdApplication()
 //                .getStorageCommon()?.splashInterstitial?.getValue() == null
 //            && !AppPurchase.getInstance().isPurchased
 //        ) {
@@ -344,7 +346,7 @@ class SplashActivity : BaseActivity() {
 
                 override fun onInterstitialLoad(interstitialAd: ApInterstitialAd?) {
                     super.onInterstitialLoad(interstitialAd)
-//                        MainApplication.getAdApplication()
+//                        AdsClass.getAdApplication()
 //                            ?.getStorageCommon()?.splashInterstitial?.postValue(interstitialAd)
                 }
 
@@ -352,14 +354,14 @@ class SplashActivity : BaseActivity() {
                     super.onAdFailedToLoad(adError)
                     Log.d("TAG_interst", "onAdFailedToLoad: $adError")
 //                    startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-//                        MainApplication.getAdApplication()
+//                        AdsClass.getAdApplication()
 //                            ?.getStorageCommon()?.splashInterstitial?.postValue(null)
                 }
 
                 override fun onAdFailedToShow(adError: ApAdError?) {
                     super.onAdFailedToShow(adError)
                     Log.d("TAG_interst", "onAdFailedToLoad: $adError")
-//                    MainApplication.getAdApplication()
+//                    AdsClass.getAdApplication()
 //                        ?.getStorageCommon()?.splashInterstitial?.postValue(null)
 //                    startActivity(Intent(this@SplashActivity, MainActivity::class.java))
                 }

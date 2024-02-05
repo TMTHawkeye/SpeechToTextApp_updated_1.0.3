@@ -32,8 +32,8 @@ android {
         applicationId = "com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio"
         minSdk = 24
         targetSdk = 34
-        versionCode = 6
-        versionName = "1.0.5"
+        versionCode = 7
+        versionName = "1.0.6"
         setProperty("archivesBaseName", "alawraq-voicetotext-$versionName")
         signingConfig = signingConfigs.getByName("debug")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -379,6 +379,8 @@ dependencies {
     implementation("androidx.compose.ui:ui-android:1.5.4")
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
+    implementation(files("libs/SmrtobjAds-release.aar"))
+
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -448,7 +450,10 @@ dependencies {
     implementation ("com.zeugmasolutions.localehelper:locale-helper-android:1.5.1")
 
     implementation("com.facebook.shimmer:shimmer:0.5.0@aar")
-//    implementation(files("libs/SmrtobjAds-libs.aar"))
-//    implementation(files("libs/SmrtobjAds.aar"))
-    implementation(project(":SmrtobjAds"))
+//    implementation(project(":SmrtobjAds"))
+//    implementation(files("libs/SmrtobjAds-release.aar"))
+
+    implementation("com.android.billingclient:billing:6.0.1")
+
+
 }

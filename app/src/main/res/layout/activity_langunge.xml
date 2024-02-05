@@ -88,7 +88,7 @@
 
         <include
             android:id="@+id/splashNativeAd"
-            layout="@layout/native_with_media_shimmer" />
+            layout="@layout/native_ad_template_placeholder" />
     </FrameLayout>
 
 

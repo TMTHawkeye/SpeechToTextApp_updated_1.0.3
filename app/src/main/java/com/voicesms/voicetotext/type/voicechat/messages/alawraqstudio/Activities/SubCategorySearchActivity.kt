@@ -13,6 +13,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.ads.nativead.NativeAd
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.AdsClass
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
 //import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdManager
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.copyToClipbard
@@ -22,7 +23,7 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ViewModel.
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivitySubCategorySearchBinding
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.NativeAdTemplateBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.smrtobjads.ads.ads.SmartAds
+import org.smrtobjads.ads.SmartAds
 import org.smrtobjads.ads.ads.models.AdmobNative
 import org.smrtobjads.ads.ads.models.ApAdError
 import org.smrtobjads.ads.billings.AppPurchase
@@ -285,14 +286,15 @@ class SubCategorySearchActivity : BaseActivity() {
 
     private fun subCategoryNativeAd(){
 
-        MainApplication.getAdApplication()?.getStorageCommon()?.subCategoryNative.let { appNative->
+        AdsClass.getAdApplication()?.getStorageCommon()?.welcomeNative.let { appNative->
             if (appNative == null || appNative.value == null && !AppPurchase.getInstance().isPurchased) {
                 SmartAds.getInstance().loadNativeAdResultCallback(this@SubCategorySearchActivity,
-                    BuildConfig.Sub_categories_native,  org.smrtobjads.ads.R.layout.custom_native_admob_free_size, object :
+                    BuildConfig.Sub_categories_native,   R.layout.native_ad_template, object :
                         AperoAdCallback(){
                         override fun onNativeAdLoaded(nativeAd: AdmobNative) {
                             super.onNativeAdLoaded(nativeAd)
-                            SmartAds.getInstance().populateNativeAdView(this@SubCategorySearchActivity, nativeAd, binding.adViewContainer, binding.splashNativeAd.shimmerContainerNative)
+                            SmartAds.getInstance().populateNativeAdView(this@SubCategorySearchActivity, nativeAd, binding.adViewContainer,binding.splashNativeAd.shimmerContainerNative)
+
                         }
 
                         override fun onAdFailedToLoad(adError: ApAdError?) {

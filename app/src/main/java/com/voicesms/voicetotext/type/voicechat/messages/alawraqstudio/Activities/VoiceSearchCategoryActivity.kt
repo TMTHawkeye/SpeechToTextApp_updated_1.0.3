@@ -9,12 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.gms.ads.LoadAdError
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Adapters.CategoryAdapter
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.AdsClass
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.MainApplication
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ModelClasses.CategoryModel
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivityVoiceSearchCategoryBinding
-import org.smrtobjads.ads.ads.SmartAds
+import org.smrtobjads.ads.SmartAds
 import org.smrtobjads.ads.ads.models.AdmobNative
 import org.smrtobjads.ads.ads.models.ApAdError
 import org.smrtobjads.ads.billings.AppPurchase
@@ -49,10 +50,22 @@ class VoiceSearchCategoryActivity : BaseActivity() {
         binding = ActivityVoiceSearchCategoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val welcomeAdContainer = binding.welcomeNativecontainer.findViewById<View>(R.id.welcomeBannerAd)
-        val fl_adplaceholder = welcomeAdContainer.findViewById<FrameLayout>(org.smrtobjads.ads.R.id.banner_container)
-        val shimmerFrameLayout = welcomeAdContainer.findViewById<ShimmerFrameLayout>(org.smrtobjads.ads.R.id.shimmer_container_banner)
-        SmartAds.getInstance().loadCollapsibleBanner(this@VoiceSearchCategoryActivity,BuildConfig.categoriesScreen_colapsible_Banner,"bottom",fl_adplaceholder,shimmerFrameLayout,object : AdCallback(){
+//        val welcomeAdContainer = binding.welcomeNativecontainer.findViewById<View>(R.id.welcomeBannerAd)
+//        val fl_adplaceholder = welcomeAdContainer.findViewById<FrameLayout>(org.smrtobjads.ads.R.id.banner_container)
+//        val shimmerFrameLayout = welcomeAdContainer.findViewById<ShimmerFrameLayout>(org.smrtobjads.ads.R.id.shimmer_container_banner)
+//        SmartAds.getInstance().loadCollapsibleBanner(this@VoiceSearchCategoryActivity,BuildConfig.categoriesScreen_colapsible_Banner,"bottom",fl_adplaceholder,shimmerFrameLayout,object : AdCallback(){
+//            override fun onAdFailedToLoad(i: LoadAdError?) {
+//                super.onAdFailedToLoad(i)
+//                binding.welcomeNativecontainer.visibility=View.GONE
+//            }
+//
+//            override fun onAdLoaded() {
+//                super.onAdLoaded()
+//                binding.welcomeNativecontainer.visibility=View.VISIBLE
+//
+//            }
+//        })
+        SmartAds.getInstance().loadCollapsibleBanner(this@VoiceSearchCategoryActivity,BuildConfig.categoriesScreen_colapsible_Banner,"bottom",object : AdCallback(){
             override fun onAdFailedToLoad(i: LoadAdError?) {
                 super.onAdFailedToLoad(i)
                 binding.welcomeNativecontainer.visibility=View.GONE
@@ -231,7 +244,7 @@ class VoiceSearchCategoryActivity : BaseActivity() {
     }
 
     fun loadsubCategoryNative(nativeAdId: String = BuildConfig.Sub_categories_native) {
-        if (MainApplication.getAdApplication().getStorageCommon()?.subCategoryNative?.getValue() == null
+        if (AdsClass.getAdApplication().getStorageCommon()?.welcomeNative?.getValue() == null
             && !AppPurchase.getInstance().isPurchased) {
 
             SmartAds.getInstance().loadNativeAdResultCallback(
@@ -241,12 +254,12 @@ class VoiceSearchCategoryActivity : BaseActivity() {
                 object : AperoAdCallback() {
                     override fun onNativeAdLoaded(nativeAd: AdmobNative) {
                         super.onNativeAdLoaded(nativeAd)
-                        MainApplication.getAdApplication()?.getStorageCommon()?.subCategoryNative?.postValue(nativeAd)
+                        AdsClass.getAdApplication()?.getStorageCommon()?.welcomeNative?.postValue(nativeAd)
                     }
 
                     override fun onAdFailedToLoad(adError: ApAdError?) {
                         super.onAdFailedToLoad(adError)
-                        MainApplication.getAdApplication()?.getStorageCommon()?.subCategoryNative?.postValue(null)
+                        AdsClass.getAdApplication()?.getStorageCommon()?.welcomeNative?.postValue(null)
                     }
                 }
             )

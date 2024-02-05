@@ -1,4 +1,4 @@
-package org.smrtobjads.ads
+package com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses
 
 import android.content.Context
 import android.util.Log
@@ -9,7 +9,7 @@ import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
-import org.smrtobjads.ads.ads.SmartAds
+import org.smrtobjads.ads.SmartAds
 import org.smrtobjads.ads.ads.models.ApAdError
 import org.smrtobjads.ads.ads.models.ApInterstitialAd
 import org.smrtobjads.ads.callbacks.AperoAdCallback
@@ -68,7 +68,7 @@ private fun loadInterNormal(
     idAdInterNormal: String,
     adListener: AperoAdCallback) {
     Log.e(TAG, "loadInterNormal: ")
-   SmartAds.getInstance().getInterstitialAds(context, idAdInterNormal, object : AperoAdCallback() {
+    SmartAds.getInstance().getInterstitialAds(context, idAdInterNormal, object : AperoAdCallback() {
         override fun onInterstitialLoad(interstitialAd: ApInterstitialAd?) {
             super.onInterstitialLoad(interstitialAd)
             adListener.onInterstitialLoad(interstitialAd)

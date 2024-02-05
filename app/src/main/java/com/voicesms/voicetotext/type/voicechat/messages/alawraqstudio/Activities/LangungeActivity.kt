@@ -7,7 +7,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.recyclerview.widget.GridLayoutManager
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Adapters.LanguageAdapter
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.AdsClass
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
 //import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdManager
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.isFirstTimeLaunch
@@ -16,7 +18,7 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivityLangungeBinding
 import com.zeugmasolutions.localehelper.LocaleHelper
 import io.paperdb.Paper
-import org.smrtobjads.ads.ads.SmartAds
+import org.smrtobjads.ads.SmartAds
 import org.smrtobjads.ads.ads.models.AdmobNative
 import org.smrtobjads.ads.ads.models.ApAdError
 import org.smrtobjads.ads.billings.AppPurchase
@@ -89,7 +91,7 @@ class LangungeActivity : BaseActivity() {
     }
 
     fun loadSplashNative(nativeAdId: String = BuildConfig.native_splash) {
-        if (MainApplication.getAdApplication().getStorageCommon()?.welcomeNative?.getValue() == null
+        if (AdsClass.getAdApplication().getStorageCommon()?.welcomeNative?.getValue() == null
             && !AppPurchase.getInstance().isPurchased) {
 
             SmartAds.getInstance().loadNativeAdResultCallback(
@@ -99,12 +101,12 @@ class LangungeActivity : BaseActivity() {
                 object : AperoAdCallback() {
                     override fun onNativeAdLoaded(nativeAd: AdmobNative) {
                         super.onNativeAdLoaded(nativeAd)
-                        MainApplication.getAdApplication()?.getStorageCommon()?.welcomeNative?.postValue(nativeAd)
+                        AdsClass.getAdApplication()?.getStorageCommon()?.welcomeNative?.postValue(nativeAd)
                     }
 
                     override fun onAdFailedToLoad(adError: ApAdError?) {
                         super.onAdFailedToLoad(adError)
-                        MainApplication.getAdApplication()?.getStorageCommon()?.welcomeNative?.postValue(null)
+                        AdsClass.getAdApplication()?.getStorageCommon()?.welcomeNative?.postValue(null)
                     }
                 }
             )
@@ -134,10 +136,10 @@ class LangungeActivity : BaseActivity() {
 //    }
 
     private fun languageNativeAd(){
-        MainApplication.getAdApplication()?.getStorageCommon()?.nativeAdsLanguage.let { appNative->
+        AdsClass.getAdApplication()?.getStorageCommon()?.nativeAdsLanguage.let { appNative->
             if (appNative == null || appNative.value == null && !AppPurchase.getInstance().isPurchased) {
                 SmartAds.getInstance().loadNativeAdResultCallback(applicationContext,
-                    BuildConfig.language_Screen_Native,  org.smrtobjads.ads.R.layout.custom_native_admob_free_size, object :
+                    BuildConfig.language_Screen_Native,   R.layout.native_ad_template, object :
                         AperoAdCallback(){
                         override fun onNativeAdLoaded(nativeAd: AdmobNative) {
                             super.onNativeAdLoaded(nativeAd)
@@ -154,10 +156,6 @@ class LangungeActivity : BaseActivity() {
                             binding.adViewContainer.visibility = View.GONE
                         }
 
-                        override fun onAdImpression() {
-                            super.onAdImpression()
-
-                        }
                     })
             }else{
                 SmartAds.getInstance().populateNativeAdView(

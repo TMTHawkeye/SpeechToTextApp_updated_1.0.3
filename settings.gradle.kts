@@ -19,6 +19,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "SpeechToTextApp"
 include(":app")
-include(":SmrtobjAds")
+//include(":SmrtobjAds")
 
 

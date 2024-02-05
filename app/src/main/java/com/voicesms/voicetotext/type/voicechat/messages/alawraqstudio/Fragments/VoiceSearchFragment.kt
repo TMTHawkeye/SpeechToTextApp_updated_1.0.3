@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.VoiceSearchCategoryActivity
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.AdsClass
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdsInterCallBack
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.PreloadAdsUtils
@@ -18,7 +19,7 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClas
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.MainApplication
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.FragmentVoiceSearchBinding
-import org.smrtobjads.ads.ads.SmartAds
+import org.smrtobjads.ads.SmartAds
 import org.smrtobjads.ads.ads.models.AdmobNative
 import org.smrtobjads.ads.ads.models.ApAdError
 import org.smrtobjads.ads.billings.AppPurchase
@@ -57,14 +58,14 @@ class VoiceSearchFragment : Fragment(), View.OnClickListener {
     }
 
     private fun SearchScreenNative(){
-        MainApplication.getAdApplication()?.getStorageCommon()?.voiceSearchNative.let { appNative->
+        AdsClass.getAdApplication()?.getStorageCommon()?.welcomeNative.let { appNative->
             if (appNative == null || appNative.value == null && !AppPurchase.getInstance().isPurchased) {
                 SmartAds.getInstance().loadNativeAdResultCallback(requireContext(),
-                    BuildConfig.Voice_Search_Screen_Native,  org.smrtobjads.ads.R.layout.custom_native_admob_free_size, object :
+                    BuildConfig.Voice_Search_Screen_Native,   R.layout.native_ad_template, object :
                         AperoAdCallback(){
                         override fun onNativeAdLoaded(nativeAd: AdmobNative) {
                             super.onNativeAdLoaded(nativeAd)
-                            SmartAds.getInstance().populateNativeAdView(requireContext(), nativeAd, binding.adViewContainer, binding.splashNativeAd.shimmerContainerNative)
+                            SmartAds.getInstance().populateNativeAdView(requireContext(), nativeAd,binding.adViewContainer , binding.splashNativeAd.shimmerContainerNative)
                         }
 
                         override fun onAdFailedToLoad(adError: ApAdError?) {
@@ -88,6 +89,7 @@ class VoiceSearchFragment : Fragment(), View.OnClickListener {
                     appNative.value,
                     binding.adViewContainer,
                     binding.splashNativeAd.shimmerContainerNative)
+
             }
         }
 
@@ -134,11 +136,11 @@ class VoiceSearchFragment : Fragment(), View.OnClickListener {
 //                showLoadingDialog(progressDialog)
 //            }
 //            loadInterstitialCategoryClick()
-            if(MainApplication.getAdApplication().getStorageCommon().splashInterstitial!=null) {
+            if(AdsClass.getAdApplication().getStorageCommon().interNormal!=null) {
 
                 PreloadAdsUtils.getInstance().showInterAlternateByTime(
                     requireContext(),
-                    MainApplication.getAdApplication().getStorageCommon().splashInterstitial,
+                    AdsClass.getAdApplication().getStorageCommon().interNormal,
                     false,
                     object : AdsInterCallBack {
                         override fun onInterstitialPriorityShowed() {
@@ -154,8 +156,8 @@ class VoiceSearchFragment : Fragment(), View.OnClickListener {
 
                         override fun onAdClosed() {
                             Log.d("TAG_interst", "onAdClosed: Ad Closed")
-                            MainApplication.getAdApplication()
-                                .getStorageCommon().splashInterstitial = null
+                            AdsClass.getAdApplication()
+                                .getStorageCommon().interNormal = null
                             PreloadAdsUtils.getInstance().loadIntersAlternate(
                                 requireContext(),
                                 BuildConfig.interstitial_voice_search_category,

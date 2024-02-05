@@ -32,6 +32,7 @@ import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdOptions
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.MainActivity
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.SavedFilesActivity
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.AdsClass
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdsInterCallBack
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.PreloadAdsUtils
@@ -44,7 +45,7 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databindin
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.FragmentVoiceRecBinding
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.NativeAdTemplateBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.smrtobjads.ads.ads.SmartAds
+import org.smrtobjads.ads.SmartAds
 import org.smrtobjads.ads.ads.models.AdmobNative
 import org.smrtobjads.ads.ads.models.ApAdError
 import org.smrtobjads.ads.billings.AppPurchase
@@ -96,11 +97,11 @@ class VoiceRecFragment : Fragment() {
     }
 
     private fun RecordingScreenNative() {
-        MainApplication.getAdApplication()?.getStorageCommon()?.voiceRecNative.let { appNative ->
+        AdsClass.getAdApplication()?.getStorageCommon()?.welcomeNative.let { appNative ->
             if (appNative == null || appNative.value == null && !AppPurchase.getInstance().isPurchased) {
                 SmartAds.getInstance().loadNativeAdResultCallback(requireContext(),
                     BuildConfig.native_voice_Rec,
-                    org.smrtobjads.ads.R.layout.custom_native_admob_free_size,
+                    R.layout.native_ad_template,
                     object :
                         AperoAdCallback() {
                         override fun onNativeAdLoaded(nativeAd: AdmobNative) {
@@ -298,8 +299,8 @@ class VoiceRecFragment : Fragment() {
                     if(isInternetAvailable(requireContext())) {
                         PreloadAdsUtils.getInstance().showInterAlternateByTime(
                             requireContext(),
-                            MainApplication.getAdApplication()
-                                .getStorageCommon().splashInterstitial,
+                            AdsClass.getAdApplication()
+                                .getStorageCommon().interNormal,
                             false,
                             object : AdsInterCallBack {
                                 override fun onInterstitialPriorityShowed() {
@@ -315,8 +316,8 @@ class VoiceRecFragment : Fragment() {
 
                                 override fun onAdClosed() {
                                     Log.d("TAG_interst", "onAdClosed: Ad Closed")
-                                    MainApplication.getAdApplication()
-                                        .getStorageCommon().splashInterstitial = null
+                                    AdsClass.getAdApplication()
+                                        .getStorageCommon().interNormal = null
                                     PreloadAdsUtils.getInstance().loadIntersAlternate(
                                         requireContext(),
                                         BuildConfig.interstitial_voice_search_category,

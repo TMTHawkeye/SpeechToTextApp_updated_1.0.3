@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Adapters.SavedFilesAdapter
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.AdsClass
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
 //import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdManager
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Interfaces.RecordingsCallback
@@ -20,7 +21,7 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ViewModel.RecordingViewModel
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivitySavedFilesBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.smrtobjads.ads.ads.SmartAds
+import org.smrtobjads.ads.SmartAds
 import org.smrtobjads.ads.ads.models.AdmobNative
 import org.smrtobjads.ads.ads.models.ApAdError
 import org.smrtobjads.ads.billings.AppPurchase
@@ -227,10 +228,10 @@ class SavedFilesActivity : BaseActivity(), RecordingsCallback {
 
     private fun savedFilesNativeAd(){
 
-        MainApplication.getAdApplication()?.getStorageCommon()?.savedFilesNative.let { appNative->
+        AdsClass.getAdApplication()?.getStorageCommon()?.welcomeNative.let { appNative->
             if (appNative == null || appNative.value == null && !AppPurchase.getInstance().isPurchased) {
                 SmartAds.getInstance().loadNativeAdResultCallback(this@SavedFilesActivity,
-                    BuildConfig.Save_file_Screen_Native,  org.smrtobjads.ads.R.layout.custom_native_admob_free_size, object :
+                    BuildConfig.Save_file_Screen_Native,  R.layout.native_ad_template, object :
                         AperoAdCallback(){
                         override fun onNativeAdLoaded(nativeAd: AdmobNative) {
                             super.onNativeAdLoaded(nativeAd)

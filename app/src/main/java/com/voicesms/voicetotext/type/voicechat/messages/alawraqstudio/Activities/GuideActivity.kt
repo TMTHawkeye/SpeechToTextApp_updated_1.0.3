@@ -17,9 +17,7 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Fragments.
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.isInternetAvailable
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivityGuideBinding
-import org.smrtobjads.ads.ads.SmartAds
-import org.smrtobjads.ads.callbacks.AdCallback
-import org.smrtobjads.ads.callbacks.AperoAdCallback
+import org.smrtobjads.ads.SmartAds
 
 class GuideActivity : BaseActivity() {
     private lateinit var binding: ActivityGuideBinding
@@ -31,10 +29,12 @@ class GuideActivity : BaseActivity() {
 
         if (isInternetAvailable(this@GuideActivity)) {
             binding.welcomeNativecontainer.visibility=View.VISIBLE
-            val welcomeAdContainer = binding.welcomeNativecontainer.findViewById<View>(R.id.welcomeBannerAd)
-            val fl_adplaceholder = welcomeAdContainer.findViewById<FrameLayout>(org.smrtobjads.ads.R.id.banner_container)
-            val shimmerFrameLayout = welcomeAdContainer.findViewById<ShimmerFrameLayout>(org.smrtobjads.ads.R.id.shimmer_container_banner)
-            SmartAds.getInstance().loadBanner(this@GuideActivity,BuildConfig.categoriesScreen_colapsible_Banner,fl_adplaceholder,shimmerFrameLayout)
+//            val welcomeAdContainer = binding.welcomeNativecontainer.findViewById<View>(R.id.welcomeBannerAd)
+//            val fl_adplaceholder = welcomeAdContainer.findViewById<FrameLayout>(org.smrtobjads.ads.R.id.banner_container)
+//            val shimmerFrameLayout = welcomeAdContainer.findViewById<ShimmerFrameLayout>(org.smrtobjads.ads.R.id.shimmer_container_banner)
+            SmartAds.getInstance().loadBanner(this@GuideActivity,BuildConfig.categoriesScreen_colapsible_Banner)
+
+//            SmartAds.getInstance().loadBanner(this@GuideActivity,BuildConfig.categoriesScreen_colapsible_Banner,fl_adplaceholder,shimmerFrameLayout)
         }
         else{
             binding.welcomeNativecontainer.visibility=View.GONE
