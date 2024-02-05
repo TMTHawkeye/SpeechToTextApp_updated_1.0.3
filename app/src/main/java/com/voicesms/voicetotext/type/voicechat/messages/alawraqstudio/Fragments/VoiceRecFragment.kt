@@ -524,7 +524,7 @@ class VoiceRecFragment : Fragment() {
 
         // Inflate and populate the native ad view
         val unifiedAdBinding = NativeAdTemplateBinding.inflate(layoutInflater)
-        populateNativeAdView(nativeAd, unifiedAdBinding)
+//        populateNativeAdView(nativeAd, unifiedAdBinding)
 
         // Add the native ad view to your layout
         binding.adFrame.addView(unifiedAdBinding.root)
@@ -536,51 +536,51 @@ class VoiceRecFragment : Fragment() {
 //        binding.adFrame.addView(unifiedAdBinding.root)
     }
 
-    private fun populateNativeAdView(
-        nativeAd: NativeAd,
-        unifiedAdBinding: NativeAdTemplateBinding
-    ) {
-        val nativeAdView = unifiedAdBinding.root
-
-        // Set the media view.
-        nativeAdView.mediaView = unifiedAdBinding.adMedia
-
-        // Set other ad assets.
-        nativeAdView.headlineView = unifiedAdBinding.adHeadline
-        nativeAdView.bodyView = unifiedAdBinding.adBody
-        nativeAdView.callToActionView = unifiedAdBinding.adCallToAction
-        nativeAdView.iconView = unifiedAdBinding.adAppIcon
-//        nativeAdView.priceView = unifiedAdBinding.adPrice
-//        nativeAdView.starRatingView = unifiedAdBinding.adStars
-//        nativeAdView.storeView = unifiedAdBinding.adStore
-        nativeAdView.advertiserView = unifiedAdBinding.adAdvertiser
-
-        // The headline and media content are guaranteed to be in every UnifiedNativeAd.
-        unifiedAdBinding.adHeadline.text = nativeAd.headline
-        nativeAd.mediaContent?.let { unifiedAdBinding.adMedia.setMediaContent(it) }
-
-        // These assets aren't guaranteed to be in every UnifiedNativeAd, so it's important to
-        // check before trying to display them.
-        if (nativeAd.body == null) {
-            unifiedAdBinding.adBody.visibility = View.INVISIBLE
-        } else {
-            unifiedAdBinding.adBody.visibility = View.VISIBLE
-            unifiedAdBinding.adBody.text = nativeAd.body
-        }
-
-        if (nativeAd.callToAction == null) {
-            unifiedAdBinding.adCallToAction.visibility = View.INVISIBLE
-        } else {
-            unifiedAdBinding.adCallToAction.visibility = View.VISIBLE
-            unifiedAdBinding.adCallToAction.text = nativeAd.callToAction
-        }
-
-        if (nativeAd.icon == null) {
-            unifiedAdBinding.adAppIcon.visibility = View.GONE
-        } else {
-            unifiedAdBinding.adAppIcon.setImageDrawable(nativeAd.icon?.drawable)
-            unifiedAdBinding.adAppIcon.visibility = View.VISIBLE
-        }
+//    private fun populateNativeAdView(
+//        nativeAd: NativeAd,
+//        unifiedAdBinding: NativeAdTemplateBinding
+//    ) {
+//        val nativeAdView = unifiedAdBinding.root
+//
+//        // Set the media view.
+//        nativeAdView.mediaView = unifiedAdBinding.adMedia
+//
+//        // Set other ad assets.
+//        nativeAdView.headlineView = unifiedAdBinding.adHeadline
+//        nativeAdView.bodyView = unifiedAdBinding.adBody
+//        nativeAdView.callToActionView = unifiedAdBinding.adCallToAction
+//        nativeAdView.iconView = unifiedAdBinding.adAppIcon
+////        nativeAdView.priceView = unifiedAdBinding.adPrice
+////        nativeAdView.starRatingView = unifiedAdBinding.adStars
+////        nativeAdView.storeView = unifiedAdBinding.adStore
+//        nativeAdView.advertiserView = unifiedAdBinding.adAdvertiser
+//
+//        // The headline and media content are guaranteed to be in every UnifiedNativeAd.
+//        unifiedAdBinding.adHeadline.text = nativeAd.headline
+//        nativeAd.mediaContent?.let { unifiedAdBinding.adMedia.setMediaContent(it) }
+//
+//        // These assets aren't guaranteed to be in every UnifiedNativeAd, so it's important to
+//        // check before trying to display them.
+//        if (nativeAd.body == null) {
+//            unifiedAdBinding.adBody.visibility = View.INVISIBLE
+//        } else {
+//            unifiedAdBinding.adBody.visibility = View.VISIBLE
+//            unifiedAdBinding.adBody.text = nativeAd.body
+//        }
+//
+//        if (nativeAd.callToAction == null) {
+//            unifiedAdBinding.adCallToAction.visibility = View.INVISIBLE
+//        } else {
+//            unifiedAdBinding.adCallToAction.visibility = View.VISIBLE
+//            unifiedAdBinding.adCallToAction.text = nativeAd.callToAction
+//        }
+//
+//        if (nativeAd.icon == null) {
+//            unifiedAdBinding.adAppIcon.visibility = View.GONE
+//        } else {
+//            unifiedAdBinding.adAppIcon.setImageDrawable(nativeAd.icon?.drawable)
+//            unifiedAdBinding.adAppIcon.visibility = View.VISIBLE
+//        }
 
 //        if (nativeAd.price == null) {
 ////            unifiedAdBinding.adPrice.visibility = View.INVISIBLE
@@ -603,19 +603,19 @@ class VoiceRecFragment : Fragment() {
 //            unifiedAdBinding.adStars.visibility = View.VISIBLE
 //        }
 
-        if (nativeAd.advertiser == null) {
-            unifiedAdBinding.adAdvertiser.visibility = View.INVISIBLE
-        } else {
-            unifiedAdBinding.adAdvertiser.text = nativeAd.advertiser
-            unifiedAdBinding.adAdvertiser.visibility = View.VISIBLE
-        }
+//        if (nativeAd.advertiser == null) {
+//            unifiedAdBinding.adAdvertiser.visibility = View.INVISIBLE
+//        } else {
+//            unifiedAdBinding.adAdvertiser.text = nativeAd.advertiser
+//            unifiedAdBinding.adAdvertiser.visibility = View.VISIBLE
+//        }
 
         // This method tells the Google Mobile Ads SDK that you have finished populating your
         // native ad view with this native ad.
-        nativeAdView.setNativeAd(nativeAd)
-
-
-    }
+//        nativeAdView.setNativeAd(nativeAd)
+//
+//
+//    }
 
 
 }

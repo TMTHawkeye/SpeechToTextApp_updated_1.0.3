@@ -18,9 +18,12 @@
             android:layout_width="@dimen/_33sdp"
             android:layout_height="@dimen/_33sdp"
             android:adjustViewBounds="true"
-            android:layout_margin="@dimen/_2sdp"
-            app:layout_constraintStart_toEndOf="@+id/adLbl"
-            app:layout_constraintTop_toBottomOf="@+id/adLbl" />
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/ad_body"
+            app:layout_constraintEnd_toStartOf="@+id/adLbl"/>
 
         <TextView
             android:id="@+id/ad_headline"
@@ -32,25 +35,26 @@
             android:text="Here is your title text"
             android:textColor="@color/black"
             android:textSize="@dimen/_10sdp"
-            app:layout_constraintBottom_toTopOf="@id/ad_advertiser"
+            app:layout_constraintBottom_toTopOf="@id/adLbl"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ad_app_icon"
             app:layout_constraintTop_toTopOf="@+id/ad_app_icon" />
 
 
         <TextView
-            android:id="@+id/ad_advertiser"
+            android:id="@+id/adLbl"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ellipsize="end"
             android:lines="1"
-            android:text="Here is Advertiser test going here...."
+            android:background="@color/green"
+            android:paddingHorizontal="@dimen/_3sdp"
+            android:text="AD"
             android:textColor="@color/black"
             android:textSize="@dimen/_11ssp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/ad_app_icon"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/ad_headline"
             app:layout_constraintTop_toBottomOf="@+id/ad_headline" />
 
@@ -62,12 +66,12 @@
             android:text="Here is body text going.."
             android:textColor="@color/black"
             android:textSize="@dimen/_10ssp"
-            android:layout_marginHorizontal="@dimen/_6sdp"
-
+            android:ellipsize="end"
+            android:maxLines="1"
             android:layout_marginTop="@dimen/_4sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ad_advertiser" />
+            app:layout_constraintEnd_toEndOf="@+id/ad_headline"
+            app:layout_constraintStart_toStartOf="@+id/ad_app_icon"
+            app:layout_constraintTop_toBottomOf="@+id/adLbl" />
 
         <com.google.android.gms.ads.nativead.MediaView
             android:id="@+id/ad_media"
@@ -98,17 +102,17 @@
             android:textStyle="bold"
             android:background="@drawable/circular_background" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_top_left_corner"
-            android:paddingHorizontal="@dimen/_3sdp"
-            android:text="AD"
-            android:id="@+id/adLbl"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_8ssp" />
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@drawable/rounded_top_left_corner"-->
+<!--            android:paddingHorizontal="@dimen/_3sdp"-->
+<!--            android:text="AD"-->
+<!--            android:id="@+id/adLbl"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="@dimen/_8ssp" />-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
