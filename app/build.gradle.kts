@@ -61,8 +61,6 @@ android {
             isDebuggable = false
 
         }
-
-
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -454,6 +452,7 @@ dependencies {
 //    implementation(files("libs/SmrtobjAds-release.aar"))
 
     implementation("com.android.billingclient:billing:6.0.1")
+//    implementation("com.github.TMTHawkeye:DependencyApp_1.0:1.0.0")
 
 
 }

@@ -56,7 +56,6 @@ class MainActivity : BaseActivity() {
 //                loadBanner()
 //            }
 //        }
-
         binding.mainTitle.text = handleSpannableString(getString(R.string.voiceSms))
         addTabs();
 

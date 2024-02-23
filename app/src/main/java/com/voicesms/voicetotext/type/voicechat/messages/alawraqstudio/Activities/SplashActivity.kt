@@ -35,6 +35,7 @@ class SplashActivity : BaseActivity() {
         binding.cardStart.visibility = android.view.View.VISIBLE
     }*/
 
+    var welcomeInterstitialAd: ApInterstitialAd? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -46,8 +47,9 @@ class SplashActivity : BaseActivity() {
 //        loadVoiceRecNative()
 //        loadVoiceSearchNative()
         downloadInitialModel()
-
-        if (AdsClass.getAdApplication()?.storageCommon?.welcomeInterstitialAd == null){
+        welcomeInterstitialAd = AdsClass.getAdApplication().getStorageCommon()?.welcomeInterstitialAd
+        if (welcomeInterstitialAd == null){
+            Log.d("TAG_inter", "interstitial value : null")
             loadWelcomeInter()
         }
 
@@ -147,16 +149,16 @@ class SplashActivity : BaseActivity() {
 
         binding.cardStart.setOnClickListener {
 
-            AdsClass.getAdApplication()?.storageCommon?.welcomeInterstitialAd.let {
+            welcomeInterstitialAd.let {
                 if (it == null) {
-                    startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                    gotoHome()
                 } else {
                     if (it.isReady) {
                         SmartAds.getInstance()
                             .forceShowInterstitial(this, it, object : AperoAdCallback() {
                                 override fun onNextAction() {
                                     Log.i("ad", "onAdClosed: start content and finish main")
-                                    startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                                    gotoHome()
                                 }
 
                                 override fun onAdFailedToShow(adError: ApAdError?) {
@@ -171,7 +173,7 @@ class SplashActivity : BaseActivity() {
 
                             }, false)
                     } else {
-                        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                        gotoHome()
                     }
                 }
             }
@@ -183,18 +185,23 @@ class SplashActivity : BaseActivity() {
         })
     }
 
+    private fun gotoHome() {
+        AdsClass.getAdApplication().getStorageCommon().welcomeInterstitialAd = null
+        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+    }
+
     private fun loadWelcomeInter() {
 
         SmartAds.getInstance()
             .getInterstitialAds(this, BuildConfig.welcome_Screen_inter, object : AperoAdCallback() {
                 override fun onInterstitialLoad(interstitialAd: ApInterstitialAd?) {
                     super.onInterstitialLoad(interstitialAd)
-                    AdsClass.getAdApplication()?.storageCommon?.welcomeInterstitialAd = interstitialAd
+                    welcomeInterstitialAd = interstitialAd
+                    AdsClass.getAdApplication().getStorageCommon().welcomeInterstitialAd = interstitialAd
                 }
 
                 override fun onAdFailedToLoad(adError: ApAdError?) {
                     super.onAdFailedToLoad(adError)
-
                 }
             })
     }

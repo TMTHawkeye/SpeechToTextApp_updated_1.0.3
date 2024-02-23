@@ -26,7 +26,7 @@ public class AdsClass extends AdsParent {
     }
 
     private void initAds() {
-        storageCommon = new StorageCommon();
+        storageCommons = new StorageCommon();
         AppOpenManager.getInstance().setSplashAdId(BuildConfig.app_open_launcher);
         AppOpenManager.getInstance().init(this, BuildConfig.app_open_others);
         AppOpenManager.getInstance().enableAppResume();
@@ -65,10 +65,10 @@ public class AdsClass extends AdsParent {
         return adsClass;
     }
 
-    StorageCommon storageCommon;
+    StorageCommon storageCommons;
 
-    @NotNull
+
     public StorageCommon getStorageCommon() {
-        return storageCommon;
+        return storageCommons;
     }
 }

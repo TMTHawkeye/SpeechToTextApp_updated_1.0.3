@@ -21,6 +21,7 @@ import io.paperdb.Paper
 import org.smrtobjads.ads.SmartAds
 import org.smrtobjads.ads.ads.models.AdmobNative
 import org.smrtobjads.ads.ads.models.ApAdError
+import org.smrtobjads.ads.ads.models.ApInterstitialAd
 import org.smrtobjads.ads.billings.AppPurchase
 import org.smrtobjads.ads.callbacks.AperoAdCallback
 import java.util.Locale
@@ -37,7 +38,8 @@ class LangungeActivity : BaseActivity() {
 //        adView = AdView(this)
         languageNativeAd()
         loadSplashNative()
-//        AdManager.getInstance().loadNativeAd(
+
+ //        AdManager.getInstance().loadNativeAd(
 //            this@LangungeActivity,
 //            BuildConfig.language_Screen_Native,
 //            binding.adViewContainer,
@@ -141,7 +143,6 @@ class LangungeActivity : BaseActivity() {
 //        super.attachBaseContext(LocaleHelper.onAttach(newBase))
 //    }
 */
-
     private fun languageNativeAd(){
         AdsClass.getAdApplication()?.getStorageCommon()?.nativeAdsLanguage.let { appNative->
             if (appNative == null || appNative.value == null && !AppPurchase.getInstance().isPurchased) {
@@ -174,9 +175,6 @@ class LangungeActivity : BaseActivity() {
         }
 
     }
-
-
-
 
 }
 

@@ -89,7 +89,7 @@ class LaunchrScreen : BaseActivity(), UMPResultListener {
             .getInterstitialAds(this, BuildConfig.welcome_Screen_inter, object : AperoAdCallback() {
                 override fun onInterstitialLoad(interstitialAd: ApInterstitialAd?) {
                     super.onInterstitialLoad(interstitialAd)
-                    AdsClass.getAdApplication()?.storageCommon?.welcomeInterstitialAd =
+                    AdsClass.getAdApplication()?.getStorageCommon()?.welcomeInterstitialAd =
                         interstitialAd
                 }
             })
