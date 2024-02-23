@@ -5,15 +5,16 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.AdsClass;
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig;
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.MainApplication;
 
+import org.smrtobjads.ads.AdsInterCallBack;
 import org.smrtobjads.ads.SmartAds;
 import org.smrtobjads.ads.ads.models.ApAdError;
 import org.smrtobjads.ads.ads.models.ApInterstitialAd;
 import org.smrtobjads.ads.billings.AppPurchase;
 import org.smrtobjads.ads.callbacks.AperoAdCallback;
- 
+
 
 public class PreloadAdsUtils {
     private static final String TAG = "PreloadAdsUtils";
@@ -40,39 +41,36 @@ public class PreloadAdsUtils {
 
         loadTimesFailHigh = 0;
         loadTimesFailNormal = 0;
-        if (MainApplication.getAdApplication().getStorageCommon().interPriority == null) {
+        if (AdsClass.getAdApplication().getStorageCommon().interPriority == null) {
             loadInterPriority(context, idAdInterPriority, adListener);
         }
-        if (MainApplication.getAdApplication().getStorageCommon().interNormal == null) {
+        if (AdsClass.getAdApplication().getStorageCommon().interNormal == null) {
             loadInterNormal(context, idAdInterNormal, adListener);
         }
     }
 
     public void loadIntersAlternate(final Context context, String idAdInterPriority, String idAdInterNormal, int interPriority ) {
-
-        if (AppPurchase.getInstance().isPurchased(context) || MainApplication.getAdApplication().getStorageCommon().interNormal != null) {
+        if (AppPurchase.getInstance().isPurchased(context) || (AdsClass.getAdApplication().getStorageCommon().interstitialAd != null && AdsClass.getAdApplication().getStorageCommon().interstitialAd.getInterstitialAd() != null)) {
             return;
         }
-
         AdsFunctionKtKt.getInterstitialAdObject(context,"",idAdInterPriority, idAdInterNormal, interPriority, new AperoAdCallback(){
             @Override
             public void onInterstitialLoad(@Nullable ApInterstitialAd interstitialAd) {
                 super.onInterstitialLoad(interstitialAd);
-                MainApplication.getAdApplication().getStorageCommon().interNormal = interstitialAd;
+                AdsClass.getAdApplication().getStorageCommon().interstitialAd = interstitialAd;
             }
 
             @Override
             public void onAdFailedToLoad(@Nullable ApAdError adError) {
                 super.onAdFailedToLoad(adError);
-                MainApplication.getAdApplication().getStorageCommon().interNormal = null;
+                AdsClass.getAdApplication().getStorageCommon().interstitialAd = null;
             }
-
             @Override
             public void onInterstitialShow() {
                 super.onInterstitialShow();
             }
         });
-        
+
     }
 
     private void loadInterNormal(Context context, String idAdInterNormal, AperoAdCallback adListener) {
@@ -102,7 +100,7 @@ public class PreloadAdsUtils {
             @Override
             public void onInterstitialLoad(@Nullable ApInterstitialAd interstitialAd) {
                 super.onInterstitialLoad(interstitialAd);
-//                adListener.onInterPriorityLoaded(interstitialAd);
+                adListener.onInterPriorityLoaded(interstitialAd);
             }
 
             @Override
@@ -129,6 +127,7 @@ public class PreloadAdsUtils {
             }
             return;
         }
+
         if (interPriority != null) {
             Log.e(TAG, "showInterSameTime: Ad priority");
             SmartAds.getInstance().showInterstitialAdByTimes(
@@ -160,7 +159,8 @@ public class PreloadAdsUtils {
                         }
                     },
                     reload);
-        } else if (interNormal != null) {
+        }
+        else if (interNormal != null) {
             Log.e(TAG, "showInterSameTime: Ad normal");
             SmartAds.getInstance().showInterstitialAdByTimes(
                     context,
@@ -207,7 +207,7 @@ public class PreloadAdsUtils {
             }
             return;
         }
-          if (interstitialAd != null) {
+        if (interstitialAd != null && interstitialAd.getInterstitialAd() != null) {
             Log.e(TAG, "showInterSameTime: Ad normal");
             SmartAds.getInstance().forceShowInterstitial(
                     context,
@@ -238,7 +238,7 @@ public class PreloadAdsUtils {
                     },
                     reload);
         } else {
-              loadIntersAlternate(context, BuildConfig.welcome_Screen_inter, BuildConfig.welcome_Screen_inter, 2);
+            loadIntersAlternate(context, BuildConfig.interstitial_voice_rec_save_btn, BuildConfig.Translate_Button_inter, 2);
             adCallback.onNextAction();
         }
     }
@@ -254,7 +254,7 @@ public class PreloadAdsUtils {
             }
             return;
         }
-          if (interstitialAd != null) {
+        if (interstitialAd != null && interstitialAd.getInterstitialAd() != null) {
             Log.e(TAG, "showInterSameTime: Ad normal");
             SmartAds.getInstance().showInterstitialAdByTimes(
                     context,
@@ -285,7 +285,7 @@ public class PreloadAdsUtils {
                     },
                     reload);
         } else {
-              loadIntersAlternate(context, BuildConfig.welcome_Screen_inter, BuildConfig.welcome_Screen_inter, 2);
+            loadIntersAlternate(context, BuildConfig.interstitial_voice_rec_save_btn, BuildConfig.Translate_Button_inter, 2);
             adCallback.onNextAction();
         }
     }
@@ -368,8 +368,5 @@ public class PreloadAdsUtils {
             adCallback.onNextAction();
         }
     }
-
-
-
 
 }

@@ -17,19 +17,14 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
-
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.gms.ads.AdView
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.firebase.FirebaseApp
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Adapters.ViewPagerAdapter
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Fragments.VoiceRecFragment
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Fragments.VoiceSMSFragment
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Fragments.VoiceSearchFragment
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Fragments.VoiceTalkFragment
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.handleSpannableString
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.MainApplication
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivityMainBinding
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.CustomDialogExitAppBinding
@@ -53,7 +48,6 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        FirebaseApp.initializeApp(this);
 
 //        binding.adViewContainer.addView(adView)
 

@@ -3,7 +3,7 @@ package com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.MutableLiveData;
 
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.LauncherActivity;
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.LaunchrScreen;
 
 import org.jetbrains.annotations.NotNull;
 import org.smrtobjads.ads.AdsParent;
@@ -30,7 +30,7 @@ public class AdsClass extends AdsParent {
         AppOpenManager.getInstance().setSplashAdId(BuildConfig.app_open_launcher);
         AppOpenManager.getInstance().init(this, BuildConfig.app_open_others);
         AppOpenManager.getInstance().enableAppResume();
-        AppOpenManager.getInstance().disableAppResumeWithActivity(LauncherActivity.class);
+        AppOpenManager.getInstance().disableAppResumeWithActivity(LaunchrScreen.class);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         String environment = BuildConfig.env_dev ? SmartAdsConfig.ENVIRONMENT_DEVELOP : SmartAdsConfig.ENVIRONMENT_PRODUCTION;
@@ -42,7 +42,9 @@ public class AdsClass extends AdsParent {
         SmartObjAdmob.getInstance().setDisableAdResumeWhenClickAds(true);
         SmartObjAdmob.getInstance().setOpenActivityAfterShowInterAds(false);
 
-        SmartAds.getInstance().setCountClickToShowAds(1);
+        AppOpenManager.getInstance().setResumeAdsRequestLimit(6);
+        SmartAds.getInstance().setCountClickToShowAds(2);
+
         // initBilling();
     }
 

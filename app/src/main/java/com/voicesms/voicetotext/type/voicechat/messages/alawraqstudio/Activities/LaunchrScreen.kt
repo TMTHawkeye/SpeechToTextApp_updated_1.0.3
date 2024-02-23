@@ -15,21 +15,20 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfi
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdsConsentManager
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.PreloadAdsUtils
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.isFirstTimeLaunch
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.isInternetAvailable
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Interfaces.UMPResultListener
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.MainApplication
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivityLauncherBinding
 import io.paperdb.Paper
 import org.smrtobjads.ads.SmartAds
 import org.smrtobjads.ads.ads.AppOpenManager
 import org.smrtobjads.ads.ads.models.AdmobNative
 import org.smrtobjads.ads.ads.models.ApAdError
-import org.smrtobjads.ads.adsutils.DataStoreUtils
+import org.smrtobjads.ads.ads.models.ApInterstitialAd
 import org.smrtobjads.ads.billings.AppPurchase
 import org.smrtobjads.ads.callbacks.AdCallback
 import org.smrtobjads.ads.callbacks.AperoAdCallback
 
-class LauncherActivity : BaseActivity() , UMPResultListener{
+class LaunchrScreen : BaseActivity(), UMPResultListener {
     lateinit var binding: ActivityLauncherBinding
     var appOpenAd: AppOpenAd? = null
     private val handler = Handler()
@@ -42,48 +41,63 @@ class LauncherActivity : BaseActivity() , UMPResultListener{
         setContentView(binding.root)
         binding.launcherLottieId.repeatCount = LottieDrawable.INFINITE
         binding.launcherLottieId.playAnimation()
-        Paper.init(this@LauncherActivity)
+        Paper.init(this@LaunchrScreen)
 
-        enableUmp=loadConsentState()
+/*//        enableUmp=loadConsentState()
 
-        if (isInternetAvailable(this@LauncherActivity)) {
+//        if (isInternetAvailable(this@LauncherActivity)) {*/
             if (enableUmp) {
                 val adsConsentManager = AdsConsentManager(this)
                 adsConsentManager.requestUMP({
                     Log.d("TAG_response", "onCreate: $it")
                     runOnUiThread {
-                        PreloadAdsUtils.getInstance().loadIntersAlternate(this, BuildConfig.welcome_Screen_inter, BuildConfig.welcome_Screen_inter, 2)
-                        handleFetchedRemoteConfig()
+                        PreloadAdsUtils.getInstance().loadIntersAlternate(
+                            this,
+                            BuildConfig.interstitial_voice_rec_save_btn,
+                            BuildConfig.Translate_Button_inter,
+                            2
+                        )
+                        if (isFirstTimeLaunch()) {
+                            loadLanguageNative()
+                        }
                         loadSplashNative()
-                        handler.postDelayed({
-                            if (DataStoreUtils.getLanguageSelected(this, false)) {
-                                loadLanguageNative()
-                            }
-                        },4000)
+
+                        handleFetchedRemoteConfig()
+                        loadWelcomeInter()
                     }
                 }, false)
             } else {
-                loadAdsSplash()
-//                startMainActivity()
-                loadSplashNative()
-                if ( DataStoreUtils.getLanguageSelected(this, false)){
+                PreloadAdsUtils.getInstance().loadIntersAlternate(
+                    this,
+                    BuildConfig.interstitial_voice_rec_save_btn,
+                    BuildConfig.Translate_Button_inter,
+                    2)
+
+                if (isFirstTimeLaunch()) {
                     loadLanguageNative()
                 }
+                handleFetchedRemoteConfig()
+                loadSplashNative()
+                loadWelcomeInter()
             }
-        }
-        else{
-            Handler().postDelayed({
-                startMainActivity()
-            },5000)
-        }
     }
-
     private fun handleFetchedRemoteConfig() {
         AppPurchase.getInstance().setBillingListener({ integer: Int -> loadAdsSplash() }, 1000)
+    }
+    private fun loadWelcomeInter() {
+        SmartAds.getInstance()
+            .getInterstitialAds(this, BuildConfig.welcome_Screen_inter, object : AperoAdCallback() {
+                override fun onInterstitialLoad(interstitialAd: ApInterstitialAd?) {
+                    super.onInterstitialLoad(interstitialAd)
+                    AdsClass.getAdApplication()?.storageCommon?.welcomeInterstitialAd =
+                        interstitialAd
+                }
+            })
     }
 
     private val TIMEOUT_SPLASH: Long = 30000
     private val TIME_DELAY_SPLASH: Long = 5000
+
     //    private val typeAdsSplash = "inter"
     private val typeAdsSplash = "app_open_start"
     private fun loadAdsSplash() {
@@ -91,36 +105,41 @@ class LauncherActivity : BaseActivity() , UMPResultListener{
             AdsClass.getAdApplication().isAdCloseSplash?.postValue(true)
             startMainActivity()
         } else {
-           AdsClass.getAdApplication()?.isAdCloseSplash?.postValue(false)
+            AdsClass.getAdApplication()?.isAdCloseSplash?.postValue(false)
 
 //            if (typeAdsSplash == "app_open_start"){
-                AppOpenManager.getInstance().loadOpenAppAdSplash(
-                    this,
-                    TIMEOUT_SPLASH,
-                    TIME_DELAY_SPLASH,
-                    false,
-                    object : AdCallback() {
-                        override fun onAdSplashReady() {
-                            super.onAdSplashReady()
-                            if (isDestroyed || isFinishing) return
-                            showAdsOpenAppSplash()
-                        }
+            AppOpenManager.getInstance().loadOpenAppAdSplash(
+                this,
+                TIMEOUT_SPLASH,
+                TIME_DELAY_SPLASH,
+                false,
+                object : AdCallback() {
+                    override fun onAdSplashReady() {
+                        super.onAdSplashReady()
+                        Log.d("TAG_appOpen", "onAdSplashReady: splash ready app open")
 
-                        override fun onNextAction() {
-                            super.onNextAction()
-                            if (isDestroyed || isFinishing) return
-                           AdsClass.getAdApplication()?.isAdCloseSplash?.postValue(true)
-                            startMainActivity()
-                        }
-
-                        override fun onAdFailedToLoad(i: LoadAdError?) {
-                            super.onAdFailedToLoad(i)
-                            if (isDestroyed || isFinishing) return
-                           AdsClass.getAdApplication()?.isAdCloseSplash?.postValue(true)
-                            startMainActivity()
-                        }
+                        if (isDestroyed || isFinishing) return
+                        showAdsOpenAppSplash()
                     }
-                )
+
+                    override fun onNextAction() {
+                        super.onNextAction()
+                        Log.d("TAG_appOpen", "onNextAction: nextaction app open")
+
+                        if (isDestroyed || isFinishing) return
+                        AdsClass.getAdApplication()?.isAdCloseSplash?.postValue(true)
+                        startMainActivity()
+                    }
+
+                    override fun onAdFailedToLoad(i: LoadAdError?) {
+                        super.onAdFailedToLoad(i)
+                        Log.d("TAG_appOpen", "onAdFailedToLoad: failed_to load app open")
+                        if (isDestroyed || isFinishing) return
+                        AdsClass.getAdApplication()?.isAdCloseSplash?.postValue(true)
+                        startMainActivity()
+                    }
+                }
+            )
 //            }else{
 //                SmartAds.getInstance().loadSplashInterstitialAds(
 //                    this,
@@ -152,7 +171,6 @@ class LauncherActivity : BaseActivity() , UMPResultListener{
 //            }
         }
     }
-
     private fun showAdsOpenAppSplash() {
         AppOpenManager.getInstance().showAppOpenSplash(
             this,
@@ -166,67 +184,71 @@ class LauncherActivity : BaseActivity() , UMPResultListener{
                 override fun onAdFailedToShow(adError: AdError?) {
                     super.onAdFailedToShow(adError)
                     if (isDestroyed || isFinishing) return
-                   AdsClass.getAdApplication()?.isAdCloseSplash?.postValue(true)
+                    AdsClass.getAdApplication()?.isAdCloseSplash?.postValue(true)
                     startMainActivity()
                 }
 
                 override fun onAdClosed() {
                     super.onAdClosed()
                     if (isDestroyed || isFinishing) return
-                   AdsClass.getAdApplication()?.isAdCloseSplash?.postValue(true)
+                    AdsClass.getAdApplication()?.isAdCloseSplash?.postValue(true)
                     startMainActivity()
                 }
             }
         )
     }
-
     fun loadLanguageNative(nativeAdId: String = BuildConfig.language_Screen_Native) {
         if (AdsClass.getAdApplication().getStorageCommon()?.nativeAdsLanguage?.getValue() == null
-            && !AppPurchase.getInstance().isPurchased) {
+            && !AppPurchase.getInstance().isPurchased
+        ) {
 
             SmartAds.getInstance().loadNativeAdResultCallback(
                 applicationContext,
                 nativeAdId,
-                org.smrtobjads.ads.R.layout.custom_native_admob_free_size_btn_bottom,
+                R.layout.native_ad_template,
                 object : AperoAdCallback() {
                     override fun onNativeAdLoaded(nativeAd: AdmobNative) {
                         super.onNativeAdLoaded(nativeAd)
-                       AdsClass.getAdApplication()?.getStorageCommon()?.nativeAdsLanguage?.postValue(nativeAd)
+                        AdsClass.getAdApplication()
+                            ?.getStorageCommon()?.nativeAdsLanguage?.postValue(nativeAd)
                     }
 
                     override fun onAdFailedToLoad(adError: ApAdError?) {
                         super.onAdFailedToLoad(adError)
-                       AdsClass.getAdApplication()?.getStorageCommon()?.nativeAdsLanguage?.postValue(null)
+                        AdsClass.getAdApplication()
+                            ?.getStorageCommon()?.nativeAdsLanguage?.postValue(null)
                     }
                 }
             )
         }
     }
-
     fun loadSplashNative(nativeAdId: String = BuildConfig.native_splash) {
         if (AdsClass.getAdApplication()?.getStorageCommon()?.welcomeNative?.getValue() == null
-            && !AppPurchase.getInstance().isPurchased) {
+            && !AppPurchase.getInstance().isPurchased
+        ) {
 
             SmartAds.getInstance().loadNativeAdResultCallback(
                 applicationContext,
                 nativeAdId,
-                org.smrtobjads.ads.R.layout.custom_native_admob_free_size_btn_bottom,
+                R.layout.native_ad_template,
                 object : AperoAdCallback() {
                     override fun onNativeAdLoaded(nativeAd: AdmobNative) {
                         super.onNativeAdLoaded(nativeAd)
-                       AdsClass.getAdApplication()?.getStorageCommon()?.welcomeNative?.postValue(nativeAd)
+                        AdsClass.getAdApplication()?.getStorageCommon()?.welcomeNative?.postValue(
+                            nativeAd
+                        )
                     }
 
                     override fun onAdFailedToLoad(adError: ApAdError?) {
                         super.onAdFailedToLoad(adError)
-                       AdsClass.getAdApplication()?.getStorageCommon()?.welcomeNative?.postValue(null)
+                        AdsClass.getAdApplication()?.getStorageCommon()?.welcomeNative?.postValue(
+                            null
+                        )
                     }
                 }
             )
         }
     }
-
-
     private fun saveConsentState(consentGiven: Boolean) {
         val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         val editor = preferences.edit()
@@ -234,95 +256,67 @@ class LauncherActivity : BaseActivity() , UMPResultListener{
         editor.apply()
     }
 
-    private fun loadConsentState(): Boolean {
-        val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        return preferences.getBoolean(CONSENT_PREFERENCE_KEY, true)
-    }
+    /*   private fun loadConsentState(): Boolean {
+           val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+           return preferences.getBoolean(CONSENT_PREFERENCE_KEY, true)
+       }*/
 
-//    private fun loadAppOpenAd(adUnitId: String) {
-//        val adRequest = AdRequest.Builder().build()
-//
-//        AppOpenAd.load(
-//            this,
-//            adUnitId,
-//            adRequest,
-//            AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT,
-//            object : AppOpenAd.AppOpenAdLoadCallback() {
-//                override fun onAdLoaded(appOpenAd: AppOpenAd) {
-//                    this@LauncherActivity.appOpenAd = appOpenAd
-//                    Log.e("LOG_TAG", "App open loaded for launcher, successfully!")
-//
-//                }
-//
-//                override fun onAdFailedToLoad(loadAdError: LoadAdError) {
-//                    // Handle ad loading failure
-//                    Log.e("LOG_TAG", "Error loading app open for launcher ad: $loadAdError")
-//                    appOpenAd = null
-//
-//                }
-//            }
-//        )
-//    }
+    /*    private fun loadAppOpenAd(adUnitId: String) {
+            val adRequest = AdRequest.Builder().build()
 
+            AppOpenAd.load(
+                this,
+                adUnitId,
+                adRequest,
+                AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT,
+                object : AppOpenAd.AppOpenAdLoadCallback() {
+                    override fun onAdLoaded(appOpenAd: AppOpenAd) {
+                        this@LauncherActivity.appOpenAd = appOpenAd
+                        Log.e("LOG_TAG", "App open loaded for launcher, successfully!")
+
+                    }
+
+                    override fun onAdFailedToLoad(loadAdError: LoadAdError) {
+                        // Handle ad loading failure
+                        Log.e("LOG_TAG", "Error loading app open for launcher ad: $loadAdError")
+                        appOpenAd = null
+
+                    }
+                }
+            )
+        }*/
     private fun startMainActivity() {
-
         binding.launcherLottieId.cancelAnimation()
         this.appOpenAd = null
         val intent = if (isFirstTimeLaunch()) {
-            Intent(this@LauncherActivity, LangungeActivity::class.java)
+            Intent(this@LaunchrScreen, LangungeActivity::class.java)
         } else {
-            Intent(this@LauncherActivity, SplashActivity::class.java)
+            Intent(this@LaunchrScreen, SplashActivity::class.java)
         }
-
         startActivity(intent)
         finish()
     }
-
     override fun onCheckUMPSuccess(consentResult: Boolean) {
         saveConsentState(consentResult)
     }
 
-    var isFirstRunApp = true
-    override fun onResume() {
-        super.onResume()
-        if (isFirstRunApp) {
-            isFirstRunApp = false
-            return
-        }
-        if (typeAdsSplash == "inter") {
-            SmartAds.getInstance().onCheckShowSplashWhenFail(this, object : AperoAdCallback() {
-                override fun onAdFailedToShow(adError: ApAdError?) {
-                    super.onAdFailedToShow(adError)
-                    if (isDestroyed || isFinishing) return
-                   AdsClass.getAdApplication()?.isAdCloseSplash?.postValue(true)
-                }
-
-                override fun onNextAction() {
-                    super.onNextAction()
-                    if (isDestroyed || isFinishing) return
-                    startMainActivity()
-                }
-
-                override fun onAdClosed() {
-                    super.onAdClosed()
-                    if (isDestroyed || isFinishing) return
-                   AdsClass.getAdApplication()?.isAdCloseSplash?.postValue(true)
-                }
-            }, 1000)
-        } else {
-            AppOpenManager.getInstance().onCheckShowAppOpenSplashWhenFail(
-                this,
-                object : AdCallback() {
-                    override fun onNextAction() {
-                        super.onNextAction()
-                        if (isDestroyed || isFinishing) return
-                        startMainActivity()
-                    }
-
-                    override fun onAdFailedToShow(adError: AdError?) {
+    /*    override fun onResume() {
+            super.onResume()
+            if (isFirstRunApp) {
+                isFirstRunApp = false
+                return
+            }
+            if (typeAdsSplash == "inter") {
+                SmartAds.getInstance().onCheckShowSplashWhenFail(this, object : AperoAdCallback() {
+                    override fun onAdFailedToShow(adError: ApAdError?) {
                         super.onAdFailedToShow(adError)
                         if (isDestroyed || isFinishing) return
                        AdsClass.getAdApplication()?.isAdCloseSplash?.postValue(true)
+                    }
+
+                    override fun onNextAction() {
+                        super.onNextAction()
+                        if (isDestroyed || isFinishing) return
                         startMainActivity()
                     }
 
@@ -330,12 +324,35 @@ class LauncherActivity : BaseActivity() , UMPResultListener{
                         super.onAdClosed()
                         if (isDestroyed || isFinishing) return
                        AdsClass.getAdApplication()?.isAdCloseSplash?.postValue(true)
-                        startMainActivity()
                     }
-                },
-                1000
-            )
-        }
-    }
-    
+                }, 1000)
+            } else {
+                AppOpenManager.getInstance().onCheckShowAppOpenSplashWhenFail(
+                    this,
+                    object : AdCallback() {
+                        override fun onNextAction() {
+                            super.onNextAction()
+                            if (isDestroyed || isFinishing) return
+                            startMainActivity()
+                        }
+
+                        override fun onAdFailedToShow(adError: AdError?) {
+                            super.onAdFailedToShow(adError)
+                            if (isDestroyed || isFinishing) return
+                           AdsClass.getAdApplication()?.isAdCloseSplash?.postValue(true)
+                            startMainActivity()
+                        }
+
+                        override fun onAdClosed() {
+                            super.onAdClosed()
+                            if (isDestroyed || isFinishing) return
+                           AdsClass.getAdApplication()?.isAdCloseSplash?.postValue(true)
+                            startMainActivity()
+                        }
+                    },
+                    1000
+                )
+            }
+        }*/
+
 }

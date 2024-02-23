@@ -1,6 +1,6 @@
 package com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Fragments
 
-import android.Manifest
+ import android.Manifest
 import android.Manifest.permission
 import android.app.Dialog
 import android.app.ProgressDialog
@@ -23,32 +23,21 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.airbnb.lottie.LottieDrawable
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdLoader
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.VideoOptions
 import com.google.android.gms.ads.nativead.NativeAd
-import com.google.android.gms.ads.nativead.NativeAdOptions
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.MainActivity
+ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.BaseActivity
+ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.MainActivity
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.SavedFilesActivity
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.AdsClass
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdsInterCallBack
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.PreloadAdsUtils
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.isInternetAvailable
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.MainApplication
-//import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdManager
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ViewModel.RecordingViewModel
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.CustomDialogSaveFileBinding
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.FragmentVoiceRecBinding
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.NativeAdTemplateBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.smrtobjads.ads.SmartAds
 import org.smrtobjads.ads.ads.models.AdmobNative
 import org.smrtobjads.ads.ads.models.ApAdError
-import org.smrtobjads.ads.billings.AppPurchase
+import org.smrtobjads.ads.ads.models.ApInterstitialAd
 import org.smrtobjads.ads.callbacks.AperoAdCallback
 import java.io.File
 
@@ -80,7 +69,7 @@ class VoiceRecFragment : Fragment() {
         retainInstance = true
         RecordingScreenNative()
 //        loadNativeAd()
-        PreloadAdsUtils.getInstance().loadIntersAlternate(requireContext(), BuildConfig.interstitial_voice_rec_save_btn, BuildConfig.Translate_Button_inter, 2)
+
 
 //        AdManager.getInstance().loadNativeAd(
 //            requireContext(),
@@ -97,9 +86,7 @@ class VoiceRecFragment : Fragment() {
     }
 
     private fun RecordingScreenNative() {
-        AdsClass.getAdApplication()?.getStorageCommon()?.welcomeNative.let { appNative ->
-            if (appNative == null || appNative.value == null && !AppPurchase.getInstance().isPurchased) {
-                SmartAds.getInstance().loadNativeAdResultCallback(requireContext(),
+        SmartAds.getInstance().loadNativeAdResultCallback(requireContext(),
                     BuildConfig.native_voice_Rec,
                     R.layout.native_ad_template,
                     object :
@@ -129,15 +116,7 @@ class VoiceRecFragment : Fragment() {
 
                         }
                     })
-            } else {
-                SmartAds.getInstance().populateNativeAdView(
-                    requireContext(),
-                    appNative.value,
-                    binding.adFrame,
-                    binding.splashNativeAd.shimmerContainerNative
-                )
-            }
-        }
+
 
     }
 
@@ -232,8 +211,6 @@ class VoiceRecFragment : Fragment() {
     }
 
     fun stopRecordingDialog() {
-//        AdManager.getInstance()
-//            .loadInterstitial(requireContext(), BuildConfig.interstitial_voice_rec_save_btn)
 
         val pairDialog = showSaveFileDialog()
 
@@ -284,62 +261,10 @@ class VoiceRecFragment : Fragment() {
                     tempFile,
                     destFile,
                     binding_dialog.filenameET.text.toString(),
-                    binding_dialog.fileExtTextView.text.toString()
-                )
+                    binding_dialog.fileExtTextView.text.toString())
                 if (isSaved) {
-//                    Toast.makeText(
-//                        requireContext(),
-//                        requireContext().getString(R.string.recording_has_been_saved),
-//                        Toast.LENGTH_SHORT
-//                    )
-//                        .show()
-//                    if (AdManager.getInstance().interstitialAd != null) {
-//                        showLoadingDialog(progressDialog)
-//                    }
-                    if(isInternetAvailable(requireContext())) {
-                        PreloadAdsUtils.getInstance().showInterAlternateByTime(
-                            requireContext(),
-                            AdsClass.getAdApplication()
-                                .getStorageCommon().interNormal,
-                            false,
-                            object : AdsInterCallBack {
-                                override fun onInterstitialPriorityShowed() {
 
-                                }
-
-                                override fun onInterstitialNormalShowed() {
-                                }
-
-                                override fun onInterstitialShowed() {
-                                    Log.d("TAG_interst", "onInterstitialShowed: Ad showed")
-                                }
-
-                                override fun onAdClosed() {
-                                    Log.d("TAG_interst", "onAdClosed: Ad Closed")
-                                    AdsClass.getAdApplication()
-                                        .getStorageCommon().interNormal = null
-                                    PreloadAdsUtils.getInstance().loadIntersAlternate(
-                                        requireContext(),
-                                        BuildConfig.interstitial_voice_search_category,
-                                        BuildConfig.Translate_Button_inter,
-                                        2
-                                    )
-                                    startActivity(
-                                        Intent(
-                                            requireContext(),
-                                            SavedFilesActivity::class.java
-                                        )
-                                    )
-                                }
-
-                                override fun onAdClicked() {
-                                    Log.d("TAG_interst", "onAdClicked: Ad clicked")
-                                }
-
-                                override fun onNextAction() {
-                                }
-                            })
-                    }else{
+                    (activity as BaseActivity).forceShowInterstitial(""){
                         startActivity(
                             Intent(
                                 requireContext(),
@@ -347,7 +272,6 @@ class VoiceRecFragment : Fragment() {
                             )
                         )
                     }
-
 //                    mhandler.postDelayed({
 //                        dismissLoadingDialog(progressDialog)
 //                        if (AdManager.getInstance().interstitialAd != null) {
@@ -444,7 +368,6 @@ class VoiceRecFragment : Fragment() {
         }
     }
 
-    // Function to show a dialog prompting the user to open app settings
     private fun showSettingsDialog() {
         val dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -465,7 +388,6 @@ class VoiceRecFragment : Fragment() {
         dialog.show()
     }
 
-    // Function to check and request permission.
     fun checkPermission(permission: String, requestCode: Int) {
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
@@ -480,142 +402,13 @@ class VoiceRecFragment : Fragment() {
             )
         } else {
             recordVoice()
-//            Toast.makeText(MainActivity.this, "Permission for already granted", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private fun loadNativeAd() {
-        val builder = AdLoader.Builder(requireContext(), BuildConfig.native_voice_Rec)
-
-        builder.forNativeAd { nativeAd ->
-            // Check if the fragment is still active
-            if (isAdded) {
-                // You can handle the loaded native ad here
-                handleNativeAd(nativeAd)
-            } else {
-                // The fragment is no longer active, destroy the native ad
-                nativeAd.destroy()
-            }
-        }
-
-        val videoOptions = VideoOptions.Builder().setStartMuted(true).build()
-        val adOptions = NativeAdOptions.Builder().setVideoOptions(videoOptions).build()
-
-        builder.withNativeAdOptions(adOptions)
-
-        val adLoader = builder
-            .withAdListener(object : AdListener() {
-                override fun onAdFailedToLoad(loadAdError: LoadAdError) {
-                    // Handle ad loading failure
-                    Log.e("TAG", "Failed to load native ad with error: $loadAdError")
-                }
-            })
-            .build()
-
-        adLoader.loadAd(AdRequest.Builder().build())
+    override fun onResume() {
+        super.onResume()
     }
 
-    private fun handleNativeAd(nativeAd: NativeAd) {
-        // Destroy the previous native ad, if any
-        currentNativeAd?.destroy()
-
-        // Save the new native ad
-        currentNativeAd = nativeAd
-
-        // Inflate and populate the native ad view
-        val unifiedAdBinding = NativeAdTemplateBinding.inflate(layoutInflater)
-//        populateNativeAdView(nativeAd, unifiedAdBinding)
-
-        // Add the native ad view to your layout
-        binding.adFrame.addView(unifiedAdBinding.root)
-
-
-//        val unifiedAdBinding = NativeAdTemplateBinding.inflate(layoutInflater)
-//        populateNativeAdView(nativeAd, unifiedAdBinding)
-//        binding.adFrame.removeAllViews()
-//        binding.adFrame.addView(unifiedAdBinding.root)
-    }
-
-//    private fun populateNativeAdView(
-//        nativeAd: NativeAd,
-//        unifiedAdBinding: NativeAdTemplateBinding
-//    ) {
-//        val nativeAdView = unifiedAdBinding.root
-//
-//        // Set the media view.
-//        nativeAdView.mediaView = unifiedAdBinding.adMedia
-//
-//        // Set other ad assets.
-//        nativeAdView.headlineView = unifiedAdBinding.adHeadline
-//        nativeAdView.bodyView = unifiedAdBinding.adBody
-//        nativeAdView.callToActionView = unifiedAdBinding.adCallToAction
-//        nativeAdView.iconView = unifiedAdBinding.adAppIcon
-////        nativeAdView.priceView = unifiedAdBinding.adPrice
-////        nativeAdView.starRatingView = unifiedAdBinding.adStars
-////        nativeAdView.storeView = unifiedAdBinding.adStore
-//        nativeAdView.advertiserView = unifiedAdBinding.adAdvertiser
-//
-//        // The headline and media content are guaranteed to be in every UnifiedNativeAd.
-//        unifiedAdBinding.adHeadline.text = nativeAd.headline
-//        nativeAd.mediaContent?.let { unifiedAdBinding.adMedia.setMediaContent(it) }
-//
-//        // These assets aren't guaranteed to be in every UnifiedNativeAd, so it's important to
-//        // check before trying to display them.
-//        if (nativeAd.body == null) {
-//            unifiedAdBinding.adBody.visibility = View.INVISIBLE
-//        } else {
-//            unifiedAdBinding.adBody.visibility = View.VISIBLE
-//            unifiedAdBinding.adBody.text = nativeAd.body
-//        }
-//
-//        if (nativeAd.callToAction == null) {
-//            unifiedAdBinding.adCallToAction.visibility = View.INVISIBLE
-//        } else {
-//            unifiedAdBinding.adCallToAction.visibility = View.VISIBLE
-//            unifiedAdBinding.adCallToAction.text = nativeAd.callToAction
-//        }
-//
-//        if (nativeAd.icon == null) {
-//            unifiedAdBinding.adAppIcon.visibility = View.GONE
-//        } else {
-//            unifiedAdBinding.adAppIcon.setImageDrawable(nativeAd.icon?.drawable)
-//            unifiedAdBinding.adAppIcon.visibility = View.VISIBLE
-//        }
-
-//        if (nativeAd.price == null) {
-////            unifiedAdBinding.adPrice.visibility = View.INVISIBLE
-//        } else {
-////            unifiedAdBinding.adPrice.visibility = View.VISIBLE
-////            unifiedAdBinding.adPrice.text = nativeAd.price
-//        }
-
-//        if (nativeAd.store == null) {
-//            unifiedAdBinding.adStore.visibility = View.INVISIBLE
-//        } else {
-//            unifiedAdBinding.adStore.visibility = View.VISIBLE
-//            unifiedAdBinding.adStore.text = nativeAd.store
-//        }
-
-//        if (nativeAd.starRating == null) {
-//            unifiedAdBinding.adStars.visibility = View.INVISIBLE
-//        } else {
-//            unifiedAdBinding.adStars.rating = nativeAd.starRating!!.toFloat()
-//            unifiedAdBinding.adStars.visibility = View.VISIBLE
-//        }
-
-//        if (nativeAd.advertiser == null) {
-//            unifiedAdBinding.adAdvertiser.visibility = View.INVISIBLE
-//        } else {
-//            unifiedAdBinding.adAdvertiser.text = nativeAd.advertiser
-//            unifiedAdBinding.adAdvertiser.visibility = View.VISIBLE
-//        }
-
-        // This method tells the Google Mobile Ads SDK that you have finished populating your
-        // native ad view with this native ad.
-//        nativeAdView.setNativeAd(nativeAd)
-//
-//
-//    }
 
 
 }

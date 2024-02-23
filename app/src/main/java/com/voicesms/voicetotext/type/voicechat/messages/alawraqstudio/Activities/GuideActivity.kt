@@ -18,6 +18,8 @@ import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClas
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivityGuideBinding
 import org.smrtobjads.ads.SmartAds
+import org.smrtobjads.ads.ads.models.ApAdError
+import org.smrtobjads.ads.callbacks.AperoAdCallback
 
 class GuideActivity : BaseActivity() {
     private lateinit var binding: ActivityGuideBinding
@@ -29,12 +31,25 @@ class GuideActivity : BaseActivity() {
 
         if (isInternetAvailable(this@GuideActivity)) {
             binding.welcomeNativecontainer.visibility=View.VISIBLE
-//            val welcomeAdContainer = binding.welcomeNativecontainer.findViewById<View>(R.id.welcomeBannerAd)
+/*//            val welcomeAdContainer = binding.welcomeNativecontainer.findViewById<View>(R.id.welcomeBannerAd)
 //            val fl_adplaceholder = welcomeAdContainer.findViewById<FrameLayout>(org.smrtobjads.ads.R.id.banner_container)
 //            val shimmerFrameLayout = welcomeAdContainer.findViewById<ShimmerFrameLayout>(org.smrtobjads.ads.R.id.shimmer_container_banner)
-            SmartAds.getInstance().loadBanner(this@GuideActivity,BuildConfig.categoriesScreen_colapsible_Banner)
+//            SmartAds.getInstance().loadBanner(this@GuideActivity,BuildConfig.categoriesScreen_colapsible_Banner)*/
+            SmartAds.getInstance().loadBanner(this@GuideActivity, BuildConfig.guide_Screen_banner,object :
+                AperoAdCallback(){
+                override fun onAdFailedToLoad(adError: ApAdError?) {
+                    super.onAdFailedToLoad(adError)
+                    binding.welcomeNativecontainer.visibility = View.GONE
 
-//            SmartAds.getInstance().loadBanner(this@GuideActivity,BuildConfig.categoriesScreen_colapsible_Banner,fl_adplaceholder,shimmerFrameLayout)
+                }
+
+                override fun onAdLoaded() {
+                    super.onAdLoaded()
+                    binding.welcomeNativecontainer.visibility = View.VISIBLE
+
+                }
+
+            })
         }
         else{
             binding.welcomeNativecontainer.visibility=View.GONE

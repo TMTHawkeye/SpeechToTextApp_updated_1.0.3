@@ -8,15 +8,15 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.BaseActivity
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.SubCategorySearchActivity
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ModelClasses.CategoryModel
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ItemCategoryBinding
 
-class CategoryAdapter(var context: Context, var categoryList: ArrayList<CategoryModel>) :
+class CategoryAdapter(var categoryList: ArrayList<CategoryModel>) :
     RecyclerView.Adapter<CategoryAdapter.viewHolder>() {
     lateinit var binding: ItemCategoryBinding
-    lateinit var progressDialog: ProgressDialog
 
     inner class viewHolder(var binding: ItemCategoryBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -30,6 +30,7 @@ class CategoryAdapter(var context: Context, var categoryList: ArrayList<Category
     }
 
     override fun onBindViewHolder(holder: viewHolder, position: Int) {
+        var context = holder.itemView.context
         binding.categoryIconId.setImageDrawable(context.getDrawable(categoryList.get(position).categoryIcon))
         binding.categoryNameId.text = categoryList.get(position).categoryName
 
@@ -44,12 +45,9 @@ class CategoryAdapter(var context: Context, var categoryList: ArrayList<Category
                 holder.itemView.background = context.getDrawable(R.drawable.card_bg)
             }, delayMillis)
 
-            context.startActivity(
-                Intent(
-                    context,
-                    SubCategorySearchActivity::class.java
-                ).putExtra("subcategory", categoryList.get(position).categoryName)
-            )
+            (context as BaseActivity).showInterstitialAdByTimes(""){
+                context.startActivity(Intent(context, SubCategorySearchActivity::class.java).putExtra("subcategory", categoryList.get(position).categoryName))
+            }
         }
 
     }

@@ -115,7 +115,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/from_card"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_170sdp"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_10ssp"
             android:layout_marginTop="@dimen/_10ssp"
             app:cardCornerRadius="@dimen/_8ssp"
@@ -130,67 +130,125 @@
 
                 <EditText
                     android:id="@+id/from_text_id"
-                    android:layout_width="@dimen/_230sdp"
-                    android:layout_height="@dimen/_120sdp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_8sdp"
                     android:background="@null"
                     android:gravity="top"
+                    android:textSize="@dimen/_13ssp"
                     android:hint="@string/writetextHint"
-                    android:padding="@dimen/_10ssp"
                     android:inputType="textMultiLine"
+                    android:minLines="4"
+                    android:padding="@dimen/_10ssp"
                     android:textColor="@color/grey"
                     android:textColorHint="@color/medium_grey"
                     android:textDirection="locale"
-                    app:layout_constraintEnd_toStartOf="@+id/send_id"
+                    app:layout_constraintBottom_toTopOf="@+id/languageLayout"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toTopOf="@+id/speaker_id_from"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/send_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/_35sdp"
+                    android:layout_height="@dimen/_35sdp"
                     android:layout_margin="@dimen/_10ssp"
+                    android:padding="@dimen/_4sdp"
                     android:src="@drawable/send_msg_icon"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/from_text_id"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/speaker_id_from"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_15ssp"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:padding="@dimen/_4sdp"
                     android:src="@drawable/voice_icon"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    app:layout_constraintBottom_toBottomOf="@+id/copy_id_from"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/copy_id_from" />
 
                 <ImageView
                     android:id="@+id/copy_id_from"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_15ssp"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:padding="@dimen/_4sdp"
                     android:src="@drawable/copy_icon"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/speaker_id_from" />
+                    app:layout_constraintBottom_toBottomOf="@+id/delete_id_from"
+                    app:layout_constraintStart_toEndOf="@+id/speaker_id_from"
+                    app:layout_constraintTop_toTopOf="@+id/delete_id_from" />
 
                 <ImageView
                     android:id="@+id/delete_id_from"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_15ssp"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:padding="@dimen/_4sdp"
                     android:src="@drawable/delete_icon"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/copy_id_from" />
+                    app:layout_constraintBottom_toBottomOf="@id/languageLayout"
+                    app:layout_constraintStart_toEndOf="@+id/copy_id_from"
+                    app:layout_constraintTop_toTopOf="@+id/languageLayout" />
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+
+                    android:id="@+id/constraintLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_6sdp"
+                    app:layout_constraintBottom_toTopOf="@+id/languageLayout"
+                    app:layout_constraintEnd_toEndOf="@+id/languageLayout"
+                    app:layout_constraintStart_toStartOf="@+id/languageLayout">
+
+                    <TextView
+                        android:id="@+id/translate_from_to"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_29sdp"
+                        android:background="@drawable/card_bg_selected"
+                        android:gravity="center"
+                        android:paddingHorizontal="@dimen/_8sdp"
+                        android:text="Translate"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_13ssp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0" />
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/lottie_translate_from_to"
+                        android:layout_width="@dimen/_50sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:layout_centerInParent="true"
+                        android:paddingBottom="@dimen/_5sdp"
+                        android:visibility="gone"
+                        app:lottie_rawRes="@raw/translate_icon_bg_lottie" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/translate_enable_icon"
+                        android:visibility="gone" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <RelativeLayout
+                    android:id="@+id/languageLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_29sdp"
-                    android:layout_margin="@dimen/_10ssp"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:layout_marginVertical="@dimen/_8sdp"
                     android:background="@drawable/layout_bg"
-                    app:cardCornerRadius="60dp"
                     app:cardElevation="0dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent">
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/from_text_id">
 
                     <TextView
                         android:id="@+id/corresponding_from_language_id"
@@ -200,43 +258,23 @@
                         android:layout_marginStart="@dimen/_10ssp"
                         android:layout_marginEnd="@dimen/_38ssp"
                         android:maxLines="1"
+                        android:textSize="@dimen/_13ssp"
                         android:text="@string/languageName"
                         android:textColor="@color/grey" />
 
 
                 </RelativeLayout>
 
-                <RelativeLayout
-                    android:id="@+id/translate_from_to"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toTopOf="@+id/speak_id_from"
-                    app:layout_constraintEnd_toEndOf="parent">
-
-                    <com.airbnb.lottie.LottieAnimationView
-                        android:id="@+id/lottie_translate_from_to"
-                        android:layout_width="@dimen/_50sdp"
-                        android:layout_height="@dimen/_50sdp"
-                        android:layout_centerInParent="true"
-                        android:paddingBottom="@dimen/_5sdp"
-                        app:lottie_rawRes="@raw/translate_icon_bg_lottie" />
-
-                    <ImageView
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"
-                        android:layout_centerInParent="true"
-                        android:src="@drawable/translate_enable_icon" />
-
-                </RelativeLayout>
 
                 <ImageView
                     android:id="@+id/speak_id_from"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_10ssp"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:padding="@dimen/_4sdp"
                     android:src="@drawable/speak_icon"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintBottom_toBottomOf="@+id/languageLayout"
+                    app:layout_constraintEnd_toEndOf="@+id/languageLayout"
+                    app:layout_constraintTop_toTopOf="@+id/languageLayout" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -259,8 +297,9 @@
             android:visibility="gone"
             android:id="@+id/to_card"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_170sdp"
-            android:layout_margin="@dimen/_10ssp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginHorizontal="@dimen/_8sdp"
             app:cardCornerRadius="@dimen/_8ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -273,65 +312,79 @@
 
                 <ScrollView
                     android:id="@+id/scroll_to"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toStartOf="@+id/to_send_id"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
                     android:fillViewport="true"
-                    app:layout_constraintBottom_toTopOf="@+id/speaker_id_to">
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    app:layout_constraintBottom_toTopOf="@+id/delete_id_to"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <TextView
-                            android:padding="@dimen/_10ssp"
                             android:id="@+id/to_text_id"
-                            android:layout_width="@dimen/_230sdp"
-                            android:layout_height="@dimen/_120sdp"
-                            android:inputType="textMultiLine"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:background="@null"
                             android:gravity="top"
                             android:hint="@string/translation"
-                            android:textColor="@color/dark_grey" />
-                    </RelativeLayout>
+                            android:minLines="4"
+                            android:paddingVertical="@dimen/_8sdp"
+                            android:paddingHorizontal="@dimen/_8sdp"
+                            android:textColor="@color/dark_grey"
+                            android:textSize="@dimen/_12ssp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </ScrollView>
+
 
                 <ImageView
                     android:id="@+id/to_send_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
                     android:layout_margin="@dimen/_10ssp"
+                    android:padding="@dimen/_4sdp"
                     android:src="@drawable/send_msg_icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/scroll_to"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:tint="@color/green" />
-
                 <ImageView
                     android:id="@+id/speaker_id_to"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_15ssp"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:padding="@dimen/_4sdp"
                     android:src="@drawable/voice_icon"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintBottom_toBottomOf="@+id/delete_id_to"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/delete_id_to" />
 
                 <ImageView
                     android:id="@+id/copy_id_to"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_15ssp"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:padding="@dimen/_4sdp"
                     android:src="@drawable/copy_icon"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/speaker_id_to" />
+                    app:layout_constraintBottom_toBottomOf="@+id/delete_id_to"
+                    app:layout_constraintStart_toEndOf="@+id/speaker_id_to"
+                    app:layout_constraintTop_toTopOf="@+id/delete_id_to" />
 
                 <ImageView
                     android:id="@+id/delete_id_to"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_15ssp"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:padding="@dimen/_4sdp"
                     android:src="@drawable/delete_icon"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/copy_id_to" />
@@ -358,7 +411,7 @@
             android:id="@+id/ad_frame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20ssp"
+            android:layout_marginTop="@dimen/_8ssp"
             android:background="@color/transparent"
             android:backgroundTint="@color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"

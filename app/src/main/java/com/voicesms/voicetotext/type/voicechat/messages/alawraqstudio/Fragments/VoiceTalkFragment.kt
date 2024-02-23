@@ -85,7 +85,7 @@ class VoiceTalkFragment : Fragment(), LanguageSelectionListener, ConversationAda
 //            val fl_adplaceholder = welcomeAdContainer.findViewById<FrameLayout>(org.smrtobjads.ads.R.id.banner_container)
 //            val shimmerFrameLayout = welcomeAdContainer.findViewById<ShimmerFrameLayout>(org.smrtobjads.ads.R.id.shimmer_container_banner)
 //            SmartAds.getInstance().loadBanner(requireActivity(),BuildConfig.categoriesScreen_colapsible_Banner,fl_adplaceholder,shimmerFrameLayout)
-            SmartAds.getInstance().loadBannerFragment(requireActivity(),BuildConfig.categoriesScreen_colapsible_Banner,binding.root)
+            SmartAds.getInstance().loadBannerFragment(requireActivity(),BuildConfig.banner_voice_talk,binding.root)
 
 
         }

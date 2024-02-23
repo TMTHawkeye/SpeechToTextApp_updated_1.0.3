@@ -1,28 +1,25 @@
 package com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Fragments
 
+//import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdManager
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.BaseActivity
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.VoiceSearchCategoryActivity
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.AdsClass
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdsInterCallBack
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.PreloadAdsUtils
-//import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdManager
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.isInternetAvailable
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.MainApplication
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.FragmentVoiceSearchBinding
 import org.smrtobjads.ads.SmartAds
 import org.smrtobjads.ads.ads.models.AdmobNative
 import org.smrtobjads.ads.ads.models.ApAdError
-import org.smrtobjads.ads.billings.AppPurchase
+import org.smrtobjads.ads.ads.models.ApInterstitialAd
 import org.smrtobjads.ads.callbacks.AperoAdCallback
 
 class VoiceSearchFragment : Fragment(), View.OnClickListener {
@@ -36,18 +33,6 @@ class VoiceSearchFragment : Fragment(), View.OnClickListener {
     ): View? {
         binding = FragmentVoiceSearchBinding.inflate(layoutInflater, container, false)
         SearchScreenNative()
-        PreloadAdsUtils.getInstance().loadIntersAlternate(requireContext(), BuildConfig.interstitial_voice_search_category, BuildConfig.Translate_Button_inter, 2)
-
-//        if (AdManager.getInstance().interstitialAd == null) {
-//            AdManager.getInstance()
-//                .loadInterstitial(requireContext(), BuildConfig.interstitial_voice_search_category)
-//        }
-//        AdManager.getInstance().loadNativeAd(
-//            requireContext(),
-//            BuildConfig.Voice_Search_Screen_Native,
-//            binding.adViewContainer,
-//            binding.shimmerViewContainer
-//        )
 
         binding.cardViewComunication.setOnClickListener(this)
         binding.cardViewShopping.setOnClickListener(this)
@@ -58,8 +43,7 @@ class VoiceSearchFragment : Fragment(), View.OnClickListener {
     }
 
     private fun SearchScreenNative(){
-        AdsClass.getAdApplication()?.getStorageCommon()?.welcomeNative.let { appNative->
-            if (appNative == null || appNative.value == null && !AppPurchase.getInstance().isPurchased) {
+
                 SmartAds.getInstance().loadNativeAdResultCallback(requireContext(),
                     BuildConfig.Voice_Search_Screen_Native,   R.layout.native_ad_template, object :
                         AperoAdCallback(){
@@ -83,44 +67,45 @@ class VoiceSearchFragment : Fragment(), View.OnClickListener {
 
                         }
                     })
-            }else{
-                SmartAds.getInstance().populateNativeAdView(
-                    requireContext(),
-                    appNative.value,
-                    binding.adViewContainer,
-                    binding.splashNativeAd.shimmerContainerNative)
 
-            }
-        }
 
     }
 
 
     override fun onClick(v: View?) {
 
+        (activity as BaseActivity).showInterstitialAdByTimes(""){
+            category = ""
+            when (v!!.id) {
+                R.id.cardView_comunication -> {
+                    category = getString(R.string.communication_title)
+                }
 
-        category = ""
-        when (v!!.id) {
-            R.id.cardView_comunication -> {
-                category = getString(R.string.communication_title)
+                R.id.cardView_shopping -> {
+                    category = getString(R.string.shopping_title)
+                }
+
+                R.id.cardView_socialmedia -> {
+                    category = getString(R.string.social_title)
+                }
+
+                R.id.cardView_searchEngine -> {
+                    category = getString(R.string.searchEngine_title)
+                }
+
+                R.id.cardView_more -> {
+                    category = getString(R.string.more_title)
+                }
             }
 
-            R.id.cardView_shopping -> {
-                category = getString(R.string.shopping_title)
-            }
-
-            R.id.cardView_socialmedia -> {
-                category = getString(R.string.social_title)
-            }
-
-            R.id.cardView_searchEngine -> {
-                category = getString(R.string.searchEngine_title)
-            }
-
-            R.id.cardView_more -> {
-                category = getString(R.string.more_title)
-            }
+            startActivity(
+                Intent(
+                    requireContext(),
+                    VoiceSearchCategoryActivity::class.java
+                ).putExtra("category", category)
+            )
         }
+
 //        if (AdManager.getInstance().interstitialAd == null) {
 //            AdManager.getInstance()
 //                .loadInterstitial(requireContext(), BuildConfig.interstitial_voice_search_category)
@@ -128,17 +113,10 @@ class VoiceSearchFragment : Fragment(), View.OnClickListener {
 
 //        handler.postDelayed({
 
-        if (isInternetAvailable(requireContext())) {
-//            progressDialog = ProgressDialog(requireContext())
-//            progressDialog.setMessage("Loading Interstitial...")
-//            progressDialog.setCancelable(false)
-//            if (AdManager.getInstance().interstitialAd != null) {
-//                showLoadingDialog(progressDialog)
-//            }
-//            loadInterstitialCategoryClick()
-            if(AdsClass.getAdApplication().getStorageCommon().interNormal!=null) {
+//        if (isInternetAvailable(requireContext())) {
+//            if(AdsClass.getAdApplication().getStorageCommon().interNormal!=null) {
 
-                PreloadAdsUtils.getInstance().showInterAlternateByTime(
+         /*       PreloadAdsUtils.getInstance().showInterAlternateByTime(
                     requireContext(),
                     AdsClass.getAdApplication().getStorageCommon().interNormal,
                     false,
@@ -178,16 +156,18 @@ class VoiceSearchFragment : Fragment(), View.OnClickListener {
 
                         override fun onNextAction() {
                         }
-                    })
-            }
-            else{
-                startActivity(
-                    Intent(
-                        requireContext(),
-                        VoiceSearchCategoryActivity::class.java
-                    ).putExtra("category", category)
-                )
-            }
+                    })*/
+
+
+//            }
+//            else{
+//                startActivity(
+//                    Intent(
+//                        requireContext(),
+//                        VoiceSearchCategoryActivity::class.java
+//                    ).putExtra("category", category)
+//                )
+//            }
 
 //                if (AdManager.getInstance().interstitialAd != null) {
 //                    handler.postDelayed({
@@ -216,21 +196,29 @@ class VoiceSearchFragment : Fragment(), View.OnClickListener {
 //                        ).putExtra("category", category)
 //                    )
 //                }
-        } else {
-            startActivity(
-                Intent(
-                    requireContext(),
-                    VoiceSearchCategoryActivity::class.java
-                ).putExtra("category", category)
-            )
-        }
+//        } else {
+//            startActivity(
+//                Intent(
+//                    requireContext(),
+//                    VoiceSearchCategoryActivity::class.java
+//                ).putExtra("category", category)
+//            )
+//        }
 //        },500)
     }
 
+
     override fun onResume() {
         super.onResume()
+//        if(AdsClass.getAdApplication()?.storageCommon?.interNormal==null) {
+
+//        }
+
         binding.root.clearFocus()
     }
+
+
+
 
 
 

@@ -35,17 +35,6 @@ class SavedFilesActivity : BaseActivity(), RecordingsCallback {
     lateinit var adapter: SavedFilesAdapter
     lateinit var listofFiles: ArrayList<FileData>
 
-    override fun onPause() {
-        super.onPause()
-//        AdManager.getInstance().currentNativeAd=null
-//        AdManager.getInstance().interstitialAd=null
-    }
-    override fun onDestroy() {
-        super.onDestroy()
-//        AdManager.getInstance().currentNativeAd=null
-//        AdManager.getInstance().interstitialAd=null
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySavedFilesBinding.inflate(layoutInflater)
@@ -56,14 +45,7 @@ class SavedFilesActivity : BaseActivity(), RecordingsCallback {
             if (it!!.size != 0) {
                 savedFilesNativeAd()
 
-//                AdManager.getInstance().loadNativeAd(
-//                    this@SavedFilesActivity,
-//                    BuildConfig.Save_file_Screen_Native,
-//                    binding.adViewContainer,
-//                    binding.shimmerViewContainer
-//                )
                 binding.adViewContainer.visibility=View.VISIBLE
-//                binding.shimmerViewContainer.visibility=View.VISIBLE
                 listofFiles = it
                 binding.noItemId.visibility = View.GONE
                 binding.savedFilesRV.visibility = View.VISIBLE
@@ -140,7 +122,6 @@ class SavedFilesActivity : BaseActivity(), RecordingsCallback {
         val dialog = builder.create()
         dialog.show()
     }
-
     private fun resetRecyclerView() {
         binding.selectAllId.setImageDrawable(getDrawable(R.drawable.select_icon))
         adapter.selectedItems.clear()
@@ -202,7 +183,6 @@ class SavedFilesActivity : BaseActivity(), RecordingsCallback {
         binding.selectAllId.visibility = View.INVISIBLE
         binding.noItemId.visibility = View.VISIBLE
     }
-
     override fun selectedRecordings() {
         if (adapter.isSelectionMode) {
             binding.constrainToolbar.visibility = View.INVISIBLE
@@ -220,16 +200,10 @@ class SavedFilesActivity : BaseActivity(), RecordingsCallback {
             binding.constrainToolbarSelected.visibility = View.INVISIBLE
         }
     }
-
-    override fun onResume() {
-        super.onResume()
-//        (application as MainApplication).loadAd(this)
-    }
-
     private fun savedFilesNativeAd(){
 
-        AdsClass.getAdApplication()?.getStorageCommon()?.welcomeNative.let { appNative->
-            if (appNative == null || appNative.value == null && !AppPurchase.getInstance().isPurchased) {
+       /* AdsClass.getAdApplication()?.getStorageCommon()?.welcomeNative.let { appNative->
+            if (appNative == null || appNative.value == null && !AppPurchase.getInstance().isPurchased) {*/
                 SmartAds.getInstance().loadNativeAdResultCallback(this@SavedFilesActivity,
                     BuildConfig.Save_file_Screen_Native,  R.layout.native_ad_template, object :
                         AperoAdCallback(){
@@ -253,14 +227,14 @@ class SavedFilesActivity : BaseActivity(), RecordingsCallback {
 
                         }
                     })
-            }else{
+/*            }else{
                 SmartAds.getInstance().populateNativeAdView(
                     this@SavedFilesActivity,
                     appNative.value,
                     binding.adViewContainer,
                     binding.splashNativeAd.shimmerContainerNative)
             }
-        }
+        }*/
 
     }
 

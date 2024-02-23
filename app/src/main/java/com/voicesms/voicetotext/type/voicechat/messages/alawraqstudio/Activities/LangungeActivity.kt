@@ -52,6 +52,9 @@ class LangungeActivity : BaseActivity() {
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
+                if(isFirstTimeLaunch()){
+                    finishAffinity()
+                }
                 finish()
             }
 
@@ -122,24 +125,28 @@ class LangungeActivity : BaseActivity() {
         languageList.add(Language("German",getDrawable(R.drawable.germany_flag),"de"))
         languageList.add(Language("Hindi",getDrawable(R.drawable.india_flag),"hi"))
         languageList.add(Language("Italian",getDrawable(R.drawable.italy_flag),"it"))
+/*
 //        languageList.add(Language("Arabic",getDrawable(R.drawable.saudi_arabia_flag),"ar"))
+*/
         languageList.add(Language("Russian",getDrawable(R.drawable.russian_flag),"ru"))
-//        languageList.add(Language("Korean",getDrawable(R.drawable.korean_flag),"ar"))
+/*//        languageList.add(Language("Korean",getDrawable(R.drawable.korean_flag),"ar"))
 //        languageList.add(Language("Urdu",getDrawable(R.drawable.urdu_flag),"ar"))
-//        languageList.add(Language("Portugues",getDrawable(R.drawable.portugal_flag),"ar"))
+//        languageList.add(Language("Portugues",getDrawable(R.drawable.portugal_flag),"ar"))*/
         return languageList
     }
+/*
 
 //    override fun attachBaseContext(newBase: Context) {
 //        val locale = Locale("en")
 //        super.attachBaseContext(LocaleHelper.onAttach(newBase))
 //    }
+*/
 
     private fun languageNativeAd(){
         AdsClass.getAdApplication()?.getStorageCommon()?.nativeAdsLanguage.let { appNative->
             if (appNative == null || appNative.value == null && !AppPurchase.getInstance().isPurchased) {
                 SmartAds.getInstance().loadNativeAdResultCallback(applicationContext,
-                    BuildConfig.language_Screen_Native,   R.layout.native_ad_template, object :
+                    BuildConfig.language_Screen_Native, R.layout.native_ad_template, object :
                         AperoAdCallback(){
                         override fun onNativeAdLoaded(nativeAd: AdmobNative) {
                             super.onNativeAdLoaded(nativeAd)

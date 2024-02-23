@@ -27,22 +27,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.airbnb.lottie.LottieDrawable
 import com.google.android.gms.ads.nativead.NativeAd
+import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.BaseActivity
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Activities.MainActivity
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.AdsClass
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BottomSheets.LanguageBottomSheet
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BottomSheets.SourceLanguageBottomSheet
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdsInterCallBack
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.PreloadAdsUtils
 //import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdManager
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.copyToClipbard
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.extractLanguageFromCountry
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.getCountryName
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.isInternetAvailable
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.loadLang
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.shareText
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Interfaces.LanguageSelectionListener
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.MainApplication
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ModelClasses.LanguageModel
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ViewModel.SMSViewModel
@@ -96,23 +93,14 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentVoiceSMSBinding.inflate(layoutInflater, container, false)
-//        loadAd()
-//        AdManager.getInstance()
-//            .loadInterstitial(requireContext(), BuildConfig.Translate_Button_inter)
-        splashNativeAd()
-        PreloadAdsUtils.getInstance().loadIntersAlternate(requireContext(), BuildConfig.Translate_Button_inter, BuildConfig.Translate_Button_inter, 2)
 
-        loadVoiceRecNative()
-        loadVoiceSearchNative()
+        showVoiceSMSNative()
+
+
+//        loadVoiceRecNative()
+//        loadVoiceSearchNative()
+
         initLanguages()
-
-//        loadNativeAd()
-//        AdManager.getInstance().loadNativeAd(
-//            requireContext(),
-//            BuildConfig.native_voice_SMS,
-//            binding.adFrame,
-//            binding.shimmerViewContainer
-//        )
 
         speakText = TextToSpeech(requireContext(), OnInitListener { status ->
             if (status == TextToSpeech.SUCCESS) {
@@ -163,72 +151,77 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
             if (!binding.fromTextId.text.isNullOrEmpty() && !searchedText.equals(binding.fromTextId.text.toString())) {
 //                getTranslation()
                 searchedText = binding.fromTextId.text.toString()
-                if (isInternetAvailable(requireContext())) {
-//                    loadInterstitialTranslateBtn()
-//                    progressDialog = ProgressDialog(requireContext())
-//                    progressDialog.setMessage("Loading Interstitial...")
-//                    progressDialog.setCancelable(false)
-//                    if(AdManager.getInstance().interstitialAd!=null) {
-//                        showLoadingDialog(progressDialog)
-//                    }
-//
-//                    handler.postDelayed({
-//                        AdManager.getInstance()
-//                            .showInterstitial(
-//                                requireActivity(),
-//                                BuildConfig.Translate_Button_inter
-//                            ) {
-//                                dismissLoadingDialog(progressDialog)
-//                                getTranslation()
-//                            }
-//                    }, 1000)
-                    if(AdsClass.getAdApplication().getStorageCommon().interNormal!=null) {
+                /*//                if (isInternetAvailable(requireContext())) {
+                //                    loadInterstitialTranslateBtn()
+                //                    progressDialog = ProgressDialog(requireContext())
+                //                    progressDialog.setMessage("Loading Interstitial...")
+                //                    progressDialog.setCancelable(false)
+                //                    if(AdManager.getInstance().interstitialAd!=null) {
+                //                        showLoadingDialog(progressDialog)
+                //                    }
+                //
+                //                    handler.postDelayed({
+                //                        AdManager.getInstance()
+                //                            .showInterstitial(
+                //                                requireActivity(),
+                //                                BuildConfig.Translate_Button_inter
+                //                            ) {
+                //                                dismissLoadingDialog(progressDialog)
+                //                                getTranslation()
+                //                            }
+                //                    }, 1000)*/
+                /* if(AdsClass.getAdApplication().getStorageCommon().interNormal!=null) {
 
-                        PreloadAdsUtils.getInstance().showInterAlternateByForce(
-                            requireContext(),
-                            AdsClass.getAdApplication()
-                                .getStorageCommon().interNormal,
-                            false,
-                            object : AdsInterCallBack {
-                                override fun onInterstitialPriorityShowed() {
+                     PreloadAdsUtils.getInstance().showInterAlternateByForce(
+                         requireContext(),
+                         AdsClass.getAdApplication()
+                             .getStorageCommon().interNormal,
+                         false,
+                         object : AdsInterCallBack {
+                             override fun onInterstitialPriorityShowed() {
 
-                                }
+                             }
 
-                                override fun onInterstitialNormalShowed() {
-                                }
+                             override fun onInterstitialNormalShowed() {
+                             }
 
-                                override fun onInterstitialShowed() {
-                                    Log.d("TAG_interst", "onInterstitialShowed: Ad showed")
-                                }
+                             override fun onInterstitialShowed() {
+                                 Log.d("TAG_interst", "onInterstitialShowed: Ad showed")
+                             }
 
-                                override fun onAdClosed() {
-                                    Log.d("TAG_interst", "onAdClosed: Ad Closed")
-                                    getTranslation()
-                                    AdsClass.getAdApplication()
-                                        .getStorageCommon().interNormal = null
-                                    PreloadAdsUtils.getInstance().loadIntersAlternate(
-                                        requireContext(),
-                                        BuildConfig.Translate_Button_inter,
-                                        BuildConfig.Translate_Button_inter,
-                                        2
-                                    )
+                             override fun onAdClosed() {
+                                 Log.d("TAG_interst", "onAdClosed: Ad Closed")
+                                 getTranslation()
+                                 AdsClass.getAdApplication()
+                                     .getStorageCommon().interNormal = null
+                                 PreloadAdsUtils.getInstance().loadIntersAlternate(
+                                     requireContext(),
+                                     BuildConfig.Translate_Button_inter,
+                                     BuildConfig.Translate_Button_inter,
+                                     2
+                                 )
 
-                                }
+                             }
 
-                                override fun onAdClicked() {
-                                    Log.d("TAG_interst", "onAdClicked: Ad clicked")
-                                }
+                             override fun onAdClicked() {
+                                 Log.d("TAG_interst", "onAdClicked: Ad clicked")
+                             }
 
-                                override fun onNextAction() {
-                                }
-                            })
-                    }
-                    else{
-                        getTranslation()
-                    }
+                             override fun onNextAction() {
+                             }
+                         })
+                 }
+                 else{
+                     getTranslation()
+                 }*/
+
+
+                (activity as BaseActivity).showInterstitialAdByTimes(""){
+                    getTranslation()
                 }
+                hideKeyboard()
+
             }
-            hideKeyboard()
         }
 
         binding.copyIdFrom.setOnClickListener {
@@ -427,7 +420,6 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
     }
 
 
-
     private fun initLanguages() {
         try {
 //            mExecutor.execute {
@@ -595,15 +587,20 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
     }
 
 
-    private fun splashNativeAd(){
-        AdsClass.getAdApplication()?.getStorageCommon()?.welcomeNative.let { appNative->
+    private fun showVoiceSMSNative() {
+        AdsClass.getAdApplication()?.getStorageCommon()?.homeNative.let { appNative ->
             if (appNative == null || appNative.value == null && !AppPurchase.getInstance().isPurchased) {
                 SmartAds.getInstance().loadNativeAdResultCallback(requireContext(),
-                    BuildConfig.native_voice_SMS,   R.layout.native_ad_template, object :
-                        AperoAdCallback(){
+                    BuildConfig.native_voice_SMS, R.layout.native_ad_template, object :
+                        AperoAdCallback() {
                         override fun onNativeAdLoaded(nativeAd: AdmobNative) {
                             super.onNativeAdLoaded(nativeAd)
-                            SmartAds.getInstance().populateNativeAdView(requireContext(), nativeAd, binding.adFrame,binding.splashNativeAd.shimmerContainerNative)
+                            SmartAds.getInstance().populateNativeAdView(
+                                requireContext(),
+                                nativeAd,
+                                binding.adFrame,
+                                binding.splashNativeAd.shimmerContainerNative
+                            )
 
                         }
 
@@ -622,107 +619,15 @@ class VoiceSMSFragment : Fragment(), LanguageSelectionListener {
 
                         }
                     })
-            }else{
+            } else {
                 SmartAds.getInstance().populateNativeAdView(
                     requireContext(),
                     appNative.value,
                     binding.adFrame,
-                    binding.splashNativeAd.shimmerContainerNative)
+                    binding.splashNativeAd.shimmerContainerNative
+                )
             }
         }
-
     }
-
-    fun loadVoiceRecNative(nativeAdId: String = BuildConfig.native_voice_Rec) {
-        if (AdsClass.getAdApplication().getStorageCommon()?.welcomeNative?.getValue() == null
-            && !AppPurchase.getInstance().isPurchased) {
-
-            SmartAds.getInstance().loadNativeAdResultCallback(
-                requireContext(),
-                nativeAdId,
-                org.smrtobjads.ads.R.layout.custom_native_admob_free_size_btn_bottom,
-                object : AperoAdCallback() {
-                    override fun onNativeAdLoaded(nativeAd: AdmobNative) {
-                        super.onNativeAdLoaded(nativeAd)
-                        AdsClass.getAdApplication()?.getStorageCommon()?.welcomeNative?.postValue(nativeAd)
-                    }
-
-                    override fun onAdFailedToLoad(adError: ApAdError?) {
-                        super.onAdFailedToLoad(adError)
-                        AdsClass.getAdApplication()?.getStorageCommon()?.welcomeNative?.postValue(null)
-                    }
-                }
-            )
-        }
-    }
-    fun loadVoiceSearchNative(nativeAdId: String = BuildConfig.Voice_Search_Screen_Native) {
-        if (AdsClass.getAdApplication().getStorageCommon()?.welcomeNative?.getValue() == null
-            && !AppPurchase.getInstance().isPurchased) {
-
-            SmartAds.getInstance().loadNativeAdResultCallback(
-                requireContext(),
-                nativeAdId,
-                org.smrtobjads.ads.R.layout.custom_native_admob_free_size_btn_bottom,
-                object : AperoAdCallback() {
-                    override fun onNativeAdLoaded(nativeAd: AdmobNative) {
-                        super.onNativeAdLoaded(nativeAd)
-                        AdsClass.getAdApplication()?.getStorageCommon()?.welcomeNative?.postValue(nativeAd)
-                    }
-
-                    override fun onAdFailedToLoad(adError: ApAdError?) {
-                        super.onAdFailedToLoad(adError)
-                        AdsClass.getAdApplication()?.getStorageCommon()?.welcomeNative?.postValue(null)
-                    }
-                }
-            )
-        }
-    }
-
-    fun loadInterstitialTranslateBtn() {
-//        if (AdsClass.getAdApplication()
-//                .getStorageCommon()?.splashInterstitial?.getValue() == null
-//            && !AppPurchase.getInstance().isPurchased
-//        ) {
-        SmartAds.getInstance().loadSplashInterstitialAds(
-            requireContext(),
-            BuildConfig.Translate_Button_inter,
-            2000,
-            500,
-            object : AperoAdCallback() {
-
-                override fun onInterstitialLoad(interstitialAd: ApInterstitialAd?) {
-                    super.onInterstitialLoad(interstitialAd)
-                    Log.d("TAG_interst", "onInterstitialLoad: adLoaded")
-//                        AdsClass.getAdApplication()
-//                            ?.getStorageCommon()?.splashInterstitial?.postValue(interstitialAd)
-                }
-
-                override fun onAdFailedToLoad(adError: ApAdError?) {
-                    super.onAdFailedToLoad(adError)
-                    Log.d("TAG_interst", "onAdFailedToLoad: $adError")
-                    getTranslation()
-//                    startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-//                        AdsClass.getAdApplication()
-//                            ?.getStorageCommon()?.splashInterstitial?.postValue(null)
-                }
-
-                override fun onAdFailedToShow(adError: ApAdError?) {
-                    super.onAdFailedToShow(adError)
-                    Log.d("TAG_interst", "onAdFailedToLoad: $adError")
-                    getTranslation()
-//                    AdsClass.getAdApplication()
-//                        ?.getStorageCommon()?.splashInterstitial?.postValue(null)
-//                    startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-                }
-
-                override fun onAdClosed() {
-                    super.onAdClosed()
-                    Log.d("TAG_interst", "onAdClosed: Ad Closed")
-                    getTranslation()
-                }
-            })
-    }
-
-
 
 }

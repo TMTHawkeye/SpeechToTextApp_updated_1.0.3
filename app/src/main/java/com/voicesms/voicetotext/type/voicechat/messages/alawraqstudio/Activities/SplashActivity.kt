@@ -11,11 +11,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.lifecycleScope
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.AdsClass
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.AdsInterCallBack
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.PreloadAdsUtils
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.dloadLanguage
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.HelperClasses.isInternetAvailable
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.MainApplication
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivitySplashBinding
 import io.paperdb.Paper
@@ -34,52 +30,33 @@ class SplashActivity : BaseActivity() {
     }
     private val handler = Handler()
 
-//    private lateinit var adView: AdView
-//    var progressDialog:ProgressDialog=ProgressDialog(this)
-
-    //    private var currentNativeAd: NativeAd? = null
-    private val delayedVisibilityChange = Runnable {
+/*    private val delayedVisibilityChange = Runnable {
         binding.progressSplash.visibility = android.view.View.GONE
         binding.cardStart.visibility = android.view.View.VISIBLE
-    }
+    }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-//        adView = AdView(this)
+
         splashNativeAd()
-        loadVoiceSMSNative()
+
+        loadHomeScreenVoiceSmsNative()
+
 //        loadVoiceRecNative()
 //        loadVoiceSearchNative()
-//        if (isInternetAvailable(this@SplashActivity)) {
-////            binding.shimmerViewContainer.visibility = View.VISIBLE
-//            binding.frameLayout.visibility = View.VISIBLE
-////            binding.shimmerViewContainer.startShimmer()
-////            AdManager.getInstance().loadNativeAd(
-////                this@SplashActivity,
-////                BuildConfig.native_splash,
-////                binding.adFrame,
-////                binding.shimmerViewContainer
-////            )
-//        } else {
-////            binding.shimmerViewContainer.visibility = View.GONE
-//            binding.frameLayout.visibility = View.GONE
-//        }
-//        refreshAd()
-//        binding.shimmerViewContainer.startShimmer()
-
-
         downloadInitialModel()
-//        if (AdManager.getInstance().interstitialAd == null) {
-//            AdManager.getInstance().loadInterstitial(this, BuildConfig.welcome_Screen_inter)
-//        }
 
+        if (AdsClass.getAdApplication()?.storageCommon?.welcomeInterstitialAd == null){
+            loadWelcomeInter()
+        }
 
         handler.postDelayed({
             binding.progressSplash.visibility = android.view.View.GONE
             binding.cardStart.visibility = android.view.View.VISIBLE
         }, 3000)
 
+/*
         binding.cardStart.setOnClickListener {
 
 //            if (isInternetAvailable(this@SplashActivity)) {
@@ -166,11 +143,60 @@ class SplashActivity : BaseActivity() {
 //                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
 //            }
         }
+*/
+
+        binding.cardStart.setOnClickListener {
+
+            AdsClass.getAdApplication()?.storageCommon?.welcomeInterstitialAd.let {
+                if (it == null) {
+                    startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                } else {
+                    if (it.isReady) {
+                        SmartAds.getInstance()
+                            .forceShowInterstitial(this, it, object : AperoAdCallback() {
+                                override fun onNextAction() {
+                                    Log.i("ad", "onAdClosed: start content and finish main")
+                                    startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                                }
+
+                                override fun onAdFailedToShow(adError: ApAdError?) {
+                                    super.onAdFailedToShow(adError)
+                                    Log.i("ad", "onAdFailedToShow:" + adError!!.message)
+                                }
+
+                                override fun onAdImpression() {
+                                    super.onAdImpression()
+
+                                }
+
+                            }, false)
+                    } else {
+                        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                    }
+                }
+            }
+        }
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 finishAffinity()
             }
         })
+    }
+
+    private fun loadWelcomeInter() {
+
+        SmartAds.getInstance()
+            .getInterstitialAds(this, BuildConfig.welcome_Screen_inter, object : AperoAdCallback() {
+                override fun onInterstitialLoad(interstitialAd: ApInterstitialAd?) {
+                    super.onInterstitialLoad(interstitialAd)
+                    AdsClass.getAdApplication()?.storageCommon?.welcomeInterstitialAd = interstitialAd
+                }
+
+                override fun onAdFailedToLoad(adError: ApAdError?) {
+                    super.onAdFailedToLoad(adError)
+
+                }
+            })
     }
 
     private fun downloadInitialModel() {
@@ -195,45 +221,17 @@ class SplashActivity : BaseActivity() {
             }
         }
     }
-
-    override fun onPause() {
-        super.onPause()
-//        adView.pause()
-
-//        AdManager.getInstance().currentNativeAd = null
-//        AdManager.getInstance().interstitialAd = null
-    }
-
-    override fun onResume() {
-        super.onResume()
-//        (application as MainApplication).loadAd(this)
-//        adView.resume()
-
-    }
-
     private fun getLanguageModelDownloadStatus(languageCode: String): Boolean {
         val preferences = getSharedPreferences("LanguagePrefs", Context.MODE_PRIVATE)
         return preferences.getBoolean("ModelDownloaded_$languageCode", false)
     }
-
     private fun setLanguageModelDownloadStatus(languageCode: String, status: Boolean) {
         val preferences = getSharedPreferences("LanguagePrefs", Context.MODE_PRIVATE)
         val editor = preferences.edit()
         editor.putBoolean("ModelDownloaded_$languageCode", status)
         editor.apply()
     }
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-//        handler.removeCallbacks(delayedVisibilityChange)
-//        AdManager.getInstance().currentNativeAd = null
-//        AdManager.getInstance().interstitialAd = null
-    }
-
-
     private fun splashNativeAd() {
-
         AdsClass.getAdApplication()?.getStorageCommon()?.welcomeNative.let { appNative ->
             if (appNative == null || appNative.value == null && !AppPurchase.getInstance().isPurchased) {
                 SmartAds.getInstance().loadNativeAdResultCallback(this@SplashActivity,
@@ -275,19 +273,17 @@ class SplashActivity : BaseActivity() {
                 )
             }
         }
-
     }
 
-    fun loadVoiceSMSNative(nativeAdId: String = BuildConfig.native_voice_SMS) {
-        if (AdsClass.getAdApplication()
-                .getStorageCommon()?.welcomeNative?.getValue() == null
+    fun loadHomeScreenVoiceSmsNative(nativeAdId: String = BuildConfig.native_voice_SMS) {
+        if (AdsClass.getAdApplication().getStorageCommon()?.homeNative?.getValue() == null
             && !AppPurchase.getInstance().isPurchased
         ) {
 
             SmartAds.getInstance().loadNativeAdResultCallback(
                 applicationContext,
                 nativeAdId,
-                org.smrtobjads.ads.R.layout.custom_native_admob_free_size_btn_bottom,
+                R.layout.native_ad_template,
                 object : AperoAdCallback() {
                     override fun onNativeAdLoaded(nativeAd: AdmobNative) {
                         super.onNativeAdLoaded(nativeAd)
@@ -305,75 +301,6 @@ class SplashActivity : BaseActivity() {
         }
     }
 
-//    fun getInterstitialAds(context: Context?, id: String?): ApInterstitialAd? {
-//        val apInterstitialAd = ApInterstitialAd()
-//        return when (adConfig.getMediationProvider()) {
-//            SmartAdsConfig.PROVIDER_ADMOB -> {
-//                SmartObjAdmob.getInstance().getInterstitialAds(context, id, object : AdCallback() {
-//                    override fun onInterstitialLoad(interstitialAd: InterstitialAd?) {
-//                        super.onInterstitialLoad(interstitialAd)
-//                        Log.d(SmartAds.TAG, "Admob onInterstitialLoad: ")
-//                        apInterstitialAd.interstitialAd = interstitialAd
-//                    }
-//
-//                    override fun onAdFailedToLoad(i: LoadAdError?) {
-//                        super.onAdFailedToLoad(i)
-//                    }
-//
-//                    override fun onAdFailedToShow(adError: AdError?) {
-//                        super.onAdFailedToShow(adError)
-//                    }
-//                })
-//                apInterstitialAd
-//            }
-//
-//            else -> apInterstitialAd
-//        }
-//    }
-
-
-    fun loadInterstitialSplash() {
-//        if (AdsClass.getAdApplication()
-//                .getStorageCommon()?.splashInterstitial?.getValue() == null
-//            && !AppPurchase.getInstance().isPurchased
-//        ) {
-        SmartAds.getInstance().loadSplashInterstitialAds(
-            this@SplashActivity,
-            BuildConfig.welcome_Screen_inter,
-            2000,
-            500,
-            object : AperoAdCallback() {
-
-                override fun onInterstitialLoad(interstitialAd: ApInterstitialAd?) {
-                    super.onInterstitialLoad(interstitialAd)
-//                        AdsClass.getAdApplication()
-//                            ?.getStorageCommon()?.splashInterstitial?.postValue(interstitialAd)
-                }
-
-                override fun onAdFailedToLoad(adError: ApAdError?) {
-                    super.onAdFailedToLoad(adError)
-                    Log.d("TAG_interst", "onAdFailedToLoad: $adError")
-//                    startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-//                        AdsClass.getAdApplication()
-//                            ?.getStorageCommon()?.splashInterstitial?.postValue(null)
-                }
-
-                override fun onAdFailedToShow(adError: ApAdError?) {
-                    super.onAdFailedToShow(adError)
-                    Log.d("TAG_interst", "onAdFailedToLoad: $adError")
-//                    AdsClass.getAdApplication()
-//                        ?.getStorageCommon()?.splashInterstitial?.postValue(null)
-//                    startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-                }
-
-                override fun onAdClosed() {
-                    super.onAdClosed()
-                    Log.d("TAG_interst", "onAdClosed: Ad Closed")
-                    startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-                }
-            })
-    }
-//    }
 
 
 }

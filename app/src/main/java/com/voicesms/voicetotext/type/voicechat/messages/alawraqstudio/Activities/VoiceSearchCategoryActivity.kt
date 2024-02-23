@@ -4,23 +4,15 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.gms.ads.LoadAdError
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.Adapters.CategoryAdapter
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.AdsClass
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.BuildConfig
-import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.MainApplication
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.ModelClasses.CategoryModel
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.R
 import com.voicesms.voicetotext.type.voicechat.messages.alawraqstudio.databinding.ActivityVoiceSearchCategoryBinding
 import org.smrtobjads.ads.SmartAds
-import org.smrtobjads.ads.ads.models.AdmobNative
-import org.smrtobjads.ads.ads.models.ApAdError
-import org.smrtobjads.ads.billings.AppPurchase
 import org.smrtobjads.ads.callbacks.AdCallback
-import org.smrtobjads.ads.callbacks.AperoAdCallback
 import java.util.concurrent.atomic.AtomicBoolean
 
 class VoiceSearchCategoryActivity : BaseActivity() {
@@ -65,6 +57,7 @@ class VoiceSearchCategoryActivity : BaseActivity() {
 //
 //            }
 //        })
+
         SmartAds.getInstance().loadCollapsibleBanner(this@VoiceSearchCategoryActivity,BuildConfig.categoriesScreen_colapsible_Banner,"bottom",object : AdCallback(){
             override fun onAdFailedToLoad(i: LoadAdError?) {
                 super.onAdFailedToLoad(i)
@@ -79,7 +72,6 @@ class VoiceSearchCategoryActivity : BaseActivity() {
         })
 
 
-        loadsubCategoryNative()
 //        SmartAds.getInstance().loadCollapsibleBanner(this, BuildConfig.categoriesScreen_colapsible_Banner,"bottom",fl_adplaceholder,shimmerFrameLayout,AdCallback())
 
 //        binding.adViewContainer.addView(adView)
@@ -105,7 +97,7 @@ class VoiceSearchCategoryActivity : BaseActivity() {
 //        v_model.getListofCategories(categoryName) {
 //            binding.categoryRV.layoutManager = GridLayoutManager(this, 3)
         getListofCategories(categoryName){
-            binding.categoryRV.adapter = CategoryAdapter(this, it)
+            binding.categoryRV.adapter = CategoryAdapter( it)
             val fixedSpacing = 8
             val spacing = (fixedSpacing * resources.displayMetrics.density).toInt()
             binding.categoryRV.addItemDecoration(object : RecyclerView.ItemDecoration() {
@@ -242,30 +234,4 @@ class VoiceSearchCategoryActivity : BaseActivity() {
 
         callback(listOfCategories)
     }
-
-    fun loadsubCategoryNative(nativeAdId: String = BuildConfig.Sub_categories_native) {
-        if (AdsClass.getAdApplication().getStorageCommon()?.welcomeNative?.getValue() == null
-            && !AppPurchase.getInstance().isPurchased) {
-
-            SmartAds.getInstance().loadNativeAdResultCallback(
-                applicationContext,
-                nativeAdId,
-                org.smrtobjads.ads.R.layout.custom_native_admob_free_size_btn_bottom,
-                object : AperoAdCallback() {
-                    override fun onNativeAdLoaded(nativeAd: AdmobNative) {
-                        super.onNativeAdLoaded(nativeAd)
-                        AdsClass.getAdApplication()?.getStorageCommon()?.welcomeNative?.postValue(nativeAd)
-                    }
-
-                    override fun onAdFailedToLoad(adError: ApAdError?) {
-                        super.onAdFailedToLoad(adError)
-                        AdsClass.getAdApplication()?.getStorageCommon()?.welcomeNative?.postValue(null)
-                    }
-                }
-            )
-        }
-    }
-
-
-
 }

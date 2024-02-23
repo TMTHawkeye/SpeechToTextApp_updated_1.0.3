@@ -46,18 +46,6 @@ class SubCategorySearchActivity : BaseActivity() {
             }
         }
 
-    private var currentNativeAd: NativeAd? = null
-
-    override fun onPause() {
-        super.onPause()
-//        AdManager.getInstance().currentNativeAd=null
-//        AdManager.getInstance().interstitialAd=null
-    }
-    override fun onDestroy() {
-        super.onDestroy()
-//        AdManager.getInstance().currentNativeAd=null
-//        AdManager.getInstance().interstitialAd=null
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySubCategorySearchBinding.inflate(layoutInflater)
@@ -140,7 +128,7 @@ class SubCategorySearchActivity : BaseActivity() {
             }
         })
     }
-
+/*
 //    private fun populateNativeAdView(nativeAd: NativeAd, unifiedAdBinding: NativeAdTemplateBinding) {
 //        val nativeAdView = unifiedAdBinding.root
 //
@@ -219,8 +207,7 @@ class SubCategorySearchActivity : BaseActivity() {
 //
 //
 //
-//    }
-
+//    }*/
     private fun generateQuery(platform: String, query: String) {
         val url: String = when (platform) {
             getString(R.string.reddit) -> getString(R.string.reddit_baseurl) + Uri.encode(query)
@@ -278,18 +265,10 @@ class SubCategorySearchActivity : BaseActivity() {
             startActivity(intent)
         }
     }
-
-    override fun onResume() {
-        super.onResume()
-//        (application as MainApplication).loadAd(this)
-    }
-
     private fun subCategoryNativeAd(){
 
-        AdsClass.getAdApplication()?.getStorageCommon()?.welcomeNative.let { appNative->
-            if (appNative == null || appNative.value == null && !AppPurchase.getInstance().isPurchased) {
                 SmartAds.getInstance().loadNativeAdResultCallback(this@SubCategorySearchActivity,
-                    BuildConfig.Sub_categories_native,   R.layout.native_ad_template, object :
+                    BuildConfig.Sub_categories_native, R.layout.native_ad_template, object :
                         AperoAdCallback(){
                         override fun onNativeAdLoaded(nativeAd: AdmobNative) {
                             super.onNativeAdLoaded(nativeAd)
@@ -312,14 +291,6 @@ class SubCategorySearchActivity : BaseActivity() {
 
                         }
                     })
-            }else{
-                SmartAds.getInstance().populateNativeAdView(
-                    this@SubCategorySearchActivity,
-                    appNative.value,
-                    binding.adViewContainer,
-                    binding.splashNativeAd.shimmerContainerNative)
-            }
-        }
 
     }
 
